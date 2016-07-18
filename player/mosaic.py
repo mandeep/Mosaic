@@ -10,11 +10,17 @@ class MusicPlayer(QMainWindow):
     def __init__(self, parent=None):
 
         QMainWindow.__init__(self, parent)
+        """
+        Initializes the QMainWindow widget and calls other widgets that
+        need to be displayed in the main window.
+        """
         self.player = QMediaPlayer()
         self.media_controls()
 
     def media_controls(self):
-
+        """
+        Creates the bottom toolbar and controls used for media playback.
+        """
         self.toolbar = QToolBar()
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
