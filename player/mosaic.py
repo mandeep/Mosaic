@@ -1,7 +1,8 @@
-import os
 import sys
 from PyQt5.QtMultimedia import QMediaPlayer
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QApplication, QToolBar, QAction
+from PyQt5.QtCore import Qt
 
 
 class MusicPlayer(QMainWindow):
@@ -9,10 +10,17 @@ class MusicPlayer(QMainWindow):
     def __init__(self, parent=None):
 
         QMainWindow.__init__(self, parent)
-        self.interface()
-
-    def interface(self):
         self.player = QMediaPlayer()
+        self.media_controls()
+
+    def media_controls(self):
+
+        self.toolbar = QToolBar()
+        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
+        self.toolbar.setMovable(False)
+
+        self.play_action = QAction(QIcon().fromTheme('media-playback-start'), 'Play', self)
+        self.toolbar.addAction(self.play_action)
 
 
 def main():
