@@ -1,5 +1,6 @@
 import os
 import sys
+from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
@@ -8,17 +9,19 @@ class MusicPlayer(QMainWindow):
     def __init__(self, parent=None):
 
         QMainWindow.__init__(self, parent)
-        self.init_ui()
+        self.interface()
 
-    def init_ui(self):
-        self.setGeometry(400, 200, 1024, 768)
-        self.setWindowTitle('Mosaic')
+    def interface(self):
+        self.player = QMediaPlayer()
 
 
 def main():
     application = QApplication(sys.argv)
-    player = MusicPlayer()
-    player.show()
+    application.setApplicationName('Mosaic')
+    window = MusicPlayer()
+    window.show()
+    window.resize(1024, 768)
+    window.move(400, 200)
     sys.exit(application.exec_())
 
 main()
