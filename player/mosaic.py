@@ -26,8 +26,13 @@ class MusicPlayer(QMainWindow):
         self.toolbar.setMovable(False)
 
         self.play_action = QAction(QIcon().fromTheme('media-playback-start'), 'Play', self)
+        self.play_action.triggered.connect(self.player.play)
+
         self.pause_action = QAction(QIcon().fromTheme('media-playback-pause'), 'Pause', self)
+        self.pause_action.triggered.connect(self.player.pause)
+
         self.stop_action = QAction(QIcon().fromTheme('media-playback-stop'), 'Stop', self)
+        self.stop_action.triggered.connect(self.player.stop)
 
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.pause_action)
