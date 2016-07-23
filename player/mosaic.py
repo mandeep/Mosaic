@@ -9,8 +9,7 @@ from PyQt5.QtCore import Qt, QUrl
 class MusicPlayer(QMainWindow):
 
     def __init__(self, parent=None):
-        """
-        Initializes the QMainWindow widget and calls methods that house
+        """Initializes the QMainWindow widget and calls methods that house
         other widgets that need to be displayed in the main window.
         """
         QMainWindow.__init__(self, parent)
@@ -18,7 +17,7 @@ class MusicPlayer(QMainWindow):
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
 
-        self.file_name = None
+        self.filename = None
 
         self.player.setPlaylist(self.playlist)
         self.menu_controls()
@@ -27,13 +26,13 @@ class MusicPlayer(QMainWindow):
         self.file_menu()
 
     def menu_controls(self):
-
+        """Initiates the menu bar and adds it to the QMainWindow widget.
+        """
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
 
     def media_controls(self):
-        """
-        Creates the bottom toolbar and controls used for media playback.
+        """Creates the bottom toolbar and controls used for media playback.
         """
         self.toolbar = QToolBar()
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
@@ -53,6 +52,8 @@ class MusicPlayer(QMainWindow):
         self.toolbar.addAction(self.stop_action)
 
     def file_menu(self):
+        """Adds a file menu to the menu bar. Allows the user to choose actions
+        related to audio files."""
         self.open_action = QAction('Open file', self)
         self.open_action.setStatusTip('Add an audio file to an empty playlist.')
         self.open_action.setShortcut('CTRL+O')
@@ -61,9 +62,11 @@ class MusicPlayer(QMainWindow):
         self.file.addAction(self.open_action)
 
     def open_file(self):
-        self.file_name, ok = QFileDialog.getOpenFileName(self, 'Open file')
+        """Retrieves the path of a file and adds it to a new playlist.
+        """
+        self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.file_name)))
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
 
 
 def main():
