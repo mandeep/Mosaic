@@ -62,7 +62,8 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         self.file_name, ok = QFileDialog.getOpenFileName(self, 'Open file')
-        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.file_name)))
+        if ok:
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.file_name)))
 
 
 def main():
