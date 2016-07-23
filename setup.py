@@ -14,6 +14,6 @@ setup(name='Mosaic',
       install_requires=dependencies,
       entry_points='''
         [console_scripts]
-        MandeepPAD=editor.mpad:main
+        Mosaic=player.mosaic:main
         ''',
       )
