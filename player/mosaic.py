@@ -8,19 +8,26 @@ from PyQt5.QtCore import Qt, QUrl
 class MusicPlayer(QMainWindow):
 
     def __init__(self, parent=None):
-
-        QMainWindow.__init__(self, parent)
         """
         Initializes the QMainWindow widget and calls methods that house
         other widgets that need to be displayed in the main window.
         """
+        QMainWindow.__init__(self, parent)
+
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
 
         self.player.setPlaylist(self.playlist)
+        self.menu_controls()
         self.media_controls()
 
         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile('')))
+
+    def menu_controls(self):
+
+        self.menu = self.menuBar()
+
+        self.file = self.menu.addMenu('File')
 
     def media_controls(self):
         """
