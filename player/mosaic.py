@@ -1,8 +1,8 @@
 import sys
-from PyQt5.QtMultimedia import QMediaPlayer
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QToolBar, QAction
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QUrl
 
 
 class MusicPlayer(QMainWindow):
@@ -11,11 +11,16 @@ class MusicPlayer(QMainWindow):
 
         QMainWindow.__init__(self, parent)
         """
-        Initializes the QMainWindow widget and calls other widgets that
-        need to be displayed in the main window.
+        Initializes the QMainWindow widget and calls methods that house
+        other widgets that need to be displayed in the main window.
         """
         self.player = QMediaPlayer()
+        self.playlist = QMediaPlaylist()
+
+        self.player.setPlaylist(self.playlist)
         self.media_controls()
+
+        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile('')))
 
     def media_controls(self):
         """
