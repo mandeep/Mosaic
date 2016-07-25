@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
-from PyQt5.QtGui import QIcon
+import mutagen
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist, QMediaMetaData
+from PyQt5.QtGui import QIcon, QPalette, QBrush, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
-                             QAction, QFileDialog)
+                             QAction, QFileDialog, QLabel)
 from PyQt5.QtCore import Qt, QUrl
 
 
@@ -15,15 +16,19 @@ class MusicPlayer(QMainWindow):
         QMainWindow.__init__(self, parent)
 
         self.player = QMediaPlayer()
-        self.playlist = QMediaPlaylist()
+
+        self.player.metaDataChanged.connect(self.retrieve_meta_data)
+
+        self.art = QLabel(self)
 
         self.filename = None
 
-        self.player.setPlaylist(self.playlist)
         self.menu_controls()
         self.media_controls()
 
         self.file_menu()
+
+        self.retrieve_meta_data()
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget.
@@ -66,7 +71,21 @@ class MusicPlayer(QMainWindow):
         """
         self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.player.play()
+
+    def retrieve_meta_data(self):
+        if self.player.isMetaDataAvailable():
+            song = mutagen.File(self.filename)
+            artwork = song.tags['APIC:'].data
+            with open('image.jpg', 'wb') as image:
+                image.write(artwork)
+            self.pixmap = QPixmap('image.jpg')
+            self.art.setPixmap(self.pixmap)
+            self.art.setFixedWidth(self.pixmap.width())
+            self.art.setFixedHeight(self.pixmap.height())
+
+            self.setGeometry(0, 0, self.pixmap.width(), self.pixmap.height()+25)
 
 
 def main():
@@ -74,8 +93,7 @@ def main():
     application.setApplicationName('Mosaic')
     window = MusicPlayer()
     window.show()
-    window.resize(1024, 768)
-    window.move(400, 200)
+    window.resize(800, 800)
     sys.exit(application.exec_())
 
 main()
