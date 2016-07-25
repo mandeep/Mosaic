@@ -76,6 +76,17 @@ class MusicPlayer(QMainWindow):
             self.player.play()
 
     def retrieve_meta_data(self):
+        """QPixmap() is initiated in order to send an image to QLabel which then
+        displays the image in QMainWindow. When a file is loaded, this function
+        searches for meta data related to cover art. The mutagen library is
+        imported to retrieve cover art from the meta data. Mp3s and FLAC audio
+        formats house pictures differently, so two different methods are used
+        to extract the meta data. Once the data (in bytes) is retrieved from
+        the audio file, it is appeneded to a QByteArray() which allows the
+        data to be passed to QPixmap(). Once QPixmap() receives the data,
+        the application's height and width are changed to match that of the
+        cover art image.
+        """
         self.pixmap = QPixmap()
         self.byte_array = QByteArray()
 
