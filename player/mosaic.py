@@ -1,11 +1,11 @@
 import sys
 import mutagen
 import mutagen.flac
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist, QMediaMetaData
-from PyQt5.QtGui import QIcon, QPalette, QBrush, QPixmap
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel)
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QUrl, QByteArray
 
 
 class MusicPlayer(QMainWindow):
@@ -76,18 +76,18 @@ class MusicPlayer(QMainWindow):
             self.player.play()
 
     def retrieve_meta_data(self):
-        if self.player.isMetaDataAvailable():
+        self.pixmap = QPixmap()
+        self.byte_array = QByteArray()
 
+        if self.player.isMetaDataAvailable() and self.filename:
             if self.filename.endswith('mp3'):
                 song = mutagen.File(self.filename)
-                artwork = song.tags['APIC:'].data
+                artwork = self.byte_array.append(song.tags['APIC:'].data)
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
-                artwork = song.pictures[0].data
-            with open('image.jpg', 'wb') as image:
-                image.write(artwork)
-
-            self.pixmap = QPixmap('image.jpg')
+                artwork = self.byte_array.append(song.pictures[0].data)
+ 
+            self.pixmap.loadFromData(artwork, 'jpg')
             self.art.setPixmap(self.pixmap)
             self.art.setFixedWidth(self.pixmap.width())
             self.art.setFixedHeight(self.pixmap.height())
@@ -99,7 +99,7 @@ def main():
     application.setApplicationName('Mosaic')
     window = MusicPlayer()
     window.show()
-    window.resize(800, 800)
+    window.resize(600, 600)
     window.move(400, 200)
     sys.exit(application.exec_())
 
