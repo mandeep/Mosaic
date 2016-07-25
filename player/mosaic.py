@@ -77,9 +77,10 @@ class MusicPlayer(QMainWindow):
     def retrieve_meta_data(self):
         if self.player.isMetaDataAvailable():
             song = mutagen.File(self.filename)
-            artwork = song.tags['APIC:'].data
-            with open('image.jpg', 'wb') as image:
-                image.write(artwork)
+            if self.filename.endswith('mp3'):
+                artwork = song.tags['APIC:'].data
+                with open('image.jpg', 'wb') as image:
+                    image.write(artwork)
             self.pixmap = QPixmap('image.jpg')
             self.art.setPixmap(self.pixmap)
             self.art.setFixedWidth(self.pixmap.width())
