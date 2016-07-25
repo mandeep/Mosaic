@@ -78,12 +78,12 @@ class MusicPlayer(QMainWindow):
     def retrieve_meta_data(self):
         if self.player.isMetaDataAvailable():
 
-            song = mutagen.File(self.filename)
-
             if self.filename.endswith('mp3'):
+                song = mutagen.File(self.filename)
                 artwork = song.tags['APIC:'].data
             elif self.filename.endswith('flac'):
-                artwork = mutagen.flac.FLAC(self.filename).pictures[0].data
+                song = mutagen.flac.FLAC(self.filename)
+                artwork = song.pictures[0].data
             with open('image.jpg', 'wb') as image:
                 image.write(artwork)
 
