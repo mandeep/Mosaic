@@ -1,5 +1,6 @@
 import sys
 import mutagen
+import mutagen.flac
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist, QMediaMetaData
 from PyQt5.QtGui import QIcon, QPalette, QBrush, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
@@ -76,17 +77,21 @@ class MusicPlayer(QMainWindow):
 
     def retrieve_meta_data(self):
         if self.player.isMetaDataAvailable():
+
             song = mutagen.File(self.filename)
+
             if self.filename.endswith('mp3'):
                 artwork = song.tags['APIC:'].data
-                with open('image.jpg', 'wb') as image:
-                    image.write(artwork)
+            elif self.filename.endswith('flac'):
+                artwork = mutagen.flac.FLAC(self.filename).pictures[0].data
+            with open('image.jpg', 'wb') as image:
+                image.write(artwork)
+
             self.pixmap = QPixmap('image.jpg')
             self.art.setPixmap(self.pixmap)
             self.art.setFixedWidth(self.pixmap.width())
             self.art.setFixedHeight(self.pixmap.height())
-
-            self.setGeometry(0, 0, self.pixmap.width(), self.pixmap.height()+25)
+            self.setFixedSize(self.pixmap.width(), self.pixmap.height()+25)
 
 
 def main():
@@ -95,6 +100,7 @@ def main():
     window = MusicPlayer()
     window.show()
     window.resize(800, 800)
+    window.move(400, 200)
     sys.exit(application.exec_())
 
 main()
