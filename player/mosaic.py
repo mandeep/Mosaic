@@ -22,6 +22,8 @@ class MusicPlayer(QMainWindow):
 
         self.art = QLabel(self)
 
+        self.setWindowIcon(QIcon('images/icon.png'))
+
         self.filename = None
 
         self.menu_controls()
@@ -76,9 +78,9 @@ class MusicPlayer(QMainWindow):
             self.player.play()
 
     def retrieve_meta_data(self):
-        """QPixmap() is initiated in order to send an image to QLabel which then
+        """QPixmap() is initiated in order to send an image to QLabel() which then
         displays the image in QMainWindow. When a file is loaded, this function
-        searches for meta data related to cover art. The mutagen library is
+        affirms that meta data in the audio file exists. The mutagen library is
         imported to retrieve cover art from the meta data. Mp3s and FLAC audio
         formats house pictures differently, so two different methods are used
         to extract the meta data. Once the data (in bytes) is retrieved from
@@ -97,7 +99,7 @@ class MusicPlayer(QMainWindow):
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
                 artwork = self.byte_array.append(song.pictures[0].data)
- 
+
             self.pixmap.loadFromData(artwork, 'jpg')
             self.art.setPixmap(self.pixmap)
             self.art.setFixedWidth(self.pixmap.width())
