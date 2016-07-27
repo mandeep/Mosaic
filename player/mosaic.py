@@ -104,13 +104,10 @@ class MusicPlayer(QMainWindow):
                     self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
-                try:
-                    album_title = song.tags['TALB']
-                    album_artist = song.tags['TPE1']
-                    track_title = song.tags['TIT2']
-                    self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
-                except KeyError:
-                    pass
+                album_title = song.get('TALB', '') 
+                album_artist = song.get('TPE1', '')
+                track_title = song.get('TIT2', '')
+                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
                 try:
