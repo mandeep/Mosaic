@@ -97,8 +97,11 @@ class MusicPlayer(QMainWindow):
         if self.player.isMetaDataAvailable() and self.filename:
             if self.filename.endswith('mp3'):
                 song = mutagen.File(self.filename)
-                artwork = self.byte_array.append(song.tags['APIC:'].data)
-                self.pixmap.loadFromData(artwork)
+                try:
+                    artwork = self.byte_array.append(song.tags['APIC:'].data)
+                    self.pixmap.loadFromData(artwork)
+                except KeyError:
+                    self.pixmap = QPixmap('images/nocover.png', 'png')
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
                 try:
