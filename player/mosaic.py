@@ -102,7 +102,7 @@ class MusicPlayer(QMainWindow):
                 song = mutagen.flac.FLAC(self.filename)
                 artwork = self.byte_array.append(song.pictures[0].data)
 
-            self.pixmap.loadFromData(artwork, 'jpg')
+            self.pixmap.loadFromData(artwork)
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
             self.art.setFixedSize(900, 925)
