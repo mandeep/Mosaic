@@ -21,6 +21,7 @@ class MusicPlayer(QMainWindow):
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
 
         self.art = QLabel(self)
+        self.setCentralWidget(self.art)
 
         self.setWindowIcon(QIcon('images/icon.png'))
 
@@ -33,7 +34,7 @@ class MusicPlayer(QMainWindow):
 
         self.retrieve_meta_data()
 
-        self.setFixedSize(900, 925)
+        self.setFixedSize(900, 952)
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget.
@@ -112,7 +113,7 @@ class MusicPlayer(QMainWindow):
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
-            self.art.setFixedSize(900, 925)
+            self.art.setFixedSize(900, 900)
 
 
 def main():
