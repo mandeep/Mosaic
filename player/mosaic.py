@@ -105,7 +105,7 @@ class MusicPlayer(QMainWindow):
                     artwork = self.byte_array.append(song.pictures[0].data)
                     self.pixmap.loadFromData(artwork)
                 except IndexError:
-                    pass
+                    self.pixmap = QPixmap('images/nocover.png', 'png')
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
