@@ -120,7 +120,7 @@ class MusicPlayer(QMainWindow):
                     self.pixmap = QPixmap('images/nocover.png', 'png')
                 try:
                     album_title = song.tags['ALBUM'][0]
-                    album_artist = song.tags['ALBUM ARTIST'][0]
+                    album_artist = song.tags['ALBUMARTIST'][0]
                     track_title = song.tags['TITLE'][0]
                     self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
                 except KeyError:
