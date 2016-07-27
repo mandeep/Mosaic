@@ -10,6 +10,6 @@ setup(name='Mosaic',
       ],
       entry_points='''
         [console_scripts]
-        Mosaic=player.mosaic:main
+        mosaic=player.mosaic:main
         ''',
       )
