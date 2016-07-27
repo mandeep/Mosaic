@@ -98,14 +98,15 @@ class MusicPlayer(QMainWindow):
             if self.filename.endswith('mp3'):
                 song = mutagen.File(self.filename)
                 artwork = self.byte_array.append(song.tags['APIC:'].data)
+                self.pixmap.loadFromData(artwork)
             elif self.filename.endswith('flac'):
+                song = mutagen.flac.FLAC(self.filename)
                 try:
-                    song = mutagen.flac.FLAC(self.filename)
                     artwork = self.byte_array.append(song.pictures[0].data)
+                    self.pixmap.loadFromData(artwork)
                 except IndexError:
-                    artwork = "No Cover Art Found"
+                    pass
 
-            self.pixmap.loadFromData(artwork)
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
             self.art.setFixedSize(900, 925)
