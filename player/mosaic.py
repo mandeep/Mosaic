@@ -17,6 +17,7 @@ class MusicPlayer(QMainWindow):
         QMainWindow.__init__(self, parent)
 
         self.player = QMediaPlayer()
+        self.setWindowTitle('Mosaic')
 
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
 
@@ -103,6 +104,13 @@ class MusicPlayer(QMainWindow):
                     self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
+                try:
+                    album_title = song.tags['TALB']
+                    album_artist = song.tags['TPE1']
+                    track_title = song.tags['TIT2']
+                    self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+                except KeyError:
+                    pass
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
                 try:
@@ -110,6 +118,13 @@ class MusicPlayer(QMainWindow):
                     self.pixmap.loadFromData(artwork)
                 except IndexError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
+                try:
+                    album_title = song.tags['ALBUM'][0]
+                    album_artist = song.tags['ALBUM ARTIST'][0]
+                    track_title = song.tags['TITLE'][0]
+                    self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+                except KeyError:
+                    pass
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
@@ -118,7 +133,6 @@ class MusicPlayer(QMainWindow):
 
 def main():
     application = QApplication(sys.argv)
-    application.setApplicationName('Mosaic')
     window = MusicPlayer()
     window.show()
     window.move(400, 200)
