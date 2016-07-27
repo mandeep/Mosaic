@@ -115,13 +115,12 @@ class MusicPlayer(QMainWindow):
                     self.pixmap.loadFromData(artwork)
                 except IndexError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
-                try:
-                    album_title = song.tags['ALBUM'][0]
-                    album_artist = song.tags['ALBUMARTIST'][0]
-                    track_title = song.tags['TITLE'][0]
-                    self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
-                except KeyError:
-                    pass
+                song_data = dict(song.tags)
+                song_data = dict((k, "".join(v)) for k, v in song_data.items())
+                album_title = song_data.get('album', '')
+                album_artist = song_data.get('albumartist', '')
+                track_title = song_data.get('title', '')
+                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
