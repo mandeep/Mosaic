@@ -33,6 +33,8 @@ class MusicPlayer(QMainWindow):
 
         self.retrieve_meta_data()
 
+        self.setFixedSize(900, 925)
+
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget.
         """
@@ -101,10 +103,9 @@ class MusicPlayer(QMainWindow):
                 artwork = self.byte_array.append(song.pictures[0].data)
 
             self.pixmap.loadFromData(artwork, 'jpg')
+            self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
-            self.art.setFixedWidth(self.pixmap.width())
-            self.art.setFixedHeight(self.pixmap.height())
-            self.setFixedSize(self.pixmap.width(), self.pixmap.height()+25)
+            self.art.setFixedSize(900, 925)
 
 
 def main():
@@ -112,7 +113,6 @@ def main():
     application.setApplicationName('Mosaic')
     window = MusicPlayer()
     window.show()
-    window.resize(600, 600)
     window.move(400, 200)
     sys.exit(application.exec_())
 
