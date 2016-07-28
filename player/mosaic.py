@@ -116,7 +116,7 @@ class MusicPlayer(QMainWindow):
                 song_data = dict(song.tags)
                 song_data = dict((k, "".join(v)) for k, v in song_data.items())
                 album_title = song_data.get('album', '')
-                album_artist = song_data.get('albumartist', '')
+                album_artist = song_data.get('artist', '')
                 track_title = song_data.get('title', '')
                 self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
                 try:
