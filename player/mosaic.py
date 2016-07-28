@@ -118,7 +118,8 @@ class MusicPlayer(QMainWindow):
                 album_title = song_data.get('album', '')
                 album_artist = song_data.get('artist', '')
                 track_title = song_data.get('title', '')
-                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+                track_number = song_data.get('tracknumber', '')
+                self.setWindowTitle('{} - {} - {} - {}' .format(track_number, album_artist, album_title, track_title))
                 try:
                     artwork = self.byte_array.append(song.pictures[0].data)
                     self.pixmap.loadFromData(artwork)
