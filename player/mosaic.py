@@ -104,9 +104,12 @@ class MusicPlayer(QMainWindow):
                 album_title = song.get('TALB', '') 
                 album_artist = song.get('TPE1', '')
                 track_title = song.get('TIT2', '')
-                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+                track_number = song.get('TRCK', '')
+                self.setWindowTitle('{} - {} - {} - {}' .format(track_number, album_artist, album_title, track_title))
                 try:
-                    artwork = self.byte_array.append(song.tags['APIC:'].data)
+                    for tag in song.tags:
+                        if 'APIC' in tag:
+                            artwork = self.byte_array.append(song.tags[tag].data)
                     self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
