@@ -24,6 +24,8 @@ class MusicPlayer(QMainWindow):
         self.art = QLabel(self)
         self.setCentralWidget(self.art)
 
+        self.art.mousePressEvent = self.press_playback
+
         self.setWindowIcon(QIcon('images/icon.png'))
 
         self.filename = None
@@ -99,32 +101,39 @@ class MusicPlayer(QMainWindow):
         if self.player.isMetaDataAvailable() and self.filename:
             if self.filename.endswith('mp3'):
                 song = mutagen.File(self.filename)
+                album_title = song.get('TALB', '') 
+                album_artist = song.get('TPE1', '')
+                track_title = song.get('TIT2', '')
+                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
                 try:
                     artwork = self.byte_array.append(song.tags['APIC:'].data)
                     self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
-                album_title = song.get('TALB', '') 
-                album_artist = song.get('TPE1', '')
-                track_title = song.get('TIT2', '')
-                self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+
             elif self.filename.endswith('flac'):
                 song = mutagen.flac.FLAC(self.filename)
-                try:
-                    artwork = self.byte_array.append(song.pictures[0].data)
-                    self.pixmap.loadFromData(artwork)
-                except IndexError:
-                    self.pixmap = QPixmap('images/nocover.png', 'png')
                 song_data = dict(song.tags)
                 song_data = dict((k, "".join(v)) for k, v in song_data.items())
                 album_title = song_data.get('album', '')
                 album_artist = song_data.get('albumartist', '')
                 track_title = song_data.get('title', '')
                 self.setWindowTitle('{} - {} - {}' .format(album_artist, album_title, track_title))
+                try:
+                    artwork = self.byte_array.append(song.pictures[0].data)
+                    self.pixmap.loadFromData(artwork)
+                except IndexError:
+                    self.pixmap = QPixmap('images/nocover.png', 'png')
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
             self.art.setFixedSize(900, 900)
+
+    def press_playback(self, event):
+        """Plays the loaded media if the player is either stopped or paused.
+        """
+        if self.player.StoppedState or self.player.PausedState:
+            self.player.play()
 
 
 def main():
