@@ -101,10 +101,10 @@ class MusicPlayer(QMainWindow):
         if self.player.isMetaDataAvailable() and self.filename:
             if self.filename.endswith('mp3'):
                 song = mutagen.File(self.filename)
-                album_title = song.get('TALB', '')
-                album_artist = song.get('TPE1', '')
-                track_title = song.get('TIT2', '')
-                track_number = song.get('TRCK', '')
+                album_title = song.get('TALB', '??')
+                album_artist = song.get('TPE1', '??')
+                track_title = song.get('TIT2', '??')
+                track_number = song.get('TRCK', '??')
                 self.setWindowTitle('{} - {} - {} - {}' .format(
                     track_number, album_artist, album_title, track_title))
                 try:
@@ -119,10 +119,10 @@ class MusicPlayer(QMainWindow):
                 song = mutagen.flac.FLAC(self.filename)
                 song_data = dict(song.tags)
                 song_data = dict((k, "".join(v)) for k, v in song_data.items())
-                album_title = song_data.get('album', '')
-                album_artist = song_data.get('artist', '')
-                track_title = song_data.get('title', '')
-                track_number = song_data.get('tracknumber', '')
+                album_title = song_data.get('album', '??')
+                album_artist = song_data.get('artist', '??')
+                track_title = song_data.get('title', '??')
+                track_number = song_data.get('tracknumber', '??')
                 self.setWindowTitle('{} - {} - {} - {}' .format(
                     track_number, album_artist, album_title, track_title))
                 try:
