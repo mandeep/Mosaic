@@ -17,6 +17,8 @@ class MusicPlayer(QMainWindow):
         QMainWindow.__init__(self, parent)
 
         self.player = QMediaPlayer()
+        self.playlist = QMediaPlaylist()
+
         self.setWindowTitle('Mosaic')
 
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
@@ -61,27 +63,50 @@ class MusicPlayer(QMainWindow):
         self.stop_action = QAction(QIcon().fromTheme('media-playback-stop'), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
 
+        self.previous_action = QAction(QIcon().fromTheme('media-playback-previous'), 'Previous', self)
+        self.previous_action.triggered.connect(self.playlist.previous)
+
+        self.next_action = QAction(QIcon().fromTheme('media-playback-next'), 'Next', self)
+        self.next_action.triggered.connect(self.playlist.next)
+
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.pause_action)
         self.toolbar.addAction(self.stop_action)
+        self.toolbar.addAction(self.previous_action)
+        self.toolbar.addAction(self.next_action)
 
     def file_menu(self):
         """Adds a file menu to the menu bar. Allows the user to choose actions
         related to audio files."""
         self.open_action = QAction('Open file', self)
-        self.open_action.setStatusTip('Add an audio file to an empty playlist.')
+        self.open_action.setStatusTip('Open an audio file for playback.')
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
+        self.open_files_action = QAction('Open files', self)
+        self.open_files_action.setStatusTip('Opens audio files and adds them to the playlist.')
+        self.open_files_action.triggered.connect(self.open_files)
+
         self.file.addAction(self.open_action)
+        self.file.addAction(self.open_files_action)
 
     def open_file(self):
-        """Retrieves the path of a file and adds it to a new playlist.
+        """Retrieves the path of a file and opens it for playback.
         """
         self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
             self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
             self.player.play()
+
+    def open_files(self):
+        """Retrieves the path of the select files and adds the files to a playlist.
+        """
+        self.filenames, ok = QFileDialog.getOpenFileNames(self, 'Open location')
+        if ok:
+            for file in self.filenames:
+                self.filename = file
+                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.player.setPlaylist(self.playlist)
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
