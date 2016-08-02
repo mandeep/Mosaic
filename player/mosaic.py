@@ -83,12 +83,7 @@ class MusicPlayer(QMainWindow):
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
-        self.open_files_action = QAction('Open files', self)
-        self.open_files_action.setStatusTip('Opens audio files and adds them to the playlist.')
-        self.open_files_action.triggered.connect(self.open_files)
-
         self.file.addAction(self.open_action)
-        self.file.addAction(self.open_files_action)
 
     def open_file(self):
         """Retrieves the path of a file and opens it for playback.
@@ -97,16 +92,6 @@ class MusicPlayer(QMainWindow):
         if ok:
             self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
             self.player.play()
-
-    def open_files(self):
-        """Retrieves the path of the select files and adds the files to a playlist.
-        """
-        self.filenames, ok = QFileDialog.getOpenFileNames(self, 'Open location')
-        if ok:
-            for file in self.filenames:
-                self.filename = file
-                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
-            self.player.setPlaylist(self.playlist)
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
