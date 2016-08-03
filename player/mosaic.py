@@ -5,7 +5,7 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider)
-from PyQt5.QtCore import Qt, QUrl, QByteArray
+from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime
 
 
 class MusicPlayer(QMainWindow):
@@ -19,14 +19,21 @@ class MusicPlayer(QMainWindow):
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.slider = QSlider(Qt.Horizontal)
+        self.duration_label = QLabel()
+
         self.slider.setRange(0, self.player.duration() / 1000)
 
         self.setWindowTitle('Mosaic')
 
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
+        self.slider.sliderMoved.connect(self.seek)
+        self.player.durationChanged.connect(self.song_duration)
+        self.player.positionChanged.connect(self.song_position)
 
         self.art = QLabel(self)
         self.setCentralWidget(self.art)
+
+        self.duration = 0
 
         self.art.mousePressEvent = self.press_playback
 
@@ -77,6 +84,7 @@ class MusicPlayer(QMainWindow):
         self.toolbar.addAction(self.previous_action)
         self.toolbar.addAction(self.next_action)
         self.toolbar.addWidget(self.slider)
+        self.toolbar.addWidget(self.duration_label)
 
     def file_menu(self):
         """Adds a file menu to the menu bar. Allows the user to choose actions
@@ -154,6 +162,41 @@ class MusicPlayer(QMainWindow):
         if self.player.StoppedState or self.player.PausedState:
             self.player.play()
 
+    def seek(self, seconds):
+        self.player.setPosition(seconds * 1000)
+
+    def song_duration(self, duration):
+        duration /= 1000
+        self.duration = duration
+        self.slider.setMaximum(duration)
+
+    def song_position(self, progress):
+        progress /= 1000
+
+        if not self.slider.isSliderDown():
+            self.slider.setValue(progress)
+
+        self.update_duration(progress)
+
+    def update_duration(self, current_duration):
+        duration = self.duration
+        if current_duration or duration:
+            current_time = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
+                (current_duration % 60), (current_duration * 1000) % 1000)
+            total_time = QTime((duration / 3600) % 60, (duration / 60) % 60, (duration % 60),
+                (duration * 1000) % 1000)
+
+            if duration > 3600:
+                time_format = "hh:mm:ss"
+            else:
+                time_format = "mm:ss"
+
+            time_display = "{} / {}" .format(current_time.toString(time_format),
+                total_time.toString(time_format))
+        else:
+            time_display = ""
+
+        self.duration_label.setText(time_display)
 
 def main():
     application = QApplication(sys.argv)
