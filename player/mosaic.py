@@ -4,7 +4,8 @@ import mutagen.flac
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
-                             QAction, QFileDialog, QLabel, QSlider)
+                             QAction, QFileDialog, QLabel, QSlider,
+                             QDesktopWidget)
 from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime
 
 
@@ -21,7 +22,7 @@ class MusicPlayer(QMainWindow):
         self.playlist = QMediaPlaylist()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
-        self.art = QLabel(self)
+        self.art = QLabel()
         self.setCentralWidget(self.art)
 
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -222,8 +223,11 @@ class MusicPlayer(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
+    desktop = QDesktopWidget().availableGeometry()
+    width = (desktop.width() - window.width()) / 2
+    height = (desktop.height() - window.height()) / 2
     window.show()
-    window.move(400, 200)
+    window.move(width, height)
     sys.exit(application.exec_())
 
 main()
