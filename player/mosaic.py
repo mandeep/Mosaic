@@ -90,7 +90,13 @@ class MusicPlayer(QMainWindow):
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
+        self.exit_action = QAction('Quit', self)
+        self.exit_action.setStatusTip('Quit the application.')
+        self.exit_action.setShortcut('CTRL+Q')
+        self.exit_action.triggered.connect(self.exit_application)
+
         self.file.addAction(self.open_action)
+        self.file.addAction(self.exit_action)
 
     def open_file(self):
         """Retrieves the path of a file and opens it for playback.
@@ -99,6 +105,11 @@ class MusicPlayer(QMainWindow):
         if ok:
             self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
             self.player.play()
+
+    def exit_application(self):
+        """Closes the window and quits the music player application.
+        """
+        QApplication.quit()
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
