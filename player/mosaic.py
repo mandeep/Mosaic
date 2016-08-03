@@ -15,35 +15,31 @@ class MusicPlayer(QMainWindow):
         other widgets that need to be displayed in the main window.
         """
         QMainWindow.__init__(self, parent)
+        self.setWindowTitle('Mosaic')
 
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
+        self.art = QLabel(self)
+        self.setCentralWidget(self.art)
 
         self.slider.setRange(0, self.player.duration() / 1000)
-
-        self.setWindowTitle('Mosaic')
 
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
         self.slider.sliderMoved.connect(self.seek)
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
 
-        self.art = QLabel(self)
-        self.setCentralWidget(self.art)
-
-        self.duration = 0
-
         self.art.mousePressEvent = self.press_playback
 
         self.setWindowIcon(QIcon('images/icon.png'))
 
+        self.duration = 0
         self.filename = None
 
         self.menu_controls()
         self.media_controls()
-
         self.file_menu()
 
         self.retrieve_meta_data()
@@ -163,14 +159,23 @@ class MusicPlayer(QMainWindow):
             self.player.play()
 
     def seek(self, seconds):
+        """When the user drags the horizontal slider, this function sets
+        the position of the song to the position dragged to.
+        """
         self.player.setPosition(seconds * 1000)
 
     def song_duration(self, duration):
+        """Sets the slider to the duration of the currently played media.
+        """
         duration /= 1000
         self.duration = duration
         self.slider.setMaximum(duration)
 
     def song_position(self, progress):
+        """As the song plays, the slider moves in sync with the duration
+        of the song. The progress is relayed to update_duration() in order
+        to display the time label next to the slider.
+        """
         progress /= 1000
 
         if not self.slider.isSliderDown():
@@ -179,11 +184,15 @@ class MusicPlayer(QMainWindow):
         self.update_duration(progress)
 
     def update_duration(self, current_duration):
+        """Calculates the time played and length of the song in time. Both
+        of these times are sent to duration_label() in order to display the
+        times on the toolbar.
+        """
         duration = self.duration
         if current_duration or duration:
-            current_time = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
+            time_played = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
                 (current_duration % 60), (current_duration * 1000) % 1000)
-            total_time = QTime((duration / 3600) % 60, (duration / 60) % 60, (duration % 60),
+            song_length = QTime((duration / 3600) % 60, (duration / 60) % 60, (duration % 60),
                 (duration * 1000) % 1000)
 
             if duration > 3600:
@@ -191,12 +200,13 @@ class MusicPlayer(QMainWindow):
             else:
                 time_format = "mm:ss"
 
-            time_display = "{} / {}" .format(current_time.toString(time_format),
-                total_time.toString(time_format))
+            time_display = "{} / {}" .format(time_played.toString(time_format),
+                                             song_length.toString(time_format))
         else:
             time_display = ""
 
         self.duration_label.setText(time_display)
+
 
 def main():
     application = QApplication(sys.argv)
