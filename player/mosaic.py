@@ -4,7 +4,7 @@ import mutagen.flac
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
-                             QAction, QFileDialog, QLabel)
+                             QAction, QFileDialog, QLabel, QSlider)
 from PyQt5.QtCore import Qt, QUrl, QByteArray
 
 
@@ -18,6 +18,8 @@ class MusicPlayer(QMainWindow):
 
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
+        self.slider = QSlider(Qt.Horizontal)
+        self.slider.setRange(0, self.player.duration() / 1000)
 
         self.setWindowTitle('Mosaic')
 
@@ -74,6 +76,7 @@ class MusicPlayer(QMainWindow):
         self.toolbar.addAction(self.stop_action)
         self.toolbar.addAction(self.previous_action)
         self.toolbar.addAction(self.next_action)
+        self.toolbar.addWidget(self.slider)
 
     def file_menu(self):
         """Adds a file menu to the menu bar. Allows the user to choose actions
