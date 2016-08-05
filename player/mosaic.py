@@ -18,7 +18,6 @@ class MusicPlayer(QMainWindow):
         self.setWindowTitle('Mosaic')
 
         self.player = QMediaPlayer()
-        self.playlist = QMediaPlaylist()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
         self.art = QLabel()
@@ -87,9 +86,11 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Retrieves the path of a file and opens it for playback."""
+        self.playlist = QMediaPlaylist()
         self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
-            self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.player.setPlaylist(self.playlist)
             self.player.play()
 
     def exit_application(self):
