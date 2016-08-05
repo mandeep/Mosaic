@@ -262,7 +262,7 @@ class MusicPlayer(QMainWindow):
             self.play_action.setIcon(QIcon('images/md_play.png'))
 
     def repeat_song(self):
-        """Sets the playlist to repeat and changes the repeat icon
+        """Sets the current media to repeat and changes the repeat icon
         accordingly."""
         if self.playlist.playbackMode() != QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
