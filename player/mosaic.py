@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider,
                              QDesktopWidget)
-from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime
+from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir
 
 
 class MusicPlayer(QMainWindow):
@@ -91,6 +91,11 @@ class MusicPlayer(QMainWindow):
         self.open_multiple_files_action.setShortcut('CTRL+SHIFT+O')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
+        self.open_directory_action = QAction('Open Directory', self)
+        self.open_directory_action.setStatusTip('Add files in a directory to an empty playlist.')
+        self.open_directory_action.setShortcut('CTRL+F')
+        self.open_directory_action.triggered.connect(self.open_directory)
+
         self.exit_action = QAction('Quit', self)
         self.exit_action.setStatusTip('Quit the application.')
         self.exit_action.setShortcut('CTRL+Q')
@@ -98,6 +103,7 @@ class MusicPlayer(QMainWindow):
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
+        self.file.addAction(self.open_directory_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
@@ -119,6 +125,19 @@ class MusicPlayer(QMainWindow):
                 self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                 self.player.setPlaylist(self.playlist)
                 self.player.play()
+
+    def open_directory(self):
+        """Opens the chosen directory and adds supported audio filetypes within
+        the directory to an empty playlist"""
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
+        if directory:
+            contents = QDir(directory).entryInfoList()
+            for filename in contents:
+                file = filename.absoluteFilePath()
+                if file.endswith('mp3') or file.endswith('flac'):
+                    self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                    self.player.setPlaylist(self.playlist)
+                    self.player.play()
 
     def exit_application(self):
         """Closes the window and quits the music player application."""
