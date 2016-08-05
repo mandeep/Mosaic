@@ -81,14 +81,14 @@ class MusicPlayer(QMainWindow):
     def file_menu(self):
         """Adds a file menu to the menu bar. Allows the user to choose actions
         related to audio files."""
-        self.open_action = QAction('Open file', self)
+        self.open_action = QAction('Open File', self)
         self.open_action.setStatusTip('Open an audio file for playback.')
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
-        self.open_files_action = QAction('Open files', self)
-        self.open_files_action.setStatusTip('Open files and add them to a new playlist.')
-        self.open_files_action.triggered.connect(self.open_files)
+        self.open_multiple_files_action = QAction('Open Multiple Files', self)
+        self.open_multiple_files_action.setStatusTip('Open multiple files and add them to an empty playlist.')
+        self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
         self.exit_action = QAction('Quit', self)
         self.exit_action.setStatusTip('Quit the application.')
@@ -96,22 +96,22 @@ class MusicPlayer(QMainWindow):
         self.exit_action.triggered.connect(self.exit_application)
 
         self.file.addAction(self.open_action)
-        self.file.addAction(self.open_files_action)
+        self.file.addAction(self.open_multiple_files_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
-        filename, ok = QFileDialog.getOpenFileName(self, 'Open file', '', 'Audio (*.mp3 *.flac)')
+        filename, ok = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
             self.player.setPlaylist(self.playlist)
             self.player.play()
 
-    def open_files(self):
+    def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
-        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac)')
+        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             for file in filenames:
