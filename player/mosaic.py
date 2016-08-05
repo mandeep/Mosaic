@@ -91,7 +91,7 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Retrieves the path of a file and opens it for playback."""
-        self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
+        self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file', '', "Audio (*.mp3 *.flac)")
         if ok:
             self.playlist.clear()
             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
