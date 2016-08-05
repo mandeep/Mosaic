@@ -8,6 +8,8 @@ Mosaic is a cover art focused media player built with Python and the PyQt5 libra
 
 .. image:: player/images/screen2.png
 
+.. image:: player/images/screen3.png
+
 *************
 Installation
 *************
