@@ -13,8 +13,7 @@ class MusicPlayer(QMainWindow):
 
     def __init__(self, parent=None):
         """Initializes the QMainWindow widget and calls methods that house
-        other widgets that need to be displayed in the main window.
-        """
+        other widgets that need to be displayed in the main window."""
         QMainWindow.__init__(self, parent)
         self.setWindowTitle('Mosaic')
 
@@ -31,6 +30,7 @@ class MusicPlayer(QMainWindow):
         self.slider.sliderMoved.connect(self.seek)
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
+        self.player.stateChanged.connect(self.set_state)
 
         self.art.mousePressEvent = self.press_playback
 
@@ -45,17 +45,15 @@ class MusicPlayer(QMainWindow):
 
         self.retrieve_meta_data()
 
-        self.setFixedSize(900, 952)
+        self.setFixedSize(900, 963)
 
     def menu_controls(self):
-        """Initiates the menu bar and adds it to the QMainWindow widget.
-        """
+        """Initiates the menu bar and adds it to the QMainWindow widget."""
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
 
     def media_controls(self):
-        """Creates the bottom toolbar and controls used for media playback.
-        """
+        """Creates the bottom toolbar and controls used for media playback."""
         self.toolbar = QToolBar()
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
@@ -63,14 +61,10 @@ class MusicPlayer(QMainWindow):
         self.play_action = QAction(QIcon('images/md_play.png'), 'Play', self)
         self.play_action.triggered.connect(self.player.play)
 
-        self.pause_action = QAction(QIcon('images/md_pause.png'), 'Pause', self)
-        self.pause_action.triggered.connect(self.player.pause)
-
         self.stop_action = QAction(QIcon('images/md_stop.png'), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
 
         self.toolbar.addAction(self.play_action)
-        self.toolbar.addAction(self.pause_action)
         self.toolbar.addAction(self.stop_action)
         self.toolbar.addWidget(self.slider)
         self.toolbar.addWidget(self.duration_label)
@@ -92,16 +86,14 @@ class MusicPlayer(QMainWindow):
         self.file.addAction(self.exit_action)
 
     def open_file(self):
-        """Retrieves the path of a file and opens it for playback.
-        """
+        """Retrieves the path of a file and opens it for playback."""
         self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
             self.player.setMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
             self.player.play()
 
     def exit_application(self):
-        """Closes the window and quits the music player application.
-        """
+        """Closes the window and quits the music player application."""
         QApplication.quit()
 
     def retrieve_meta_data(self):
@@ -114,8 +106,7 @@ class MusicPlayer(QMainWindow):
         the audio file, it is appeneded to a QByteArray() which allows the
         data to be passed to QPixmap(). Once QPixmap() receives the data,
         the application's height and width are changed to match that of the
-        cover art image.
-        """
+        cover art image."""
         self.pixmap = QPixmap()
         self.byte_array = QByteArray()
 
@@ -157,20 +148,22 @@ class MusicPlayer(QMainWindow):
             self.art.setFixedSize(900, 900)
 
     def press_playback(self, event):
-        """Plays the loaded media if the player is either stopped or paused.
-        """
-        if self.player.StoppedState or self.player.PausedState:
+        """On mouse event, the player will play the media if the player is
+        either paused or stopped. If the media is playing, the media is set
+        to pause."""
+        if (self.player.state() == QMediaPlayer.StoppedState or
+                self.player.state() == QMediaPlayer.PausedState):
             self.player.play()
+        elif self.player.state() == QMediaPlayer.PlayingState:
+            self.player.pause()
 
     def seek(self, seconds):
         """When the user drags the horizontal slider, this function sets
-        the position of the song to the position dragged to.
-        """
+        the position of the song to the position dragged to."""
         self.player.setPosition(seconds * 1000)
 
     def song_duration(self, duration):
-        """Sets the slider to the duration of the currently played media.
-        """
+        """Sets the slider to the duration of the currently played media."""
         duration /= 1000
         self.duration = duration
         self.slider.setMaximum(duration)
@@ -178,8 +171,7 @@ class MusicPlayer(QMainWindow):
     def song_position(self, progress):
         """As the song plays, the slider moves in sync with the duration
         of the song. The progress is relayed to update_duration() in order
-        to display the time label next to the slider.
-        """
+        to display the time label next to the slider."""
         progress /= 1000
 
         if not self.slider.isSliderDown():
@@ -190,8 +182,7 @@ class MusicPlayer(QMainWindow):
     def update_duration(self, current_duration):
         """Calculates the time played and length of the song in time. Both
         of these times are sent to duration_label() in order to display the
-        times on the toolbar.
-        """
+        times on the toolbar."""
         duration = self.duration
         if current_duration or duration:
             time_played = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
@@ -210,6 +201,18 @@ class MusicPlayer(QMainWindow):
             time_display = ""
 
         self.duration_label.setText(time_display)
+
+    def set_state(self, state):
+        """Changes the play icon to the pause icon when a song is playing and
+        changes the pause icon back to the play icon when either paused or
+        stopped. The action of the button changes with respect to its icon."""
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.play_action.setIcon(QIcon('images/md_pause.png'))
+            self.play_action.triggered.connect(self.player.pause)
+        elif (self.player.state() == QMediaPlayer.PausedState or
+              self.player.state() == QMediaPlayer.StoppedState):
+            self.play_action.triggered.connect(self.player.play)
+            self.play_action.setIcon(QIcon('images/md_play.png'))
 
 
 def main():
