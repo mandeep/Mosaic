@@ -60,20 +60,14 @@ class MusicPlayer(QMainWindow):
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
 
-        self.play_action = QAction(QIcon().fromTheme('media-playback-start'), 'Play', self)
+        self.play_action = QAction(QIcon('images/md_play.png'), 'Play', self)
         self.play_action.triggered.connect(self.player.play)
 
-        self.pause_action = QAction(QIcon().fromTheme('media-playback-pause'), 'Pause', self)
+        self.pause_action = QAction(QIcon('images/md_pause.png'), 'Pause', self)
         self.pause_action.triggered.connect(self.player.pause)
 
-        self.stop_action = QAction(QIcon().fromTheme('media-playback-stop'), 'Stop', self)
+        self.stop_action = QAction(QIcon('images/md_stop.png'), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
-
-        self.previous_action = QAction(QIcon().fromTheme('media-playback-previous'), 'Previous', self)
-        self.previous_action.triggered.connect(self.playlist.previous)
-
-        self.next_action = QAction(QIcon().fromTheme('media-playback-next'), 'Next', self)
-        self.next_action.triggered.connect(self.playlist.next)
 
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.pause_action)
