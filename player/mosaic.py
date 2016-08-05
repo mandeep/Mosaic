@@ -244,10 +244,10 @@ class MusicPlayer(QMainWindow):
     def repeat_song(self):
         """Sets the playlist to repeat and changes the repeat icon
         accordingly."""
-        if self.playlist.playbackMode() != QMediaPlaylist.Loop:
-            self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+        if self.playlist.playbackMode() != QMediaPlaylist.CurrentItemInLoop:
+            self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
             self.repeat_action.setIcon(QIcon('images/md_repeat_on.png'))
-        elif self.playlist.playbackMode() == QMediaPlaylist.Loop:
+        elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
             self.repeat_action.setIcon(QIcon('images/md_repeat.png'))
 
