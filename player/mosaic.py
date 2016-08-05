@@ -93,7 +93,7 @@ class MusicPlayer(QMainWindow):
 
         self.open_directory_action = QAction('Open Directory', self)
         self.open_directory_action.setStatusTip('Add files in a directory to an empty playlist.')
-        self.open_directory_action.setShortcut('CTRL+F')
+        self.open_directory_action.setShortcut('CTRL+D')
         self.open_directory_action.triggered.connect(self.open_directory)
 
         self.exit_action = QAction('Quit', self)
