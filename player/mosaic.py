@@ -133,7 +133,7 @@ class MusicPlayer(QMainWindow):
 
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().path()
-            try:
+            if file_path.endswith('mp3'):
                 song = mutagen.File(file_path)
                 album_title = song.get('TALB', '??')
                 album_artist = song.get('TPE1', '??')
@@ -148,8 +148,7 @@ class MusicPlayer(QMainWindow):
                     self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
-
-            except:
+            elif file_path.endswith('flac'):
                 song = mutagen.flac.FLAC(file_path)
                 song_data = dict(song.tags)
                 song_data = dict((k, "".join(v)) for k, v in song_data.items())
