@@ -16,13 +16,14 @@ class MusicPlayer(QMainWindow):
         other widgets that need to be displayed in the main window."""
         QMainWindow.__init__(self, parent)
         self.setWindowTitle('Mosaic')
+        self.setWindowIcon(QIcon('images/icon.png'))
 
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.content = QMediaContent()
+        self.art = QLabel()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
-        self.art = QLabel()
         self.setCentralWidget(self.art)
 
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -34,8 +35,6 @@ class MusicPlayer(QMainWindow):
         self.player.stateChanged.connect(self.set_state)
 
         self.art.mousePressEvent = self.press_playback
-
-        self.setWindowIcon(QIcon('images/icon.png'))
 
         self.duration = 0
 
@@ -62,11 +61,19 @@ class MusicPlayer(QMainWindow):
         self.stop_action = QAction(QIcon('images/md_stop.png'), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
 
+        self.previous_action = QAction(QIcon('images/md_previous.png'), 'Previous', self)
+        self.previous_action.triggered.connect(self.playlist.previous)
+
+        self.next_action = QAction(QIcon('images/md_next.png'), 'Next', self)
+        self.next_action.triggered.connect(self.playlist.next)
+
         self.repeat_action = QAction(QIcon('images/md_repeat.png'), 'Repeat', self)
         self.repeat_action.triggered.connect(self.repeat_song)
 
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.stop_action)
+        self.toolbar.addAction(self.previous_action)
+        self.toolbar.addAction(self.next_action)
         self.toolbar.addAction(self.repeat_action)
         self.toolbar.addWidget(self.slider)
         self.toolbar.addWidget(self.duration_label)
@@ -104,7 +111,7 @@ class MusicPlayer(QMainWindow):
 
     def open_files(self):
         """Opens the selected files and adds them to a new playlist."""
-        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac')
+        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             for file in filenames:
