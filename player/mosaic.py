@@ -78,8 +78,6 @@ class MusicPlayer(QMainWindow):
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.pause_action)
         self.toolbar.addAction(self.stop_action)
-        self.toolbar.addAction(self.previous_action)
-        self.toolbar.addAction(self.next_action)
         self.toolbar.addWidget(self.slider)
         self.toolbar.addWidget(self.duration_label)
 
@@ -203,9 +201,9 @@ class MusicPlayer(QMainWindow):
         duration = self.duration
         if current_duration or duration:
             time_played = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
-                (current_duration % 60), (current_duration * 1000) % 1000)
+                                (current_duration % 60), (current_duration * 1000) % 1000)
             song_length = QTime((duration / 3600) % 60, (duration / 60) % 60, (duration % 60),
-                (duration * 1000) % 1000)
+                                (duration * 1000) % 1000)
 
             if duration > 3600:
                 time_format = "hh:mm:ss"
