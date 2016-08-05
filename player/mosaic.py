@@ -19,6 +19,7 @@ class MusicPlayer(QMainWindow):
 
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
+        self.content = QMediaContent()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
         self.art = QLabel()
@@ -42,8 +43,6 @@ class MusicPlayer(QMainWindow):
         self.menu_controls()
         self.media_controls()
         self.file_menu()
-
-        self.retrieve_meta_data()
 
         self.setFixedSize(900, 963)
 
@@ -81,12 +80,17 @@ class MusicPlayer(QMainWindow):
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
+        self.open_files_action = QAction('Open files', self)
+        self.open_files_action.setStatusTip('Open files and add them to a new playlist.')
+        self.open_files_action.triggered.connect(self.open_files)
+
         self.exit_action = QAction('Quit', self)
         self.exit_action.setStatusTip('Quit the application.')
         self.exit_action.setShortcut('CTRL+Q')
         self.exit_action.triggered.connect(self.exit_application)
 
         self.file.addAction(self.open_action)
+        self.file.addAction(self.open_files_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
@@ -98,6 +102,16 @@ class MusicPlayer(QMainWindow):
             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
             self.player.setPlaylist(self.playlist)
             self.player.play()
+
+    def open_files(self):
+        """Opens the selected files and adds them to a new playlist."""
+        self.filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac')
+        if ok:
+            self.playlist.clear()
+            for file in self.filenames:
+                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                self.player.setPlaylist(self.playlist)
+                self.player.play()
 
     def exit_application(self):
         """Closes the window and quits the music player application."""
@@ -117,9 +131,10 @@ class MusicPlayer(QMainWindow):
         self.pixmap = QPixmap()
         self.byte_array = QByteArray()
 
-        if self.player.isMetaDataAvailable() and self.filename:
-            if self.filename.endswith('mp3'):
-                song = mutagen.File(self.filename)
+        if self.player.isMetaDataAvailable():
+            file_path = self.player.currentMedia().canonicalUrl().path()
+            try:
+                song = mutagen.File(file_path)
                 album_title = song.get('TALB', '??')
                 album_artist = song.get('TPE1', '??')
                 track_title = song.get('TIT2', '??')
@@ -134,8 +149,8 @@ class MusicPlayer(QMainWindow):
                 except KeyError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
 
-            elif self.filename.endswith('flac'):
-                song = mutagen.flac.FLAC(self.filename)
+            except:
+                song = mutagen.flac.FLAC(file_path)
                 song_data = dict(song.tags)
                 song_data = dict((k, "".join(v)) for k, v in song_data.items())
                 album_title = song_data.get('album', '??')
