@@ -18,6 +18,7 @@ class MusicPlayer(QMainWindow):
         self.setWindowTitle('Mosaic')
 
         self.player = QMediaPlayer()
+        self.playlist = QMediaPlaylist()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
         self.art = QLabel()
@@ -63,8 +64,12 @@ class MusicPlayer(QMainWindow):
         self.stop_action = QAction(QIcon('images/md_stop.png'), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
 
+        self.repeat_action = QAction(QIcon('images/md_repeat.png'), 'Repeat', self)
+        self.repeat_action.triggered.connect(self.repeat_song)
+
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.stop_action)
+        self.toolbar.addAction(self.repeat_action)
         self.toolbar.addWidget(self.slider)
         self.toolbar.addWidget(self.duration_label)
 
@@ -86,7 +91,7 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Retrieves the path of a file and opens it for playback."""
-        self.playlist = QMediaPlaylist()
+        self.playlist.clear()
         self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file')
         if ok:
             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
@@ -214,6 +219,16 @@ class MusicPlayer(QMainWindow):
               self.player.state() == QMediaPlayer.StoppedState):
             self.play_action.triggered.connect(self.player.play)
             self.play_action.setIcon(QIcon('images/md_play.png'))
+
+    def repeat_song(self):
+        """Sets the playlist to repeat and changes the repeat icon to indicate
+        whether or not the playlist is being repeated."""
+        if self.playlist.playbackMode() != QMediaPlaylist.Loop:
+            self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+            self.repeat_action.setIcon(QIcon('images/md_repeat_on.png'))
+        elif self.playlist.playbackMode() == QMediaPlaylist.Loop:
+            self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+            self.repeat_action.setIcon(QIcon('images/md_repeat.png'))
 
 
 def main():
