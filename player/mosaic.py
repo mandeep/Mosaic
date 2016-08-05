@@ -38,7 +38,6 @@ class MusicPlayer(QMainWindow):
         self.setWindowIcon(QIcon('images/icon.png'))
 
         self.duration = 0
-        self.filename = None
 
         self.menu_controls()
         self.media_controls()
@@ -96,19 +95,19 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
-        self.filename, ok = QFileDialog.getOpenFileName(self, 'Open file', '', 'Audio (*.mp3 *.flac)')
+        filename, ok = QFileDialog.getOpenFileName(self, 'Open file', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.filename)))
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
             self.player.setPlaylist(self.playlist)
             self.player.play()
 
     def open_files(self):
         """Opens the selected files and adds them to a new playlist."""
-        self.filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac')
+        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open files', '', 'Audio (*.mp3 *.flac')
         if ok:
             self.playlist.clear()
-            for file in self.filenames:
+            for file in filenames:
                 self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                 self.player.setPlaylist(self.playlist)
                 self.player.play()
