@@ -88,6 +88,7 @@ class MusicPlayer(QMainWindow):
 
         self.open_multiple_files_action = QAction('Open Multiple Files', self)
         self.open_multiple_files_action.setStatusTip('Open multiple files and add them to an empty playlist.')
+        self.open_multiple_files_action.setShortcut('CTRL+SHIFT+O')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
         self.exit_action = QAction('Quit', self)
