@@ -5,7 +5,7 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider,
-                             QDesktopWidget)
+                             QDesktopWidget, QMessageBox)
 from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir
 
 
@@ -40,7 +40,8 @@ class MusicPlayer(QMainWindow):
 
         self.menu_controls()
         self.media_controls()
-        self.file_menu()
+
+
 
         self.setFixedSize(900, 963)
 
@@ -48,6 +49,10 @@ class MusicPlayer(QMainWindow):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
+        self.help_ = self.menu.addMenu('Help')
+
+        self.file_menu()
+        self.help_menu()
 
     def media_controls(self):
         """Creates the bottom toolbar and controls used for media playback."""
@@ -139,6 +144,24 @@ class MusicPlayer(QMainWindow):
     def exit_application(self):
         """Closes the window and quits the music player application."""
         QApplication.quit()
+
+    def help_menu(self):
+        """
+        """
+        self.about_action = QAction('About', self)
+        self.about_action.triggered.connect(self.about_dialog)
+
+        self.help_.addAction(self.about_action)
+
+    def about_dialog(self):
+        """Pops up a dialog that shows application informaion."""
+        message = QMessageBox()
+        message.setFixedSize(500, 200)
+        message.setWindowTitle('Mosaic')
+        message.setText('Created by Mandeep Bhutani')
+        message.setInformativeText('Material design icons created by Google\n\n'
+                                   'GitHub: mandeepbhutani')
+        message.exec_()
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
