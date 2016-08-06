@@ -148,6 +148,7 @@ class MusicPlayer(QMainWindow):
                 if file.endswith('mp3') or file.endswith('flac'):
                     self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                     self.player.setPlaylist(self.playlist)
+                    self.playlist_view.addItem(filename.fileName())
                     self.player.play()
 
     def exit_application(self):
