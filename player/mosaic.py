@@ -142,6 +142,7 @@ class MusicPlayer(QMainWindow):
         directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
         if directory:
             self.playlist.clear()
+            self.playlist_view.clear()
             contents = QDir(directory).entryInfoList()
             for filename in contents:
                 file = filename.absoluteFilePath()
