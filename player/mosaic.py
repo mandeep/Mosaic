@@ -82,22 +82,18 @@ class MusicPlayer(QMainWindow):
         """Adds a file menu to the menu bar. Allows the user to choose actions
         related to audio files."""
         self.open_action = QAction('Open File', self)
-        self.open_action.setStatusTip('Open an audio file for playback.')
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
 
         self.open_multiple_files_action = QAction('Open Multiple Files', self)
-        self.open_multiple_files_action.setStatusTip('Open multiple files and add them to an empty playlist.')
         self.open_multiple_files_action.setShortcut('CTRL+SHIFT+O')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
         self.open_directory_action = QAction('Open Directory', self)
-        self.open_directory_action.setStatusTip('Add files in a directory to an empty playlist.')
         self.open_directory_action.setShortcut('CTRL+D')
         self.open_directory_action.triggered.connect(self.open_directory)
 
         self.exit_action = QAction('Quit', self)
-        self.exit_action.setStatusTip('Quit the application.')
         self.exit_action.setShortcut('CTRL+Q')
         self.exit_action.triggered.connect(self.exit_application)
 
