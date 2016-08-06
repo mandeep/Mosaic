@@ -5,7 +5,8 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider,
-                             QDesktopWidget, QMessageBox)
+                             QDesktopWidget, QMessageBox, QDockWidget,
+                             QListWidget)
 from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir
 
 
@@ -24,9 +25,17 @@ class MusicPlayer(QMainWindow):
         self.art = QLabel()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
-        self.setCentralWidget(self.art)
+        self.sidebar = QDockWidget('Playlist', self)
+        self.playlist_view = QListWidget()
 
+        self.setCentralWidget(self.art)
         self.slider.setRange(0, self.player.duration() / 1000)
+
+        self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
+        self.sidebar.setWidget(self.playlist_view)
+        self.sidebar.setFloating(True)
+        self.sidebar.setGeometry(0, 0, 300, 800)
+        self.sidebar.setVisible(False)
 
         self.player.metaDataChanged.connect(self.retrieve_meta_data)
         self.slider.sliderMoved.connect(self.seek)
@@ -41,17 +50,17 @@ class MusicPlayer(QMainWindow):
         self.menu_controls()
         self.media_controls()
 
-
-
         self.setFixedSize(900, 963)
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
+        self.view = self.menu.addMenu('View')
         self.help_ = self.menu.addMenu('Help')
 
         self.file_menu()
+        self.view_menu()
         self.help_menu()
 
     def media_controls(self):
@@ -146,8 +155,7 @@ class MusicPlayer(QMainWindow):
         QApplication.quit()
 
     def help_menu(self):
-        """
-        """
+        """Provides informational items regarding the application."""
         self.about_action = QAction('About', self)
         self.about_action.triggered.connect(self.about_dialog)
 
@@ -161,6 +169,12 @@ class MusicPlayer(QMainWindow):
         message.setInformativeText('Material design icons created by Google\n\n'
                                    'GitHub: mandeepbhutani')
         message.exec_()
+
+    def view_menu(self):
+        """Provides items that allow the user to customize the viewing
+        experience of the main window."""
+        self.dock_action = self.sidebar.toggleViewAction()
+        self.view.addAction(self.dock_action)
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
