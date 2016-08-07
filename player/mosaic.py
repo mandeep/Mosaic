@@ -145,6 +145,7 @@ class MusicPlayer(QMainWindow):
         filename, ok = QFileDialog.getOpenFileUrl(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
+            self.playlist_view.clear()
             self.playlist.addMedia(QMediaContent(filename))
             self.player.setPlaylist(self.playlist)
             self.playlist_view.addItem(filename.fileName())
@@ -155,11 +156,12 @@ class MusicPlayer(QMainWindow):
         filenames, ok = QFileDialog.getOpenFileUrls(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
+            self.playlist_view.clear()
             for file in filenames:
                 self.playlist.addMedia(QMediaContent(file))
                 self.player.setPlaylist(self.playlist)
                 self.playlist_view.addItem(file.fileName())
-                self.player.play()
+            self.player.play()
 
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
