@@ -152,12 +152,13 @@ class MusicPlayer(QMainWindow):
 
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
-        filenames, ok = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)')
+        filenames, ok = QFileDialog.getOpenFileUrls(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             for file in filenames:
-                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                self.playlist.addMedia(QMediaContent(file))
                 self.player.setPlaylist(self.playlist)
+                self.playlist_view.addItem(file.fileName())
                 self.player.play()
 
     def open_directory(self):
