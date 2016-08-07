@@ -217,8 +217,6 @@ class MusicPlayer(QMainWindow):
                 album_artist = song.get('TPE1', '??')
                 track_title = song.get('TIT2', '??')
                 track_number = song.get('TRCK', '??')
-                self.setWindowTitle('{} - {} - {} - {}' .format(
-                    track_number, album_artist, album_title, track_title))
                 try:
                     for tag in song.tags:
                         if 'APIC' in tag:
@@ -234,13 +232,15 @@ class MusicPlayer(QMainWindow):
                 album_artist = song_data.get('artist', '??')
                 track_title = song_data.get('title', '??')
                 track_number = song_data.get('tracknumber', '??')
-                self.setWindowTitle('{} - {} - {} - {}' .format(
-                    track_number, album_artist, album_title, track_title))
                 try:
                     artwork = self.byte_array.append(song.pictures[0].data)
                     self.pixmap.loadFromData(artwork)
                 except IndexError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
+
+            self.meta_data = '{} - {} - {} - {}' .format(
+                    track_number, album_artist, album_title, track_title)
+            self.setWindowTitle(self.meta_data)
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
