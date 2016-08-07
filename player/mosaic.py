@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider,
                              QDesktopWidget, QMessageBox, QDockWidget,
                              QListWidget, QDialog, QStackedWidget)
-from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir
+from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir, QFileInfo
 
 
 class MusicPlayer(QMainWindow):
@@ -142,11 +142,12 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
-        filename, ok = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
+        filename, ok = QFileDialog.getOpenFileUrl(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
+            self.playlist.addMedia(QMediaContent(filename))
             self.player.setPlaylist(self.playlist)
+            self.playlist_view.addItem(filename.fileName())
             self.player.play()
 
     def open_multiple_files(self):
@@ -238,9 +239,9 @@ class MusicPlayer(QMainWindow):
                 except IndexError:
                     self.pixmap = QPixmap('images/nocover.png', 'png')
 
-            self.meta_data = '{} - {} - {} - {}' .format(
+            meta_data = '{} - {} - {} - {}' .format(
                     track_number, album_artist, album_title, track_title)
-            self.setWindowTitle(self.meta_data)
+            self.setWindowTitle(meta_data)
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
