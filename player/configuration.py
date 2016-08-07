@@ -11,8 +11,8 @@ class FilePage(QWidget):
 
         file_config = QGroupBox("File Menu Configuration")
 
-        self.recursive_directory = QCheckBox('Recursive Open Directory '
-                                        '(open files in all subdirectories)', self)
+        self.recursive_directory = QCheckBox(
+            'Recursive Open Directory (open files in all subdirectories)', self)
         self.recursive_directory.setChecked(False)
 
         file_config_layout = QHBoxLayout()
