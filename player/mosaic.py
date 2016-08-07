@@ -1,6 +1,7 @@
 import sys
 import mutagen
 import mutagen.flac
+import configuration
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
@@ -119,7 +120,8 @@ class MusicPlayer(QMainWindow):
         self.file.addAction(self.exit_action)
 
     def edit_menu(self):
-        """"""
+        """Provides items that allow the user to customize
+        the options of the music player."""
         self.preferences_action = QAction('Preferences', self)
         self.preferences_action.setShortcut('CTRL+P')
         self.preferences_action.triggered.connect(self.preferences)
@@ -183,7 +185,9 @@ class MusicPlayer(QMainWindow):
         QApplication.quit()
 
     def preferences(self):
-        """"""
+        """Opens a dialog with user configurable options."""
+        dialog = configuration.PreferencesDialog()
+        dialog.exec_()
 
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
