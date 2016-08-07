@@ -1,13 +1,12 @@
 import sys
 import mutagen
 import mutagen.flac
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
-                             QAction, QFileDialog, QLabel, QSlider,
-                             QDesktopWidget, QMessageBox, QDockWidget,
-                             QListWidget, QDialog, QStackedWidget)
-from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir, QFileInfo
+from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
+                             QDockWidget, QFileDialog, QLabel, QListWidget,
+                             QMainWindow, QMessageBox, QSlider, QToolBar)
+from PyQt5.QtCore import Qt, QByteArray,  QDir, QTime, QUrl
 
 
 class MusicPlayer(QMainWindow):
@@ -185,10 +184,6 @@ class MusicPlayer(QMainWindow):
 
     def preferences(self):
         """"""
-        dialog = QDialog()
-        layout = QStackedWidget(dialog)
-        dialog.setWindowTitle('Preferences')
-        dialog.exec_()
 
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
