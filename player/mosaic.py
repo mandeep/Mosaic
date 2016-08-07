@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QToolBar,
                              QAction, QFileDialog, QLabel, QSlider,
                              QDesktopWidget, QMessageBox, QDockWidget,
-                             QListWidget)
+                             QListWidget, QDialog, QStackedWidget)
 from PyQt5.QtCore import Qt, QUrl, QByteArray, QTime, QDir
 
 
@@ -56,10 +56,12 @@ class MusicPlayer(QMainWindow):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
+        self.edit = self.menu.addMenu('Edit')
         self.view = self.menu.addMenu('View')
         self.help_ = self.menu.addMenu('Help')
 
         self.file_menu()
+        self.edit_menu()
         self.view_menu()
         self.help_menu()
 
@@ -117,6 +119,27 @@ class MusicPlayer(QMainWindow):
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
+    def edit_menu(self):
+        """"""
+        self.preferences_action = QAction('Preferences', self)
+        self.preferences_action.setShortcut('CTRL+P')
+        self.preferences_action.triggered.connect(self.preferences)
+
+        self.edit.addAction(self.preferences_action)
+
+    def view_menu(self):
+        """Provides items that allow the user to customize the viewing
+        experience of the main window."""
+        self.dock_action = self.sidebar.toggleViewAction()
+        self.view.addAction(self.dock_action)
+
+    def help_menu(self):
+        """Provides informational items regarding the application."""
+        self.about_action = QAction('About', self)
+        self.about_action.triggered.connect(self.about_dialog)
+
+        self.help_.addAction(self.about_action)
+
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
         filename, ok = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
@@ -156,12 +179,12 @@ class MusicPlayer(QMainWindow):
         """Closes the window and quits the music player application."""
         QApplication.quit()
 
-    def help_menu(self):
-        """Provides informational items regarding the application."""
-        self.about_action = QAction('About', self)
-        self.about_action.triggered.connect(self.about_dialog)
-
-        self.help_.addAction(self.about_action)
+    def preferences(self):
+        """"""
+        dialog = QDialog()
+        layout = QStackedWidget(dialog)
+        dialog.setWindowTitle('Preferences')
+        dialog.exec_()
 
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
@@ -171,12 +194,6 @@ class MusicPlayer(QMainWindow):
         message.setInformativeText('Material design icons created by Google\n\n'
                                    'GitHub: mandeepbhutani')
         message.exec_()
-
-    def view_menu(self):
-        """Provides items that allow the user to customize the viewing
-        experience of the main window."""
-        self.dock_action = self.sidebar.toggleViewAction()
-        self.view.addAction(self.dock_action)
 
     def retrieve_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
