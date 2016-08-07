@@ -14,7 +14,7 @@ class MusicPlayer(QMainWindow):
     def __init__(self, parent=None):
         """Initializes the QMainWindow widget and calls methods that house
         other widgets that need to be displayed in the main window."""
-        QMainWindow.__init__(self, parent)
+        super(MusicPlayer, self).__init__(parent)
         self.setWindowTitle('Mosaic')
         self.setWindowIcon(QIcon('images/icon.png'))
 
