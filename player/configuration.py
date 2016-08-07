@@ -1,8 +1,7 @@
-import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout,
-    QLabel, QListWidget, QListWidgetItem, QPushButton,
-    QStackedWidget, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
+                             QListWidget, QListWidgetItem, QPushButton,
+                             QStackedWidget, QVBoxLayout, QWidget)
 
 
 class FilePage(QWidget):
