@@ -44,6 +44,7 @@ class MusicPlayer(QMainWindow):
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
+        self.playlist_view.currentRowChanged.connect(self.change_item)
 
         self.art.mousePressEvent = self.press_playback
 
@@ -342,6 +343,11 @@ class MusicPlayer(QMainWindow):
         elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
             self.repeat_action.setIcon(QIcon('images/md_repeat.png'))
+
+    def change_item(self, row):
+        """Changes the current media to the index of the media selected
+        by the user."""
+        self.playlist.setCurrentIndex(row)
 
 
 def main():
