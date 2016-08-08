@@ -1,13 +1,16 @@
 import toml
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
                              QListWidget, QListWidgetItem, QPushButton,
                              QStackedWidget, QVBoxLayout, QWidget)
 
 
 class FileOptions(QWidget):
+    """"""
 
     def __init__(self, parent=None):
+        """"""
         super(FileOptions, self).__init__(parent)
 
         file_config = QGroupBox("File Menu Configuration")
@@ -61,11 +64,14 @@ class FileOptions(QWidget):
 
 
 class PreferencesDialog(QDialog):
+    """"""
 
     def __init__(self, parent=None):
+        """"""
 
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
+        self.setWindowIcon(QIcon('images/md_settings.png'))
         self.setFixedSize(800, 700)
 
         self.contents = QListWidget()
@@ -82,6 +88,7 @@ class PreferencesDialog(QDialog):
         self.setLayout(layout)
 
     def list_items(self):
+        """"""
         file_options = QListWidgetItem(self.contents)
         file_options.setText('File Options')
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
@@ -89,6 +96,7 @@ class PreferencesDialog(QDialog):
         self.contents.currentItemChanged.connect(self.change_page)
 
     def change_page(self, current, previous):
+        """"""
         if not current:
             current = previous
 
