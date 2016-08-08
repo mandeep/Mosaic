@@ -8,7 +8,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
                              QDockWidget, QFileDialog, QLabel, QListWidget,
                              QMainWindow, QMessageBox, QSlider, QToolBar)
-from PyQt5.QtCore import Qt, QByteArray,  QDir, QTime, QUrl
+from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
 
 
 class MusicPlayer(QMainWindow):
@@ -51,6 +51,7 @@ class MusicPlayer(QMainWindow):
         self.art.mousePressEvent = self.press_playback
 
         self.duration = 0
+        self.media_library = ''
 
         self.menu_controls()
         self.media_controls()
@@ -148,26 +149,30 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
-        filename, ok = QFileDialog.getOpenFileUrl(self, 'Open File', '', 'Audio (*.mp3 *.flac)')
+        filename, ok = QFileDialog.getOpenFileName(
+            self, 'Open File', self.media_library, 'Audio (*.mp3 *.flac)')
         if ok:
+            file_info = QFileInfo(filename).fileName()
             self.playlist.clear()
             self.playlist_view.clear()
-            self.playlist.addMedia(QMediaContent(filename))
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
             self.player.setPlaylist(self.playlist)
-            self.playlist_view.addItem(filename.fileName())
+            self.playlist_view.addItem(file_info)
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
-        filenames, ok = QFileDialog.getOpenFileUrls(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)')
+        filenames, ok = QFileDialog.getOpenFileNames(
+            self, 'Open Multiple Files', self.media_library, 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
             for file in filenames:
-                self.playlist.addMedia(QMediaContent(file))
+                file_info = QFileInfo(file).fileName()
+                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                 self.player.setPlaylist(self.playlist)
-                self.playlist_view.addItem(file.fileName())
+                self.playlist_view.addItem(file_info)
                 self.playlist_view.setCurrentRow(0)
             self.player.play()
 
@@ -178,7 +183,7 @@ class MusicPlayer(QMainWindow):
             conffile = conffile.read()
             config = toml.loads(conffile)
 
-        directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library)
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
