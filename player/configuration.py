@@ -16,7 +16,7 @@ class FileOptions(QWidget):
         file_config = QGroupBox("File Menu Configuration")
 
         self.recursive_directory = QCheckBox(
-            'Recursive Open Directory (open files in all subdirectories)', self)
+            'Recursively Open Directories (open files in all subdirectories)', self)
 
         self.settings_file()
 
@@ -28,10 +28,9 @@ class FileOptions(QWidget):
         main_layout = QVBoxLayout()
         main_layout.addWidget(file_config)
         main_layout.addStretch(1)
+        self.setLayout(main_layout)
 
         self.recursive_directory.stateChanged.connect(self.recursive_directory_option)
-
-        self.setLayout(main_layout)
 
     def recursive_directory_option(self):
         """This setting changes the behavior of the Open Directory item in
@@ -77,7 +76,6 @@ class PreferencesDialog(QDialog):
         self.contents = QListWidget()
         self.pages = QStackedWidget()
 
-        self.contents.setCurrentRow(0)
         self.pages.addWidget(FileOptions())
         self.list_items()
 
@@ -87,13 +85,14 @@ class PreferencesDialog(QDialog):
 
         self.setLayout(layout)
 
+        self.contents.currentItemChanged.connect(self.change_page)
+
     def list_items(self):
         """"""
         file_options = QListWidgetItem(self.contents)
         file_options.setText('File Options')
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-
-        self.contents.currentItemChanged.connect(self.change_page)
+        self.contents.setCurrentRow(0)
 
     def change_page(self, current, previous):
         """"""
