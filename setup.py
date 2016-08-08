@@ -1,10 +1,11 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(name='Mosaic',
       version='1.0',
       author='Mandeep Bhutani',
       packages=['player', 'player.images'],
-      package_data={"player.images": ['*.png']},
+      package_data={"player.images": '*.png',
+                    "player": '*.toml'},
       install_requires=[
         'mutagen>=1.34'
       ],
