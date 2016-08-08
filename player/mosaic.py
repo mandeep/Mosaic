@@ -12,7 +12,8 @@ from PyQt5.QtCore import Qt, QByteArray,  QDir, QTime, QUrl
 
 
 class MusicPlayer(QMainWindow):
-    """"""
+    """MusicPlayer houses all of the methods and attributes needed to
+    instantiate a fully functional music player."""
 
     def __init__(self, parent=None):
         """Initializes the QMainWindow widget and calls methods that house
