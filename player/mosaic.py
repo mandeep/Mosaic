@@ -51,7 +51,7 @@ class MusicPlayer(QMainWindow):
         self.art.mousePressEvent = self.press_playback
 
         self.duration = 0
-        self.media_library = ''
+        self.media_library = self.media_library_path()
 
         self.menu_controls()
         self.media_controls()
@@ -364,6 +364,13 @@ class MusicPlayer(QMainWindow):
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
         self.playlist_view.setCurrentRow(row)
+
+    def media_library_path(self):
+        """"""
+        with open('settings.toml', 'r') as conffile:
+            conffile = conffile.read()
+            config = toml.loads(conffile)
+        return config['media_library_path']
 
 
 def main():
