@@ -7,10 +7,12 @@ from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
 
 
 class FileOptions(QWidget):
-    """"""
+    """Contains all of the user configurable options related to the
+    file menu."""
 
     def __init__(self, parent=None):
-        """"""
+        """Initializes a page of options to be shown in the
+        preferences dialog."""
         super(FileOptions, self).__init__(parent)
 
         file_config = QGroupBox("File Menu Configuration")
@@ -63,10 +65,13 @@ class FileOptions(QWidget):
 
 
 class PreferencesDialog(QDialog):
-    """"""
+    """Creates a dialog that shows the user all of the user configurable
+    options. A list on the left shows all of the available pages, with
+    the page's contents shown on the right."""
 
     def __init__(self, parent=None):
-        """"""
+        """Initializes the preferences dialog with a list box on the left
+        and a content layout on the right."""
 
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
@@ -88,14 +93,15 @@ class PreferencesDialog(QDialog):
         self.contents.currentItemChanged.connect(self.change_page)
 
     def list_items(self):
-        """"""
+        """Lists all of the pages available to the user. Each page houses
+        its own user configurable options."""
         file_options = QListWidgetItem(self.contents)
         file_options.setText('File Options')
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.contents.setCurrentRow(0)
 
     def change_page(self, current, previous):
-        """"""
+        """Changes the page according to the clicked list item."""
         if not current:
             current = previous
 
