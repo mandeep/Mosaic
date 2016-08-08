@@ -1,3 +1,4 @@
+import toml
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
                              QListWidget, QListWidgetItem, QPushButton,
@@ -13,7 +14,8 @@ class FilePage(QWidget):
 
         self.recursive_directory = QCheckBox(
             'Recursive Open Directory (open files in all subdirectories)', self)
-        self.recursive_directory.setChecked(False)
+
+        self.settings_file()
 
         file_config_layout = QHBoxLayout()
         file_config_layout.addWidget(self.recursive_directory)
@@ -30,9 +32,32 @@ class FilePage(QWidget):
 
     def recursive_directory_option(self):
         """This setting changes the behavior of the Open Directory item in
-        the file menu. The default setting only searches for songs in the
+        the file menu. The default setting only opens songs in the
         selected directory. With this option checked, Open Directory will
-        also search subdirectories for songs."""
+        open all songs in the directory and its subdirectories."""
+        with open('settings.toml', 'r') as conffile:
+            config = toml.load(conffile)
+
+        if self.recursive_directory.isChecked():
+            config['recursive_directory'] = True
+
+        elif not self.recursive_directory.isChecked():
+            config['recursive_directory'] = False
+
+        with open('settings.toml', 'r+') as conffile:            
+            toml.dump(config, conffile)
+
+    def settings_file(self):
+        """Sets the options in the preferences dialog to the
+        settings defined in settings.toml."""
+        with open('settings.toml', 'r') as conffile:
+            conffile = conffile.read()
+            config = toml.loads(conffile)
+
+        if config['recursive_directory'] is True:
+            self.recursive_directory.setChecked(True)
+        elif config['recursive_directory'] is False:
+            self.recursive_directory.setChecked(False)
 
 
 class PreferencesDialog(QDialog):
