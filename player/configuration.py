@@ -1,4 +1,5 @@
-import toml
+import pkg_resources
+import pytoml
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QCheckBox, QDialog, QFileDialog, QGroupBox,
@@ -40,8 +41,9 @@ class FileOptions(QWidget):
         the file menu. The default setting only opens songs in the
         selected directory. With this option checked, Open Directory will
         open all songs in the directory and its subdirectories."""
-        with open('settings.toml', 'r') as conffile:
-            config = toml.load(conffile)
+        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+        with settings_stream as conffile:
+            config = pytoml.load(conffile)
 
         if self.recursive_directory.isChecked():
             config['recursive_directory'] = True
@@ -49,15 +51,15 @@ class FileOptions(QWidget):
         elif not self.recursive_directory.isChecked():
             config['recursive_directory'] = False
 
-        with open('settings.toml', 'r+') as conffile:            
-            toml.dump(config, conffile)
+        with settings_stream as conffile:            
+            pytoml.dump(config, conffile)
 
     def settings_file(self):
         """Sets the options in the preferences dialog to the
         settings defined in settings.toml."""
-        with open('settings.toml', 'r') as conffile:
-            conffile = conffile.read()
-            config = toml.loads(conffile)
+        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+        with settings_stream as conffile:
+            config = pytoml.load(conffile)
 
         if config['recursive_directory'] is True:
             self.recursive_directory.setChecked(True)
@@ -103,20 +105,21 @@ class MediaLibrary(QWidget):
         if library:
             self.media_library_line.setText(library)
 
-            with open('settings.toml', 'r') as conffile:
-                config = toml.load(conffile)
+            settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+            with settings_stream as conffile:
+                config = pytoml.load(conffile)
                 config['media_library_path'] = library
 
-            with open('settings.toml', 'r+') as conffile:            
-                toml.dump(config, conffile)
+            with settings_stream as conffile:            
+                pytoml.dump(config, conffile)
 
     def media_library_settings(self):
         """If the user has already defined a media library path that was
         previously written to settings.toml, the path is set as the text
         of the text box on the media library options page."""
-        with open('settings.toml', 'r') as conffile:
-            conffile = conffile.read()
-            config = toml.loads(conffile)
+        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+        with settings_stream as conffile:
+            config = pytoml.load(conffile)
 
         library = config['media_library_path']
         if len(library) > 1:
@@ -134,7 +137,8 @@ class PreferencesDialog(QDialog):
 
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
-        self.setWindowIcon(QIcon('images/md_settings.png'))
+        settings_icon = pkg_resources.resource_filename('player.images', 'md_settings.png')
+        self.setWindowIcon(QIcon(settings_icon))
         self.setFixedSize(800, 700)
 
         self.contents = QListWidget()
