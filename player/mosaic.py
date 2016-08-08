@@ -45,6 +45,7 @@ class MusicPlayer(QMainWindow):
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
         self.playlist_view.currentRowChanged.connect(self.change_item)
+        self.playlist.currentIndexChanged.connect(self.change_index)
 
         self.art.mousePressEvent = self.press_playback
 
@@ -153,6 +154,7 @@ class MusicPlayer(QMainWindow):
             self.playlist.addMedia(QMediaContent(filename))
             self.player.setPlaylist(self.playlist)
             self.playlist_view.addItem(filename.fileName())
+            self.playlist_view.setCurrentRow(0)
             self.player.play()
 
     def open_multiple_files(self):
@@ -165,6 +167,7 @@ class MusicPlayer(QMainWindow):
                 self.playlist.addMedia(QMediaContent(file))
                 self.player.setPlaylist(self.playlist)
                 self.playlist_view.addItem(file.fileName())
+                self.playlist_view.setCurrentRow(0)
             self.player.play()
 
     def open_directory(self):
@@ -186,6 +189,7 @@ class MusicPlayer(QMainWindow):
                     if file.endswith('mp3') or file.endswith('flac'):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                         self.playlist_view.addItem(filename.fileName())
+                        self.playlist_view.setCurrentRow(0)
                         self.player.setPlaylist(self.playlist)
                 elif config['recursive_directory'] is True:
                     if filename.isDir():
@@ -196,6 +200,7 @@ class MusicPlayer(QMainWindow):
                                 self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(sub_file)))
                                 self.player.setPlaylist(self.playlist)
                                 self.playlist_view.addItem(sub_files.fileName())
+                                self.playlist_view.setCurrentRow(0)
             self.player.play()
 
     def exit_application(self):
@@ -349,6 +354,10 @@ class MusicPlayer(QMainWindow):
         in the playlist view by the user."""
         if self.playlist.currentIndex() != row:
             self.playlist.setCurrentIndex(row)
+
+    def change_index(self, row):
+        """"""
+        self.playlist_view.setCurrentRow(row)
 
 
 def main():
