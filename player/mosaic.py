@@ -182,8 +182,7 @@ class MusicPlayer(QMainWindow):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist"""
         with open('settings.toml', 'r') as conffile:
-            conffile = conffile.read()
-            config = toml.loads(conffile)
+            config = toml.loads(conffile.read())
 
         directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library)
         if directory:
@@ -371,8 +370,7 @@ class MusicPlayer(QMainWindow):
         """Sets the user defined media library path as the default path
         in file dialogs."""
         with open('settings.toml', 'r') as conffile:
-            conffile = conffile.read()
-            config = toml.loads(conffile)
+            config = toml.loads(conffile.read())
         return config['media_library_path']
 
 
