@@ -138,6 +138,8 @@ class MusicPlayer(QMainWindow):
         """Provides items that allow the user to customize the viewing
         experience of the main window."""
         self.dock_action = self.sidebar.toggleViewAction()
+        self.dock_action.setShortcut('CTRL+SHIFT+P')
+
         self.view.addAction(self.dock_action)
 
     def help_menu(self):
@@ -366,7 +368,8 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.setCurrentRow(row)
 
     def media_library_path(self):
-        """"""
+        """Sets the user defined media library path as the default path
+        in file dialogs."""
         with open('settings.toml', 'r') as conffile:
             conffile = conffile.read()
             config = toml.loads(conffile)
