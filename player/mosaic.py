@@ -223,6 +223,7 @@ class MusicPlayer(QMainWindow):
         """Pops up a dialog that shows application informaion."""
         message = QMessageBox()
         message.setWindowTitle('About')
+        message.setWindowIcon(QIcon('images/md_help.png'))
         message.setText('Created by Mandeep Bhutani')
         message.setInformativeText('Material design icons created by Google\n\n'
                                    'GitHub: mandeepbhutani')
