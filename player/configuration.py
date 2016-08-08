@@ -64,6 +64,31 @@ class FileOptions(QWidget):
             self.recursive_directory.setChecked(False)
 
 
+class MediaLibrary(QWidget):
+    """Contains all of the user configurable options related to the
+    media library."""
+
+    def __init__(self, parent=None):
+        """Initializes a page of options to be shown in the
+        preferences dialog."""
+        super(MediaLibrary, self).__init__(parent)
+
+        media_library_config = QGroupBox("Media Library Configuration")
+
+        self.media_library_checkbox = QCheckBox(
+            'Set Media Library', self)
+
+        media_library_config_layout = QHBoxLayout()
+        media_library_config_layout.addWidget(self.media_library_checkbox)
+
+        media_library_config.setLayout(media_library_config_layout)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(media_library_config)
+        main_layout.addStretch(1)
+        self.setLayout(main_layout)
+
+
 class PreferencesDialog(QDialog):
     """Creates a dialog that shows the user all of the user configurable
     options. A list on the left shows all of the available pages, with
@@ -82,6 +107,7 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
 
         self.pages.addWidget(FileOptions())
+        self.pages.addWidget(MediaLibrary())
         self.list_items()
 
         layout = QHBoxLayout()
@@ -99,6 +125,9 @@ class PreferencesDialog(QDialog):
         file_options.setText('File Options')
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.contents.setCurrentRow(0)
+
+        media_library_options = QListWidgetItem(self.contents)
+        media_library_options.setText('Media Library')
 
     def change_page(self, current, previous):
         """Changes the page according to the clicked list item."""
