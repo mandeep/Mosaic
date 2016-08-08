@@ -1,9 +1,10 @@
 import toml
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
-                             QLabel, QLineEdit, QListWidget, QListWidgetItem,
-                             QPushButton, QStackedWidget, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QCheckBox, QDialog, QFileDialog, QGroupBox,
+                             QHBoxLayout, QLabel, QLineEdit, QListWidget,
+                             QListWidgetItem, QPushButton, QStackedWidget,
+                             QVBoxLayout, QWidget)
 
 
 class FileOptions(QWidget):
@@ -79,6 +80,8 @@ class MediaLibrary(QWidget):
         self.media_library_line = QLineEdit()
         self.media_library_button = QPushButton('Select Path')
 
+        self.media_library_button.clicked.connect(self.select_media_library)
+
         media_library_config_layout = QHBoxLayout()
         media_library_config_layout.addWidget(self.media_library_label)
         media_library_config_layout.addWidget(self.media_library_line)
@@ -90,6 +93,34 @@ class MediaLibrary(QWidget):
         main_layout.addWidget(media_library_config)
         main_layout.addStretch(1)
         self.setLayout(main_layout)
+
+        self.media_library_settings()
+
+    def select_media_library(self):
+        """Opens a file dialog to allow the user to select the media library
+        path. The path is then written to settings.toml."""
+        library = QFileDialog.getExistingDirectory(self, 'Select Media Library Directory')
+        if library:
+            self.media_library_line.setText(library)
+
+            with open('settings.toml', 'r') as conffile:
+                config = toml.load(conffile)
+                config['media_library_path'] = library
+
+            with open('settings.toml', 'r+') as conffile:            
+                toml.dump(config, conffile)
+
+    def media_library_settings(self):
+        """If the user has already defined a media library path that was
+        previously written to settings.toml, the path is set as the text
+        of the text box on the media library options page."""
+        with open('settings.toml', 'r') as conffile:
+            conffile = conffile.read()
+            config = toml.loads(conffile)
+
+        library = config['media_library_path']
+        if len(library) > 1:
+            self.media_library_line.setText(library)
 
 
 class PreferencesDialog(QDialog):
