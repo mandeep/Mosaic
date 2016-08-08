@@ -12,6 +12,7 @@ from PyQt5.QtCore import Qt, QByteArray,  QDir, QTime, QUrl
 
 
 class MusicPlayer(QMainWindow):
+    """"""
 
     def __init__(self, parent=None):
         """Initializes the QMainWindow widget and calls methods that house
@@ -168,25 +169,23 @@ class MusicPlayer(QMainWindow):
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist"""
-        directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
         with open('settings.toml', 'r') as conffile:
             conffile = conffile.read()
             config = toml.loads(conffile)
 
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
             contents = QDir(directory).entryInfoList()
 
             for filename in contents:
-                file = filename.absoluteFilePath()
-                if file.endswith('mp3') or file.endswith('flac'):
+                if config['recursive_directory'] is False:
+                    file = filename.absoluteFilePath()
+                    if file.endswith('mp3') or file.endswith('flac'):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                         self.playlist_view.addItem(filename.fileName())
-
-                if config['recursive_directory'] is False:
-                    self.player.setPlaylist(self.playlist)
-            
+                        self.player.setPlaylist(self.playlist)
                 elif config['recursive_directory'] is True:
                     if filename.isDir():
                         sub_directory = QDir(filename.filePath()).entryInfoList()
