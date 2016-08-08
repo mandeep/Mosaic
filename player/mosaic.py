@@ -1,15 +1,15 @@
-import player.configuration
-import pkg_resources
 import mutagen
 import mutagen.flac
-import sys
-import pytoml
+import pkg_resources
+import player.configuration
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
                              QDockWidget, QFileDialog, QLabel, QListWidget,
                              QMainWindow, QMessageBox, QSlider, QToolBar)
 from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
+import pytoml
+import sys
 
 
 class MusicPlayer(QMainWindow):
