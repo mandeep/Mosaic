@@ -347,7 +347,8 @@ class MusicPlayer(QMainWindow):
     def change_item(self, row):
         """Changes the current media to the index of the media selected
         by the user."""
-        self.playlist.setCurrentIndex(row)
+        if self.playlist.currentIndex() != row:
+            self.playlist.setCurrentIndex(row)
 
 
 def main():
