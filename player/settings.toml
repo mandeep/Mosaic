@@ -1,2 +1,3 @@
+recursive_directory = true
 title = "Mosaic Preferences"
-recursive_directory = false
+media_library_path = ""
