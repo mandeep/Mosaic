@@ -222,7 +222,7 @@ class MusicPlayer(QMainWindow):
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
         message = QMessageBox()
-        message.setWindowTitle('Mosaic')
+        message.setWindowTitle('About')
         message.setText('Created by Mandeep Bhutani')
         message.setInformativeText('Material design icons created by Google\n\n'
                                    'GitHub: mandeepbhutani')
