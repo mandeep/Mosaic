@@ -356,7 +356,7 @@ class MusicPlayer(QMainWindow):
             self.playlist.setCurrentIndex(row)
 
     def change_index(self, row):
-        """"""
+        """Changes the playlist view in relation to the current media."""
         self.playlist_view.setCurrentRow(row)
 
 
