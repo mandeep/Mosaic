@@ -5,10 +5,10 @@ from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
                              QStackedWidget, QVBoxLayout, QWidget)
 
 
-class FilePage(QWidget):
+class FileOptions(QWidget):
 
     def __init__(self, parent=None):
-        super(FilePage, self).__init__(parent)
+        super(FileOptions, self).__init__(parent)
 
         file_config = QGroupBox("File Menu Configuration")
 
@@ -72,7 +72,7 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
 
         self.contents.setCurrentRow(0)
-        self.pages.addWidget(FilePage())
+        self.pages.addWidget(FileOptions())
         self.list_items()
 
         layout = QHBoxLayout()
