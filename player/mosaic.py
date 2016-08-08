@@ -1,7 +1,8 @@
-import sys
+import configuration
 import mutagen
 import mutagen.flac
-import configuration
+import sys
+import toml
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
@@ -168,17 +169,34 @@ class MusicPlayer(QMainWindow):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist"""
         directory = QFileDialog.getExistingDirectory(self, 'Open Directory')
+        with open('settings.toml', 'r') as conffile:
+            conffile = conffile.read()
+            config = toml.loads(conffile)
+
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
             contents = QDir(directory).entryInfoList()
+
             for filename in contents:
                 file = filename.absoluteFilePath()
                 if file.endswith('mp3') or file.endswith('flac'):
-                    self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist_view.addItem(filename.fileName())
+
+                if config['recursive_directory'] is False:
                     self.player.setPlaylist(self.playlist)
-                    self.playlist_view.addItem(filename.fileName())
-                    self.player.play()
+            
+                elif config['recursive_directory'] is True:
+                    if filename.isDir():
+                        sub_directory = QDir(filename.filePath()).entryInfoList()
+                        for sub_files in sub_directory:
+                            sub_file = sub_files.absoluteFilePath()
+                            if sub_file.endswith('mp3') or sub_file.endswith('flac'):
+                                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(sub_file)))
+                                self.player.setPlaylist(self.playlist)
+                                self.playlist_view.addItem(sub_files.fileName())
+            self.player.play()
 
     def exit_application(self):
         """Closes the window and quits the music player application."""
