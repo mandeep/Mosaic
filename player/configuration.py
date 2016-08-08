@@ -2,8 +2,8 @@ import toml
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QCheckBox, QDialog, QGroupBox, QHBoxLayout,
-                             QListWidget, QListWidgetItem, QPushButton,
-                             QStackedWidget, QVBoxLayout, QWidget)
+                             QLabel, QLineEdit, QListWidget, QListWidgetItem,
+                             QPushButton, QStackedWidget, QVBoxLayout, QWidget)
 
 
 class FileOptions(QWidget):
@@ -75,11 +75,14 @@ class MediaLibrary(QWidget):
 
         media_library_config = QGroupBox("Media Library Configuration")
 
-        self.media_library_checkbox = QCheckBox(
-            'Set Media Library', self)
+        self.media_library_label = QLabel('Media Library', self)
+        self.media_library_line = QLineEdit()
+        self.media_library_button = QPushButton('Select Path')
 
         media_library_config_layout = QHBoxLayout()
-        media_library_config_layout.addWidget(self.media_library_checkbox)
+        media_library_config_layout.addWidget(self.media_library_label)
+        media_library_config_layout.addWidget(self.media_library_line)
+        media_library_config_layout.addWidget(self.media_library_button)
 
         media_library_config.setLayout(media_library_config_layout)
 
