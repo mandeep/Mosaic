@@ -1,7 +1,6 @@
 import os
 import pkg_resources
 import pytoml
-import toml
 from appdirs import AppDirs
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -52,12 +51,12 @@ class FileOptions(QWidget):
             config = pytoml.load(conffile)
 
         if self.recursive_directory.isChecked():
-            config['recursive_directory'] = True
+            config['file_options']['recursive_directory'] = True
 
         elif not self.recursive_directory.isChecked():
-            config['recursive_directory'] = False
+            config['file_options']['recursive_directory'] = False
 
-        with open(settings_stream, 'r+') as conffile:            
+        with open(settings_stream, 'w') as conffile:            
             pytoml.dump(conffile, config)
 
     def check_directory_option(self):
@@ -67,9 +66,9 @@ class FileOptions(QWidget):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        if config['recursive_directory'] is True:
+        if config['file_options']['recursive_directory'] is True:
             self.recursive_directory.setChecked(True)
-        elif config['recursive_directory'] is False:
+        elif config['file_options']['recursive_directory'] is False:
             self.recursive_directory.setChecked(False)
 
 
@@ -116,9 +115,9 @@ class MediaLibrary(QWidget):
             with open(settings_stream) as conffile:
                 config = pytoml.load(conffile)
 
-            config['media_library_path'] = library
+            config['media_library']['media_library_path'] = library
 
-            with open(settings_stream, 'r+') as conffile:           
+            with open(settings_stream, 'w') as conffile:           
                 pytoml.dump(conffile, config)
 
     def media_library_settings(self):
@@ -129,7 +128,7 @@ class MediaLibrary(QWidget):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        library = config['media_library_path']
+        library = config['media_library']['media_library_path']
         if len(library) > 1:
             self.media_library_line.setText(library)
 
