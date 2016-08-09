@@ -1,6 +1,7 @@
 import os
 import pkg_resources
 import pytoml
+import toml
 from appdirs import AppDirs
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -24,6 +25,9 @@ class FileOptions(QWidget):
         self.recursive_directory = QCheckBox(
             'Recursively Open Directories (open files in all subdirectories)', self)
 
+        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+                                             'settings.toml')
+
         self.check_directory_option()
 
         file_config_layout = QHBoxLayout()
@@ -43,8 +47,8 @@ class FileOptions(QWidget):
         the file menu. The default setting only opens songs in the
         selected directory. With this option checked, Open Directory will
         open all songs in the directory and its subdirectories."""
-        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
-        with settings_stream as conffile:
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
         if self.recursive_directory.isChecked():
@@ -53,46 +57,20 @@ class FileOptions(QWidget):
         elif not self.recursive_directory.isChecked():
             config['recursive_directory'] = False
 
-        with settings_stream as conffile:            
-            pytoml.dump(config, conffile)
+        with open(settings_stream, 'r+') as conffile:            
+            pytoml.dump(conffile, config)
 
     def check_directory_option(self):
         """Sets the options in the preferences dialog to the
         settings defined in settings.toml."""
-        try:
-            settings_stream = self.settings_file()
-
-        except FileNotFoundError:
-            settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
-
-        try:
-            with open(settings_stream) as conffile:
-                config = pytoml.load(conffile)
-        except ValueError:
-            with settings_stream as conffile:
-                config = pytoml.load(conffile)
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
 
         if config['recursive_directory'] is True:
             self.recursive_directory.setChecked(True)
         elif config['recursive_directory'] is False:
             self.recursive_directory.setChecked(False)
-
-    def settings_file(self):
-        config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        if not os.path.exists(config_directory):
-            os.makedirs(config_directory)
-
-        settings = pkg_resources.resource_filename(__name__, 'settings.toml')
-        with open(settings) as conffile:
-            config = conffile.read()
-
-        config_file = os.path.join(config_directory, 'settings.toml')
-        if not os.path.isfile(config_file):
-            with open(config_file, 'a') as new_config_file:
-                new_config_file.write(config)
-            return new_config_file
-        else:
-            return config_file
 
 
 class MediaLibrary(QWidget):
