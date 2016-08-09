@@ -192,8 +192,8 @@ class MusicPlayer(QMainWindow):
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist"""
-        settings_stream = self.settings_file()
-        with settings_stream as conffile:
+        settings_stream = os.path.join(self.config_directory, 'settings.toml')
+        with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
         directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library)
@@ -203,14 +203,14 @@ class MusicPlayer(QMainWindow):
             contents = QDir(directory).entryInfoList()
 
             for filename in contents:
-                if config['recursive_directory'] is False:
+                if config['file_options']['recursive_directory'] is False:
                     file = filename.absoluteFilePath()
                     if file.endswith('mp3') or file.endswith('flac'):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                         self.playlist_view.addItem(filename.fileName())
                         self.playlist_view.setCurrentRow(0)
                         self.player.setPlaylist(self.playlist)
-                elif config['recursive_directory'] is True:
+                elif config['file_options']['recursive_directory'] is True:
                     if filename.isDir():
                         sub_directory = QDir(filename.filePath()).entryInfoList()
                         for sub_files in sub_directory:
@@ -392,7 +392,7 @@ class MusicPlayer(QMainWindow):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        return config['media_library_path']
+        return config['media_library']['media_library_path']
 
     def create_settings_file(self):
         if not os.path.exists(self.config_directory):
