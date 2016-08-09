@@ -4,7 +4,6 @@ import os
 import pkg_resources
 import player.configuration
 import pytoml
-import shutil
 import sys
 from appdirs import AppDirs
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
@@ -388,14 +387,20 @@ class MusicPlayer(QMainWindow):
         """Sets the user defined media library path as the default path
         in file dialogs."""
         settings_stream = self.settings_file()
-        with settings_stream as conffile:
-            config = pytoml.load(conffile)
+        try:
+            with open(settings_stream) as conffile:
+                config = pytoml.load(conffile)
+        except TypeError:
+            with settings_stream as conffile:
+                config = pytoml.load(conffile)
+
         return config['media_library_path']
 
     def settings_file(self):
         config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        if os.path.isdir(config_directory) and 'settings.toml' in os.listdir(config_directory):
-            return os.listdir(config_directory)[0]
+        config_file = os.path.join(config_directory, 'settings.toml')
+        if os.path.isdir(config_directory) and os.path.isfile(config_file):
+            return config_file
         else:
             return pkg_resources.resource_stream(__name__, 'settings.toml')
 
