@@ -55,6 +55,8 @@ class MusicPlayer(QMainWindow):
         self.art.mousePressEvent = self.press_playback
 
         self.duration = 0
+        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.create_settings_file()
         self.media_library = self.media_library_path()
 
         self.menu_controls()
@@ -386,23 +388,24 @@ class MusicPlayer(QMainWindow):
     def media_library_path(self):
         """Sets the user defined media library path as the default path
         in file dialogs."""
-        settings_stream = self.settings_file()
-        try:
-            with open(settings_stream) as conffile:
-                config = pytoml.load(conffile)
-        except TypeError:
-            with settings_stream as conffile:
-                config = pytoml.load(conffile)
+        settings_stream = os.path.join(self.config_directory, 'settings.toml')
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
 
         return config['media_library_path']
 
-    def settings_file(self):
-        config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        config_file = os.path.join(config_directory, 'settings.toml')
-        if os.path.isdir(config_directory) and os.path.isfile(config_file):
-            return config_file
-        else:
-            return pkg_resources.resource_stream(__name__, 'settings.toml')
+    def create_settings_file(self):
+        if not os.path.exists(self.config_directory):
+            os.makedirs(self.config_directory)
+
+        settings = pkg_resources.resource_filename(__name__, 'settings.toml')
+        with open(settings) as default_config:
+            config = default_config.read()
+
+        user_config_file = os.path.join(self.config_directory, 'settings.toml')
+        if not os.path.isfile(user_config_file):
+            with open(user_config_file, 'a') as new_config_file:
+                new_config_file.write(config)
 
 
 def main():
