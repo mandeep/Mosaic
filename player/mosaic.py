@@ -57,7 +57,6 @@ class MusicPlayer(QMainWindow):
         self.duration = 0
         self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
         self.create_settings_file()
-        self.media_library = self.media_library_path()
 
         self.menu_controls()
         self.media_controls()
@@ -163,7 +162,7 @@ class MusicPlayer(QMainWindow):
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
         filename, ok = QFileDialog.getOpenFileName(
-            self, 'Open File', self.media_library, 'Audio (*.mp3 *.flac)')
+            self, 'Open File', self.media_library_path(), 'Audio (*.mp3 *.flac)')
         if ok:
             file_info = QFileInfo(filename).fileName()
             self.playlist.clear()
@@ -177,7 +176,7 @@ class MusicPlayer(QMainWindow):
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
         filenames, ok = QFileDialog.getOpenFileNames(
-            self, 'Open Multiple Files', self.media_library, 'Audio (*.mp3 *.flac)')
+            self, 'Open Multiple Files', self.media_library_path(), 'Audio (*.mp3 *.flac)')
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -196,7 +195,7 @@ class MusicPlayer(QMainWindow):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library)
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library_path())
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
