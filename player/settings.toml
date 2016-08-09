@@ -1,3 +1,9 @@
-recursive_directory = true
 title = "Mosaic Preferences"
-media_library_path = ""
+
+[file_options]
+
+recursive_directory = true
+
+[media_library]
+
+media_library_path = "/media/mandeep/My Passport/Music"
