@@ -1,15 +1,18 @@
 import mutagen
 import mutagen.flac
+import os
 import pkg_resources
 import player.configuration
+import pytoml
+import shutil
+import sys
+from appdirs import AppDirs
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
                              QDockWidget, QFileDialog, QLabel, QListWidget,
                              QMainWindow, QMessageBox, QSlider, QToolBar)
 from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
-import pytoml
-import sys
 
 
 class MusicPlayer(QMainWindow):
@@ -188,7 +191,7 @@ class MusicPlayer(QMainWindow):
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist"""
-        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+        settings_stream = self.settings_file()
         with settings_stream as conffile:
             config = pytoml.load(conffile)
 
@@ -384,10 +387,17 @@ class MusicPlayer(QMainWindow):
     def media_library_path(self):
         """Sets the user defined media library path as the default path
         in file dialogs."""
-        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+        settings_stream = self.settings_file()
         with settings_stream as conffile:
             config = pytoml.load(conffile)
         return config['media_library_path']
+
+    def settings_file(self):
+        config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        if os.path.isdir(config_directory) and 'settings.toml' in os.listdir(config_directory):
+            return os.listdir(config_directory)[0]
+        else:
+            return pkg_resources.resource_stream(__name__, 'settings.toml')
 
 
 def main():
