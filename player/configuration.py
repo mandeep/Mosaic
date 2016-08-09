@@ -1,5 +1,7 @@
+import os
 import pkg_resources
 import pytoml
+from appdirs import AppDirs
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QCheckBox, QDialog, QFileDialog, QGroupBox,
@@ -22,7 +24,7 @@ class FileOptions(QWidget):
         self.recursive_directory = QCheckBox(
             'Recursively Open Directories (open files in all subdirectories)', self)
 
-        self.settings_file()
+        self.check_directory_option()
 
         file_config_layout = QHBoxLayout()
         file_config_layout.addWidget(self.recursive_directory)
@@ -54,17 +56,43 @@ class FileOptions(QWidget):
         with settings_stream as conffile:            
             pytoml.dump(config, conffile)
 
-    def settings_file(self):
+    def check_directory_option(self):
         """Sets the options in the preferences dialog to the
         settings defined in settings.toml."""
-        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
-        with settings_stream as conffile:
-            config = pytoml.load(conffile)
+        try:
+            settings_stream = self.settings_file()
+
+        except FileNotFoundError:
+            settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
+
+        try:
+            with open(settings_stream) as conffile:
+                config = pytoml.load(conffile)
+        except ValueError:
+            with settings_stream as conffile:
+                config = pytoml.load(conffile)
 
         if config['recursive_directory'] is True:
             self.recursive_directory.setChecked(True)
         elif config['recursive_directory'] is False:
             self.recursive_directory.setChecked(False)
+
+    def settings_file(self):
+        config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        if not os.path.exists(config_directory):
+            os.makedirs(config_directory)
+
+        settings = pkg_resources.resource_filename(__name__, 'settings.toml')
+        with open(settings) as conffile:
+            config = conffile.read()
+
+        config_file = os.path.join(config_directory, 'settings.toml')
+        if not os.path.isfile(config_file):
+            with open(config_file, 'a') as new_config_file:
+                new_config_file.write(config)
+            return new_config_file
+        else:
+            return config_file
 
 
 class MediaLibrary(QWidget):
