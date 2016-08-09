@@ -44,7 +44,7 @@ class MusicPlayer(QMainWindow):
         self.sidebar.setGeometry(0, 0, 300, 800)
         self.sidebar.setVisible(False)
 
-        self.player.metaDataChanged.connect(self.retrieve_meta_data)
+        self.player.metaDataChanged.connect(self.display_meta_data)
         self.slider.sliderMoved.connect(self.seek)
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
@@ -241,7 +241,7 @@ class MusicPlayer(QMainWindow):
                                    'GitHub: mandeepbhutani')
         message.exec_()
 
-    def retrieve_meta_data(self):
+    def display_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
         displays the image in QMainWindow. When a file is loaded, this function
         affirms that meta data in the audio file exists. The mutagen library is
