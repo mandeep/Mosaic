@@ -121,6 +121,10 @@ class MusicPlayer(QMainWindow):
         self.open_multiple_files_action.setShortcut('CTRL+SHIFT+O')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
+        self.open_playlist_action = QAction('Open Playlist', self)
+        self.open_playlist_action.setShortcut('CTRL+P')
+        self.open_playlist_action.triggered.connect(self.open_playlist)
+
         self.open_directory_action = QAction('Open Directory', self)
         self.open_directory_action.setShortcut('CTRL+D')
         self.open_directory_action.triggered.connect(self.open_directory)
@@ -131,6 +135,7 @@ class MusicPlayer(QMainWindow):
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
+        self.file.addAction(self.open_playlist_action)
         self.file.addAction(self.open_directory_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
@@ -139,7 +144,7 @@ class MusicPlayer(QMainWindow):
         """Provides items that allow the user to customize
         the options of the music player."""
         self.preferences_action = QAction('Preferences', self)
-        self.preferences_action.setShortcut('CTRL+P')
+        self.preferences_action.setShortcut('CTRL+SHIFT+P')
         self.preferences_action.triggered.connect(self.preferences)
 
         self.edit.addAction(self.preferences_action)
@@ -148,7 +153,7 @@ class MusicPlayer(QMainWindow):
         """Provides items that allow the user to customize the viewing
         experience of the main window."""
         self.dock_action = self.sidebar.toggleViewAction()
-        self.dock_action.setShortcut('CTRL+SHIFT+P')
+        self.dock_action.setShortcut('CTRL+ALT+P')
 
         self.view.addAction(self.dock_action)
 
@@ -187,6 +192,23 @@ class MusicPlayer(QMainWindow):
                 self.playlist_view.addItem(file_info)
                 self.playlist_view.setCurrentRow(0)
             self.player.play()
+
+    def open_playlist(self):
+        """Loads an m3u or pls playlist into the media playlist and adds the
+        content of the chosen playlist to playlist_view."""
+        playlist, ok = QFileDialog.getOpenFileName(
+            self, 'Open Playlist', self.media_library_path(), 'Playlist (*.m3u *.pls)')
+        if ok:
+            playlist = QUrl.fromLocalFile(playlist)
+            self.playlist.clear()
+            self.playlist_view.clear()
+            self.playlist.load(playlist)
+            self.player.setPlaylist(self.playlist)
+            self.player.play()
+
+            for song_index in range(self.playlist.mediaCount()+1):
+                song = self.playlist.media(song_index).canonicalUrl().fileName()
+                self.playlist_view.addItem(song)
 
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
