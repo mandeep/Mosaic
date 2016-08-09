@@ -1,5 +1,5 @@
-import mutagen
 import mutagen.flac
+import mutagen.mp3
 import os
 import pkg_resources
 import player.configuration
@@ -194,7 +194,7 @@ class MusicPlayer(QMainWindow):
             self.player.play()
 
     def open_playlist(self):
-        """Loads an m3u or pls playlist into the media playlist and adds the
+        """Loads an m3u or pls file into an empty playlist and adds the
         content of the chosen playlist to playlist_view."""
         playlist, ok = QFileDialog.getOpenFileName(
             self, 'Open Playlist', self.media_library_path(), 'Playlist (*.m3u *.pls)')
@@ -281,31 +281,29 @@ class MusicPlayer(QMainWindow):
             file_path = self.player.currentMedia().canonicalUrl().path()
             no_cover_image = pkg_resources.resource_filename('player.images', 'nocover.png')
             if file_path.endswith('mp3'):
-                song = mutagen.File(file_path)
-                album_title = song.get('TALB', '??')
-                album_artist = song.get('TPE1', '??')
-                track_title = song.get('TIT2', '??')
-                track_number = song.get('TRCK', '??')
+                song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
                 try:
-                    for tag in song.tags:
+                    mp3_bytes = mutagen.mp3.MP3(file_path)
+                    for tag in mp3_bytes:
                         if 'APIC' in tag:
-                            artwork = self.byte_array.append(song.tags[tag].data)
-                    self.pixmap.loadFromData(artwork)
+                            artwork = self.byte_array.append(mp3_bytes.tags[tag].data)
+                            self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap(no_cover_image)
             elif file_path.endswith('flac'):
                 song = mutagen.flac.FLAC(file_path)
-                song_data = dict(song.tags)
-                song_data = dict((k, "".join(v)) for k, v in song_data.items())
-                album_title = song_data.get('album', '??')
-                album_artist = song_data.get('artist', '??')
-                track_title = song_data.get('title', '??')
-                track_number = song_data.get('tracknumber', '??')
                 try:
                     artwork = self.byte_array.append(song.pictures[0].data)
                     self.pixmap.loadFromData(artwork)
                 except IndexError:
                     self.pixmap = QPixmap(no_cover_image)
+
+            song_data = dict(song.tags)
+            song_data = dict((k, "".join(v)) for k, v in song_data.items())
+            album_title = song_data.get('album', '??')
+            album_artist = song_data.get('artist', '??')
+            track_title = song_data.get('title', '??')
+            track_number = song_data.get('tracknumber', '??')
 
             meta_data = '{} - {} - {} - {}' .format(
                     track_number, album_artist, album_title, track_title)
@@ -438,3 +436,5 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
+
+main()
