@@ -155,7 +155,11 @@ class MusicPlayer(QMainWindow):
         self.dock_action = self.sidebar.toggleViewAction()
         self.dock_action.setShortcut('CTRL+ALT+P')
 
+        self.view_media_info_action = QAction('Media Information', self)
+        self.view_media_info_action.triggered.connect(self.view_media_info)
+
         self.view.addAction(self.dock_action)
+        self.view.addAction(self.view_media_info_action)
 
     def help_menu(self):
         """Provides informational items regarding the application."""
@@ -251,6 +255,9 @@ class MusicPlayer(QMainWindow):
         """Opens a dialog with user configurable options."""
         dialog = player.configuration.PreferencesDialog()
         dialog.exec_()
+
+    def view_media_info(self):
+        """"""
 
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
@@ -436,5 +443,3 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
-
-main()
