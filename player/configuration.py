@@ -81,6 +81,8 @@ class MediaLibrary(QWidget):
         """Initializes a page of options to be shown in the
         preferences dialog."""
         super(MediaLibrary, self).__init__(parent)
+        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+                                             'settings.toml')
 
         media_library_config = QGroupBox("Media Library Configuration")
 
@@ -110,21 +112,21 @@ class MediaLibrary(QWidget):
         library = QFileDialog.getExistingDirectory(self, 'Select Media Library Directory')
         if library:
             self.media_library_line.setText(library)
-
-            settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
-            with settings_stream as conffile:
+            settings_stream = self.user_config_file
+            with open(settings_stream) as conffile:
                 config = pytoml.load(conffile)
-                config['media_library_path'] = library
 
-            with settings_stream as conffile:            
-                pytoml.dump(config, conffile)
+            config['media_library_path'] = library
+
+            with open(settings_stream, 'r+') as conffile:           
+                pytoml.dump(conffile, config)
 
     def media_library_settings(self):
         """If the user has already defined a media library path that was
         previously written to settings.toml, the path is set as the text
         of the text box on the media library options page."""
-        settings_stream = pkg_resources.resource_stream(__name__, 'settings.toml')
-        with settings_stream as conffile:
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
         library = config['media_library_path']
