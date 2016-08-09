@@ -287,8 +287,10 @@ class MusicPlayer(QMainWindow):
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().path()
             no_cover_image = pkg_resources.resource_filename('player.images', 'nocover.png')
+
             if file_path.endswith('mp3'):
                 song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
+
                 try:
                     mp3_bytes = mutagen.mp3.MP3(file_path)
                     for tag in mp3_bytes:
@@ -297,8 +299,10 @@ class MusicPlayer(QMainWindow):
                             self.pixmap.loadFromData(artwork)
                 except KeyError:
                     self.pixmap = QPixmap(no_cover_image)
+
             elif file_path.endswith('flac'):
                 song = mutagen.flac.FLAC(file_path)
+
                 try:
                     artwork = self.byte_array.append(song.pictures[0].data)
                     self.pixmap.loadFromData(artwork)
@@ -421,6 +425,9 @@ class MusicPlayer(QMainWindow):
         return config['media_library']['media_library_path']
 
     def create_settings_file(self):
+        """Creates a copy of the settings.toml file in the user's system
+        config directory. This copy then becomes the default config file
+        for user configurable settings."""
         if not os.path.exists(self.config_directory):
             os.makedirs(self.config_directory)
 
