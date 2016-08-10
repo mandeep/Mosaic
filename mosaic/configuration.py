@@ -144,7 +144,7 @@ class PreferencesDialog(QDialog):
 
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
-        settings_icon = pkg_resources.resource_filename('player.images', 'md_settings.png')
+        settings_icon = pkg_resources.resource_filename('mosaic.images', 'md_settings.png')
         self.setWindowIcon(QIcon(settings_icon))
         self.setFixedSize(800, 700)
 
