@@ -266,6 +266,8 @@ class MusicPlayer(QMainWindow):
         widgets and layouts."""
         dialog = QDialog()
         dialog.setWindowTitle('Media Information')
+        info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
+        dialog.setWindowIcon(QIcon(info_icon))
         dialog.setFixedSize(600, 600)
 
         if self.player.isMetaDataAvailable():
