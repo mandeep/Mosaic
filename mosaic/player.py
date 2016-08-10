@@ -304,8 +304,7 @@ class MusicPlayer(QMainWindow):
                 artist, album, date, title, track_number, genre, bitrate,
                 bitrate_mode, sample_rate, bits_per_sample, description)
         else:
-            media_information = mosaic.metadata.MediaInformation(
-                '', '', '', '', '', '', '', '', '', '', '')
+            media_information = mosaic.metadata.MediaInformation()
 
         page = QStackedWidget()
         page.addWidget(media_information)
