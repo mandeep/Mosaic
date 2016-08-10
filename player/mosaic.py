@@ -1,3 +1,4 @@
+import mutagen.easyid3
 import mutagen.flac
 import mutagen.mp3
 import os
