@@ -1,17 +1,15 @@
+import mosaic.configuration
 import mutagen.easyid3
 import mutagen.flac
 import mutagen.mp3
 import os
 import pkg_resources
-import player.configuration
 import pytoml
 import sys
 from appdirs import AppDirs
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget,
-                             QDockWidget, QFileDialog, QLabel, QListWidget,
-                             QMainWindow, QMessageBox, QSlider, QToolBar)
+from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog, QDockWidget, QFileDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMainWindow, QMessageBox, QSlider, QToolBar, QVBoxLayout)
 from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
 
 
@@ -24,7 +22,7 @@ class MusicPlayer(QMainWindow):
         other widgets that need to be displayed in the main window."""
         super(MusicPlayer, self).__init__(parent)
         self.setWindowTitle('Mosaic')
-        window_icon = pkg_resources.resource_filename('player.images', 'icon.png')
+        window_icon = pkg_resources.resource_filename('mosaic.images', 'icon.png')
         self.setWindowIcon(QIcon(window_icon))
 
         self.player = QMediaPlayer()
@@ -83,23 +81,23 @@ class MusicPlayer(QMainWindow):
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
 
-        play_icon = pkg_resources.resource_filename('player.images', 'md_play.png')
+        play_icon = pkg_resources.resource_filename('mosaic.images', 'md_play.png')
         self.play_action = QAction(QIcon(play_icon), 'Play', self)
         self.play_action.triggered.connect(self.player.play)
 
-        stop_icon = pkg_resources.resource_filename('player.images', 'md_stop.png')
+        stop_icon = pkg_resources.resource_filename('mosaic.images', 'md_stop.png')
         self.stop_action = QAction(QIcon(stop_icon), 'Stop', self)
         self.stop_action.triggered.connect(self.player.stop)
 
-        previous_icon = pkg_resources.resource_filename('player.images', 'md_previous.png')
+        previous_icon = pkg_resources.resource_filename('mosaic.images', 'md_previous.png')
         self.previous_action = QAction(QIcon(previous_icon), 'Previous', self)
         self.previous_action.triggered.connect(self.playlist.previous)
 
-        next_icon = pkg_resources.resource_filename('player.images', 'md_next.png')
+        next_icon = pkg_resources.resource_filename('mosaic.images', 'md_next.png')
         self.next_action = QAction(QIcon(next_icon), 'Next', self)
         self.next_action.triggered.connect(self.playlist.next)
 
-        repeat_icon = pkg_resources.resource_filename('player.images', 'md_repeat.png')
+        repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat.png')
         self.repeat_action = QAction(QIcon(repeat_icon), 'Repeat', self)
         self.repeat_action.triggered.connect(self.repeat_song)
 
@@ -254,7 +252,7 @@ class MusicPlayer(QMainWindow):
 
     def preferences(self):
         """Opens a dialog with user configurable options."""
-        dialog = player.configuration.PreferencesDialog()
+        dialog = mosaic.configuration.PreferencesDialog()
         dialog.exec_()
 
     def view_media_info(self):
@@ -264,7 +262,7 @@ class MusicPlayer(QMainWindow):
         """Pops up a dialog that shows application informaion."""
         message = QMessageBox()
         message.setWindowTitle('About')
-        help_icon = pkg_resources.resource_filename('player.images', 'md_help.png')
+        help_icon = pkg_resources.resource_filename('mosaic.images', 'md_help.png')
         message.setWindowIcon(QIcon(help_icon))
         message.setText('Created by Mandeep Bhutani')
         message.setInformativeText('Material design icons created by Google\n\n'
@@ -287,7 +285,7 @@ class MusicPlayer(QMainWindow):
 
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().path()
-            no_cover_image = pkg_resources.resource_filename('player.images', 'nocover.png')
+            no_cover_image = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
             if file_path.endswith('mp3'):
                 song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
@@ -385,13 +383,13 @@ class MusicPlayer(QMainWindow):
         changes the pause icon back to the play icon when either paused or
         stopped. The action of the button changes with respect to its icon."""
         if self.player.state() == QMediaPlayer.PlayingState:
-            pause_icon = pkg_resources.resource_filename('player.images', 'md_pause.png')
+            pause_icon = pkg_resources.resource_filename('mosaic.images', 'md_pause.png')
             self.play_action.setIcon(QIcon(pause_icon))
             self.play_action.triggered.connect(self.player.pause)
         elif (self.player.state() == QMediaPlayer.PausedState or
               self.player.state() == QMediaPlayer.StoppedState):
             self.play_action.triggered.connect(self.player.play)
-            play_icon = pkg_resources.resource_filename('player.images', 'md_play.png')
+            play_icon = pkg_resources.resource_filename('mosaic.images', 'md_play.png')
             self.play_action.setIcon(QIcon(play_icon))
 
     def repeat_song(self):
@@ -399,11 +397,11 @@ class MusicPlayer(QMainWindow):
         accordingly."""
         if self.playlist.playbackMode() != QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
-            repeat_on_icon = pkg_resources.resource_filename('player.images', 'md_repeat_on.png')
+            repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_on.png')
             self.repeat_action.setIcon(QIcon(repeat_on_icon))
         elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
-            repeat_icon = pkg_resources.resource_filename('player.images', 'md_repeat.png')
+            repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat.png')
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def change_item(self, row):
