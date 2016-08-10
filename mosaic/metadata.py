@@ -97,7 +97,7 @@ class MediaInformation(QWidget):
         bits_per_sample_box.addWidget(bits_per_sample_label)
         bits_per_sample_box.addWidget(bits_per_sample_line)
 
-        audio_description_label = QLabel('Description')
+        audio_description_label = QLabel('Description', self)
         audio_description_line = QTextEdit()
         audio_description_line.setText(description)
         audio_description_line.setReadOnly(True)
