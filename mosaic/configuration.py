@@ -87,6 +87,7 @@ class MediaLibrary(QWidget):
 
         self.media_library_label = QLabel('Media Library', self)
         self.media_library_line = QLineEdit()
+        self.media_library_line.setReadOnly(True)
         self.media_library_button = QPushButton('Select Path')
 
         self.media_library_button.clicked.connect(self.select_media_library)
