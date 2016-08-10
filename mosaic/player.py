@@ -1,4 +1,5 @@
 import mosaic.configuration
+import mosaic.metadata
 import mutagen.easyid3
 import mutagen.flac
 import mutagen.mp3
@@ -9,7 +10,10 @@ import sys
 from appdirs import AppDirs
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog, QDockWidget, QFileDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMainWindow, QMessageBox, QSlider, QToolBar, QVBoxLayout)
+from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
+                             QDockWidget, QFileDialog, QHBoxLayout, QLabel,
+                             QListWidget, QMainWindow, QMessageBox, QSlider,
+                             QStackedWidget, QToolBar)
 from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
 
 
@@ -256,7 +260,59 @@ class MusicPlayer(QMainWindow):
         dialog.exec_()
 
     def view_media_info(self):
-        """"""
+        """Creates a dialog window displaying all of the metadata
+        available in the audio file. mosaic.metadata.MediaInformation
+        is instantiated to fill the dialog window with the necessary
+        widgets and layouts."""
+        dialog = QDialog()
+        dialog.setWindowTitle('Media Information')
+        dialog.setFixedSize(600, 600)
+
+        if self.player.isMetaDataAvailable():
+            file_path = self.player.currentMedia().canonicalUrl().path()
+
+            if file_path.endswith('mp3'):
+                song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
+            elif file_path.endswith('flac'):
+                song = mutagen.flac.FLAC(file_path)
+
+            song_data = dict(song.tags)
+            song_data = dict((k, "".join(v)) for k, v in song_data.items())
+
+            artist = song_data.get('artist', '')
+            album = song_data.get('album', '')
+            date = song_data.get('date', '')
+            title = song_data.get('title', '')
+            track_number = song_data.get('tracknumber', '')
+            genre = song_data.get('genre', '')
+            description = song_data.get('description', '')
+            sample_rate = "{} Hz" .format(song.info.sample_rate)
+            try:
+                bitrate = "{} kb/s" .format(song.info.bitrate // 1000)
+                bitrate_mode = "{}" .format(song.info.bitrate_mode)
+            except AttributeError:
+                bitrate = ''
+                bitrate_mode = ''
+            try:
+                bits_per_sample = "{}" .format(song.info.bits_per_sample)
+            except AttributeError:
+                bits_per_sample = ''
+
+            media_information = mosaic.metadata.MediaInformation(
+                artist, album, date, title, track_number, genre, bitrate,
+                bitrate_mode, sample_rate, bits_per_sample, description)
+        else:
+            media_information = mosaic.metadata.MediaInformation(
+                '', '', '', '', '', '', '', '', '', '', '')
+
+        page = QStackedWidget()
+        page.addWidget(media_information)
+
+        dialog_layout = QHBoxLayout()
+        dialog_layout.addWidget(page)
+
+        dialog.setLayout(dialog_layout)
+        dialog.exec_()
 
     def about_dialog(self):
         """Pops up a dialog that shows application informaion."""
