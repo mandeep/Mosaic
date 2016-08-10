@@ -3,9 +3,9 @@ from setuptools import setup
 setup(name='Mosaic',
       version='1.1',
       author='Mandeep Bhutani',
-      packages=['player', 'player.images'],
-      package_data={"player.images": '*.png',
-                    "player": '*.toml'},
+      packages=['mosaic', 'mosaic.images'],
+      package_data={"mosaic.images": '*.png',
+                    "mosaic": '*.toml'},
       install_requires=[
         'mutagen==1.34',
         'pytoml==0.1.10',
@@ -13,6 +13,6 @@ setup(name='Mosaic',
       ],
       entry_points='''
         [console_scripts]
-        mosaic=player.mosaic:main
+        mosaic=mosaic.player:main
         ''',
       )
