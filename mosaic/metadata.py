@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit,
                              QTextEdit, QVBoxLayout, QWidget)
 
@@ -15,6 +16,7 @@ class MediaInformation(QWidget):
         super(MediaInformation, self).__init__(parent)
 
         artist_label = QLabel('Artist', self)
+        artist_label.setStyleSheet('font-weight: bold')
         artist_line = QLineEdit()
         artist_line.setText(artist)
         artist_line.setReadOnly(True)
@@ -23,6 +25,7 @@ class MediaInformation(QWidget):
         artist_box.addWidget(artist_line)
 
         album_label = QLabel('Album', self)
+        album_label.setStyleSheet('font-weight: bold')
         album_line = QLineEdit()
         album_line.setText(album)
         album_line.setReadOnly(True)
@@ -31,6 +34,7 @@ class MediaInformation(QWidget):
         album_box.addWidget(album_line)
 
         album_date_label = QLabel('Album Date', self)
+        album_date_label.setStyleSheet('font-weight: bold')
         album_date_line = QLineEdit()
         album_date_line.setText(date)
         album_date_line.setReadOnly(True)
@@ -40,6 +44,7 @@ class MediaInformation(QWidget):
         date_box.addWidget(album_date_line)
 
         track_label = QLabel('Track Title', self)
+        track_label.setStyleSheet('font-weight: bold')
         track_line = QLineEdit()
         track_line.setText(title)
         track_line.setReadOnly(True)
@@ -48,15 +53,17 @@ class MediaInformation(QWidget):
         track_box.addWidget(track_line)
 
         track_number_label = QLabel('Track Number', self)
+        track_number_label.setStyleSheet('font-weight: bold')
         track_number_line = QLineEdit()
         track_number_line.setText(number)
         track_number_line.setReadOnly(True)
-        track_number_line.setFixedWidth(80)
+        track_number_line.setFixedWidth(90)
         number_box = QVBoxLayout()
         number_box.addWidget(track_number_label)
         number_box.addWidget(track_number_line)
 
         genre_label = QLabel('Genre', self)
+        genre_label.setStyleSheet('font-weight: bold')
         genre_line = QLineEdit()
         genre_line.setText(genre)
         genre_line.setReadOnly(True)
@@ -66,6 +73,7 @@ class MediaInformation(QWidget):
         genre_box.addWidget(genre_line)
 
         bitrate_label = QLabel('Bitrate', self)
+        bitrate_label.setStyleSheet('font-weight: bold')
         bitrate_line = QLineEdit()
         bitrate_line.setText(bitrate)
         bitrate_line.setReadOnly(True)
@@ -75,6 +83,7 @@ class MediaInformation(QWidget):
         bitrate_box.addWidget(bitrate_line)
 
         bitrate_mode_label = QLabel('Bitrate Mode', self)
+        bitrate_mode_label.setStyleSheet('font-weight: bold')
         bitrate_mode_line = QLineEdit()
         bitrate_mode_line.setText(bitrate_mode)
         bitrate_mode_line.setReadOnly(True)
@@ -83,6 +92,7 @@ class MediaInformation(QWidget):
         bitrate_mode_box.addWidget(bitrate_mode_line)
 
         sample_rate_label = QLabel('Sample Rate', self)
+        sample_rate_label.setStyleSheet('font-weight: bold')
         sample_rate_line = QLineEdit()
         sample_rate_line.setText(sample_rate)
         sample_rate_line.setReadOnly(True)
@@ -91,6 +101,7 @@ class MediaInformation(QWidget):
         sample_rate_box.addWidget(sample_rate_line)
 
         bits_per_sample_label = QLabel('Bits Per Sample', self)
+        bits_per_sample_label.setStyleSheet('font-weight: bold')
         bits_per_sample_line = QLineEdit()
         bits_per_sample_line.setText(bits_per_sample)
         bits_per_sample_line.setReadOnly(True)
@@ -99,6 +110,7 @@ class MediaInformation(QWidget):
         bits_per_sample_box.addWidget(bits_per_sample_line)
 
         audio_description_label = QLabel('Description', self)
+        audio_description_label.setStyleSheet('font-weight: bold')
         audio_description_line = QTextEdit()
         audio_description_line.setText(description)
         audio_description_line.setReadOnly(True)
