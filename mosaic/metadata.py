@@ -6,9 +6,10 @@ class MediaInformation(QWidget):
     """MediaInformation houses all of the widgets and layouts necessary
     to create a dialog filled with audio metadata."""
 
-    def __init__(self, artist, album, date, title, number, genre, bitrate,
-                 bitrate_mode, sample_rate, bits_per_sample,
-                 description, parent=None):
+    def __init__(self, artist=None, album=None, date=None, title=None,
+                 number=None, genre=None, bitrate=None, bitrate_mode=None,
+                 sample_rate=None, bits_per_sample=None, description=None,
+                 parent=None):
         """Initializes the widgets and layouts needed to create a
         dialog containing audio metadata."""
         super(MediaInformation, self).__init__(parent)
