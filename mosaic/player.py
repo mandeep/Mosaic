@@ -167,6 +167,7 @@ class MusicPlayer(QMainWindow):
     def help_menu(self):
         """Provides informational items regarding the application."""
         self.about_action = QAction('About', self)
+        self.about_action.setShortcut('CTRL+H')
         self.about_action.triggered.connect(self.about_dialog)
 
         self.help_.addAction(self.about_action)
