@@ -16,7 +16,9 @@ Mosaic is a cover art focused media player built with Python and the PyQt5 libra
 Installation
 *************
 
-Mosaic requires Python and the PyQt5 library installed locally. Once these are installed, the following commands allow the user to install Mosaic::
+Mosaic requires Python and the PyQt5 library installed locally. For PyQt5 install instructions please visit: https://www.riverbankcomputing.com/software/pyqt/download5
+
+With your environment set, run the following commands to install Mosaic::
 
     git clone https://github.com/mandeepbhutani/Mosaic.git
     cd Mosaic
