@@ -1,3 +1,4 @@
+from appdirs import AppDirs
 import mosaic.configuration
 import mosaic.metadata
 import mutagen.easyid3
@@ -5,9 +6,6 @@ import mutagen.flac
 import mutagen.mp3
 import os
 import pkg_resources
-import pytoml
-import sys
-from appdirs import AppDirs
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
@@ -15,6 +13,8 @@ from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
                              QListWidget, QMainWindow, QMessageBox, QSlider,
                              QStackedWidget, QToolBar)
 from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
+import pytoml
+import sys
 
 
 class MusicPlayer(QMainWindow):
