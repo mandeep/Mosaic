@@ -1,5 +1,6 @@
 from mosaic import player, configuration
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer, QUrl
+from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
 import sys
 
@@ -70,6 +71,9 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
 
     def test_quit_application(self, qtbot, monkeypatch):
+        """Qtbot clicks on the file menu and Qt.Key_Down highlights the quit application
+        item. Monkeypatch is set to intercept the exit call and will append 1 to exit_calls
+        when it does."""
         exit_calls = []
         monkeypatch.setattr(QApplication, 'quit', lambda: exit_calls.append(1))
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
