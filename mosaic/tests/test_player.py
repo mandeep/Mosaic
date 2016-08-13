@@ -1,6 +1,6 @@
 from mosaic import player, configuration
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
 import sys
 
 app = QApplication(sys.argv)
@@ -25,6 +25,60 @@ class TestMusicPlayer:
         assert self.music_player.width() == 900
         assert self.music_player.height() == 963
         assert self.music_player.windowIcon().isNull() is False
+
+    def test_open_file(self, qtbot, mock):
+        """Qtbot clicks on the file menu then Qt.Key_Down highlights
+        the open file item. The mock plugin creates a mock of the
+        QFileDialog window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        mock.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.mp3', '*.mp3'))
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+
+    def test_open_files(self, qtbot, mock):
+        """Qtbot clicks on the file menu then Qt.Key_Down highlights
+        the open files item. The mock plugin creates a mock of the
+        QFileDialog window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        mock.patch.object(QFileDialog, 'getOpenFileNames', return_value=(
+                          ['test.flac', 'test.mp3'], '*.flac *.mp3'))
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+
+    def test_open_playlist(self, qtbot, mock):
+        """Qtbot clicks on the file menu then Qt.Key_Down highlights
+        the open playlist item. The mock plugin creates a mock of the
+        QFileDialog window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        mock.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.m3u', '*.m3u'))
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+
+    def test_open_directory(self, qtbot, mock):
+        """Qtbot clicks on the file menu then Qt.Key_Down highlights
+        the open directory item. The mock plugin creates a mock of the
+        QFileDialog window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        mock.patch.object(QFileDialog, 'getExistingDirectory', return_value='/home/')
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+
+    def test_quit_application(self, qtbot, monkeypatch):
+        exit_calls = []
+        monkeypatch.setattr(QApplication, 'quit', lambda: exit_calls.append(1))
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+        assert exit_calls == [1]
 
     def test_preferences(self, qtbot, mock):
         """Qtbot clicks on the edit menu then Qt.Key_Down highlights
