@@ -1,5 +1,5 @@
 from mosaic import player
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog
 import sys
 
@@ -33,3 +33,10 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.edit, Qt.Key_Down)
         mock.patch.object(QDialog, 'exec_', return_value='')
         qtbot.keyClick(self.music_player.edit, Qt.Key_Enter)
+
+    def test_media_information(self, qtbot, mock):
+        qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.view, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.view, Qt.Key_Down)
+        mock.patch.object(QDialog, 'exec_', return_value='')
+        qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
