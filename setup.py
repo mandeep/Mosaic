@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='Mosaic',
-      version='1.1',
+      version='1.0.0',
       author='Mandeep Bhutani',
       packages=['mosaic', 'mosaic.images', 'mosaic.tests'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
