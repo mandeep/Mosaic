@@ -1,6 +1,6 @@
 from mosaic import player
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog
+from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
 import sys
 
 app = QApplication(sys.argv)
@@ -35,13 +35,27 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.edit, Qt.Key_Enter)
 
     def test_playlist_view(self, qtbot, mock):
+        """Qtbot selects the view menu then keys down to the view playlist
+        item. Once highlighted, qtbot simulates the enter key on the item."""
         qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
         qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
 
     def test_media_information(self, qtbot, mock):
+        """Qtbot clicks on the view menu then Qt.Key_Down highlights
+        the media information item. The mock plugin creates a mock of the
+        QDialog window while Key_Enter executes it."""
         qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
         mock.patch.object(QDialog, 'exec_', return_value='')
         qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
+
+    def test_about_dialog(self, qtbot, mock):
+        """Qtbot clicks on the help menu then Qt.Key_Down highlights
+        the about item. The mock plugin creates a mock of the
+        QMessageBox window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.help_, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.help_, Qt.Key_Down)
+        mock.patch.object(QMessageBox, 'exec_', return_value='')
+        qtbot.keyClick(self.music_player.help_, Qt.Key_Enter)
