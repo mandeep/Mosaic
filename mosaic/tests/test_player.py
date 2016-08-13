@@ -34,6 +34,11 @@ class TestMusicPlayer:
         mock.patch.object(QDialog, 'exec_', return_value='')
         qtbot.keyClick(self.music_player.edit, Qt.Key_Enter)
 
+    def test_playlist_view(self, qtbot, mock):
+        qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.view, Qt.Key_Down)
+        qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
+
     def test_media_information(self, qtbot, mock):
         qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
