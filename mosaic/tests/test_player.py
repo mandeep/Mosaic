@@ -1,4 +1,5 @@
 from mosaic import player, configuration
+import pkg_resources
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
@@ -27,13 +28,24 @@ class TestMusicPlayer:
         assert self.music_player.height() == 963
         assert self.music_player.windowIcon().isNull() is False
 
-    def test_open_file(self, qtbot, mock):
+    def test_open_mp3_file(self, qtbot, mock):
         """Qtbot clicks on the file menu then Qt.Key_Down highlights
         the open file item. The mock plugin creates a mock of the
         QFileDialog window while Key_Enter executes it."""
+        file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
         qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
-        mock.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.mp3', '*.mp3'))
+        mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.mp3'))
+        qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+
+    def test_open_flac_file(self, qtbot, mock):
+        """Qtbot clicks on the file menu then Qt.Key_Down highlights
+        the open file item. The mock plugin creates a mock of the
+        QFileDialog window while Key_Enter executes it."""
+        file = pkg_resources.resource_filename('mosaic.tests', '02_Ghosts_I.flac')
+        qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.file, Qt.Key_Down)
+        mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.flac'))
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
 
     def test_open_files(self, qtbot, mock):
@@ -62,12 +74,13 @@ class TestMusicPlayer:
         """Qtbot clicks on the file menu then Qt.Key_Down highlights
         the open directory item. The mock plugin creates a mock of the
         QFileDialog window while Key_Enter executes it."""
+        file = pkg_resources.resource_filename('mosaic.tests', '')
         qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
-        mock.patch.object(QFileDialog, 'getExistingDirectory', return_value='/home/')
+        mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
 
     def test_quit_application(self, qtbot, monkeypatch):
