@@ -349,14 +349,13 @@ class MusicPlayer(QMainWindow):
             if file_path.endswith('mp3'):
                 song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
 
-                try:
-                    mp3_bytes = mutagen.mp3.MP3(file_path)
-                    for tag in mp3_bytes:
-                        if 'APIC' in tag:
-                            artwork = self.byte_array.append(mp3_bytes.tags[tag].data)
-                            self.pixmap.loadFromData(artwork)
-                except KeyError:
-                    self.pixmap = QPixmap(no_cover_image)
+                mp3_bytes = mutagen.mp3.MP3(file_path)
+                for tag in mp3_bytes:
+                    if 'APIC' in tag:
+                        artwork = self.byte_array.append(mp3_bytes.tags[tag].data)
+                        self.pixmap.loadFromData(artwork)
+                    else:
+                        self.pixmap = QPixmap(no_cover_image)
 
             elif file_path.endswith('flac'):
                 song = mutagen.flac.FLAC(file_path)
