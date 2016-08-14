@@ -130,7 +130,7 @@ class MediaLibrary(QWidget):
             config = pytoml.load(conffile)
 
         library = config['media_library']['media_library_path']
-        if len(library) > 1:
+        if os.path.isdir(library):
             self.media_library_line.setText(library)
 
 
