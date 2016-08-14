@@ -1,7 +1,7 @@
 from mosaic import player, configuration
 import pkg_resources
 from PyQt5.QtCore import Qt, QTimer, QUrl
-from PyQt5.QtMultimedia import QMediaContent
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
 import sys
 
@@ -37,6 +37,7 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.mp3'))
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+        assert self.music_player.player.state() == QMediaPlayer.PlayingState
 
     def test_open_flac_file(self, qtbot, mock):
         """Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -47,6 +48,7 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.flac'))
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+        assert self.music_player.player.state() == QMediaPlayer.PlayingState
 
     def test_open_files(self, qtbot, mock):
         """Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -82,6 +84,7 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
+        assert self.music_player.player.state() == QMediaPlayer.PlayingState
 
     def test_quit_application(self, qtbot, monkeypatch):
         """Qtbot clicks on the file menu and Qt.Key_Down highlights the quit application
@@ -120,7 +123,7 @@ class TestMusicPlayer:
         qtbot.mouseClick(self.music_player.view, Qt.LeftButton)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
-        mock.patch.object(QDialog, 'exec_', return_value='')
+        mock.patch.object(QDialog, 'exec_', return_value='accept')
         qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
 
     def test_about_dialog(self, qtbot, mock):
