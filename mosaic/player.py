@@ -273,7 +273,7 @@ class MusicPlayer(QMainWindow):
         dialog.setFixedSize(600, 600)
 
         if self.player.isMetaDataAvailable():
-            file_path = self.player.currentMedia().canonicalUrl().path()
+            file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
 
             if file_path.endswith('mp3'):
                 song = mutagen.mp3.MP3(file_path, ID3=mutagen.easyid3.EasyID3)
@@ -343,7 +343,7 @@ class MusicPlayer(QMainWindow):
         self.byte_array = QByteArray()
 
         if self.player.isMetaDataAvailable():
-            file_path = self.player.currentMedia().canonicalUrl().path()
+            file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
             no_cover_image = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
             if file_path.endswith('mp3'):
