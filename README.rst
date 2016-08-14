@@ -28,7 +28,6 @@ When the package has finished installing, Mosaic can be run with the following c
 
 .. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
     :target: https://travis-ci.org/mandeepbhutani/Mosaic
-.. |coverage| image:: https://coveralls.io/repos/github/mandeepbhutani/Mosaic/badge.svg?branch=master
-    :target: https://coveralls.io/github/mandeepbhutani/Mosaic?branch=master
-
+.. |coverage| image:: https://img.shields.io/codecov/c/github/mandeepbhutani/Mosaic/master.svg
+    :target: https://codecov.io/gh/mandeepbhutani/Mosaic/branch/master/graph/badge.svg
 
