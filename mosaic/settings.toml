@@ -6,4 +6,4 @@ recursive_directory = true
 
 [media_library]
 
-media_library_path = "/media/mandeep/My Passport/Music"
+media_library_path = ""
