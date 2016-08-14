@@ -32,8 +32,8 @@ When the package has finished installing, Mosaic can be run with the following c
 
 .. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
     :target: https://travis-ci.org/mandeepbhutani/Mosaic
-.. |coverage| image:: https://img.shields.io/codecov/c/github/mandeepbhutani/Mosaic/master.svg
-    :target: https://codecov.io/gh/mandeepbhutani/Mosaic/branch/master/graph/badge.svg
+.. |coverage| image:: https://codecov.io/gh/mandeepbhutani/Mosaic/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/mandeepbhutani/Mosaic
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 
