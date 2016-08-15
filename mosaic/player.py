@@ -44,7 +44,7 @@ class MusicPlayer(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
         self.sidebar.setWidget(self.playlist_view)
         self.sidebar.setFloating(True)
-        self.sidebar.setGeometry(0, 0, 300, 800)
+        self.sidebar.resize(300, 800)
         self.sidebar.setVisible(False)
 
         self.player.metaDataChanged.connect(self.display_meta_data)
@@ -221,7 +221,7 @@ class MusicPlayer(QMainWindow):
 
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
-        the directory to an empty playlist"""
+        the directory to an empty playlist."""
         settings_stream = os.path.join(self.config_directory, 'settings.toml')
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
@@ -499,9 +499,12 @@ class MusicPlayer(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
+    dock = window.sidebar
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
     height = (desktop.height() - window.height()) / 2
     window.show()
     window.move(width, height)
+    dock.move(width + window.width(), height)
     sys.exit(application.exec_())
+main()
