@@ -505,4 +505,3 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
-main()
