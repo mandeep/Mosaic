@@ -230,16 +230,14 @@ class MusicPlayer(QMainWindow):
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
-            contents = QDir(directory).entryInfoList()
 
             if config['file_options']['recursive_directory'] is False:
-                for filename in contents:
-                    file = filename.absoluteFilePath()
-                    if file.endswith('mp3') or file.endswith('flac'):
+                for filename in os.listdir(directory):
+                    file = os.path.join(directory, filename)
+                    if filename.endswith('mp3') or filename.endswith('flac'):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                        self.playlist_view.addItem(filename.fileName())
-                        self.playlist_view.setCurrentRow(0)
-                        self.player.setPlaylist(self.playlist)
+                        self.playlist_view.addItem(filename)
+
             elif config['file_options']['recursive_directory'] is True:
                 for dirpath, dirnames, files in os.walk(directory):
                     for filename in files:
@@ -247,8 +245,9 @@ class MusicPlayer(QMainWindow):
                         if filename.endswith('mp3') or filename.endswith('flac'):
                             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                             self.playlist_view.addItem(filename)
-                self.player.setPlaylist(self.playlist)
-                self.playlist_view.setCurrentRow(0)
+
+            self.player.setPlaylist(self.playlist)
+            self.playlist_view.setCurrentRow(0)
             self.player.play()
 
     def exit_application(self):
