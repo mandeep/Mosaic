@@ -4,6 +4,10 @@ title = "Mosaic Preferences"
 
 recursive_directory = true
 
+[view_options]
+
+window_size = 1
+
 [media_library]
 
 media_library_path = ""
