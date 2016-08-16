@@ -288,11 +288,10 @@ class MusicPlayer(QMainWindow):
         if file.endswith('mp3'):
             song = mutagen.mp3.MP3(file, ID3=mutagen.easyid3.EasyID3)
 
-            mp3_bytes = mutagen.mp3.MP3(file)
-            for tag in mp3_bytes:
+            for tag in mutagen.mp3.MP3(file):
                 try:
                     if 'APIC' in tag:
-                        self.artwork = QByteArray().append(mp3_bytes[tag].data)
+                        self.artwork = QByteArray().append(mutagen.mp3.MP3(file)[tag].data)
                 except KeyError:
                     self.artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
