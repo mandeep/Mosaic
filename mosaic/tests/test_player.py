@@ -1,7 +1,6 @@
 from mosaic import player, configuration
 import pkg_resources
-from PyQt5.QtCore import Qt, QTimer, QUrl
-from PyQt5.QtMultimedia import QMediaContent
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
 import sys
 
@@ -143,6 +142,7 @@ class TestMusicPlayer:
         mock.patch.object(QDialog, 'exec_', return_value='')
         mock.patch.object(QCheckBox, 'toggle', return_value='')
         qtbot.keyClick(self.music_player.edit, Qt.Key_Enter)
+        qtbot.mouseClick(self.config_file.recursive_directory, Qt.LeftButton)
         qtbot.mouseClick(self.config_file.recursive_directory, Qt.LeftButton)
         file = pkg_resources.resource_filename('mosaic.tests', '')
         qtbot.mouseClick(self.music_player.file, Qt.LeftButton)
