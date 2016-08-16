@@ -6,7 +6,7 @@ recursive_directory = true
 
 [view_options]
 
-window_size = 1
+window_size = 0
 
 [media_library]
 
