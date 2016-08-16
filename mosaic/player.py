@@ -39,13 +39,19 @@ class MusicPlayer(QMainWindow):
         self.playlist_view = QListWidget()
 
         self.setCentralWidget(self.art)
-        self.slider.setRange(0, self.player.duration() / 1000)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
         self.sidebar.setWidget(self.playlist_view)
         self.sidebar.setFloating(True)
         self.sidebar.resize(300, 800)
         self.sidebar.setVisible(False)
+
+        self.slider.setRange(0, self.player.duration() / 1000)
+        self.duration = 0
+
+        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.create_settings_file()
+        self.preferences_dialog = mosaic.configuration.PreferencesDialog()
 
         self.player.metaDataChanged.connect(self.display_meta_data)
         self.slider.sliderMoved.connect(self.seek)
@@ -54,17 +60,12 @@ class MusicPlayer(QMainWindow):
         self.player.stateChanged.connect(self.set_state)
         self.playlist_view.currentRowChanged.connect(self.change_item)
         self.playlist.currentIndexChanged.connect(self.change_index)
-
+        self.preferences_dialog.finished.connect(self.window_size)
         self.art.mousePressEvent = self.press_playback
-
-        self.duration = 0
-        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        self.create_settings_file()
 
         self.menu_controls()
         self.media_controls()
-
-        self.setFixedSize(900, 963)
+        self.window_size()
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
@@ -260,8 +261,7 @@ class MusicPlayer(QMainWindow):
 
     def preferences(self):
         """Opens a dialog with user configurable options."""
-        dialog = mosaic.configuration.PreferencesDialog()
-        dialog.exec_()
+        self.preferences_dialog.exec_()
 
     def view_media_info(self):
         """Creates a dialog window displaying all of the metadata
@@ -381,7 +381,6 @@ class MusicPlayer(QMainWindow):
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
-            self.art.setFixedSize(900, 900)
 
     def press_playback(self, event):
         """On mouse event, the player will play the media if the player is
@@ -482,6 +481,22 @@ class MusicPlayer(QMainWindow):
             config = pytoml.load(conffile)
 
         return config['media_library']['media_library_path']
+
+    def window_size(self):
+        """Sets the user defined window size as the size of the current window."""
+        settings_stream = os.path.join(self.config_directory, 'settings.toml')
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        sizes = [(900, 900), (800, 800), (700, 700), (600, 600), (500, 500), (400, 400)]
+
+        width, height = sizes[config['view_options']['window_size']]
+
+        self.setFixedWidth(width)
+        self.setFixedHeight(height + 63)
+
+        self.art.setFixedWidth(width)
+        self.art.setFixedHeight(height)
 
     def create_settings_file(self):
         """Creates a copy of the settings.toml file in the user's system
