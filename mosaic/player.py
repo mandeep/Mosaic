@@ -176,7 +176,8 @@ class MusicPlayer(QMainWindow):
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
         filename, ok = QFileDialog.getOpenFileName(
-            self, 'Open File', self.media_library_path(), 'Audio (*.mp3 *.flac)')
+            self, 'Open File', self.media_library_path(), 'Audio (*.mp3 *.flac)', '',
+            QFileDialog.ReadOnly)
         if ok:
             file_info = QFileInfo(filename).fileName()
             self.playlist.clear()
@@ -190,7 +191,8 @@ class MusicPlayer(QMainWindow):
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
         filenames, ok = QFileDialog.getOpenFileNames(
-            self, 'Open Multiple Files', self.media_library_path(), 'Audio (*.mp3 *.flac)')
+            self, 'Open Multiple Files', self.media_library_path(), 'Audio (*.mp3 *.flac)', '',
+            QFileDialog.ReadOnly)
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -206,7 +208,8 @@ class MusicPlayer(QMainWindow):
         """Loads an m3u or pls file into an empty playlist and adds the
         content of the chosen playlist to playlist_view."""
         playlist, ok = QFileDialog.getOpenFileName(
-            self, 'Open Playlist', self.media_library_path(), 'Playlist (*.m3u *.pls)')
+            self, 'Open Playlist', self.media_library_path(), 'Playlist (*.m3u *.pls)', '',
+            QFileDialog.ReadOnly)
         if ok:
             playlist = QUrl.fromLocalFile(playlist)
             self.playlist.clear()
@@ -226,7 +229,8 @@ class MusicPlayer(QMainWindow):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', self.media_library_path())
+        directory = QFileDialog.getExistingDirectory(
+            self, 'Open Directory', self.media_library_path(), QFileDialog.ReadOnly)
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
