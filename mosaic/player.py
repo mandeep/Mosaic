@@ -261,7 +261,7 @@ class MusicPlayer(QMainWindow):
             if config['file_options']['recursive_directory'] is False:
                 for filename in natsort.natsorted(os.listdir(directory), alg=natsort.ns.PATH):
                     file = os.path.join(directory, filename)
-                    if filename.endswith('mp3') or filename.endswith('flac'):
+                    if filename.endswith(('mp3', 'flac')):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                         self.playlist_view.addItem(filename)
 
@@ -269,7 +269,7 @@ class MusicPlayer(QMainWindow):
                 for dirpath, dirnames, files in os.walk(directory):
                     for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
                         file = os.path.join(dirpath, filename)
-                        if filename.endswith('mp3') or filename.endswith('flac'):
+                        if filename.endswith(('mp3', 'flac')):
                             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                             self.playlist_view.addItem(filename)
 
