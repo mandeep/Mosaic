@@ -483,20 +483,24 @@ class MusicPlayer(QMainWindow):
         return config['media_library']['media_library_path']
 
     def window_size(self):
-        """Sets the user defined window size as the size of the current window."""
+        """Sets the user defined window size as the size of the current window. The
+        sizes list contains widths from 900 to 400. Because the width of the window
+        will be the same as the height, there's no need to differentiate between the two. The
+        index contained in the settings.toml selects the index from the sizes list and sets
+        the window and image size accordingly."""
         settings_stream = os.path.join(self.config_directory, 'settings.toml')
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        sizes = [(900, 900), (800, 800), (700, 700), (600, 600), (500, 500), (400, 400)]
+        sizes = [900, 800, 700, 600, 500, 400]
 
-        width, height = sizes[config['view_options']['window_size']]
+        size = sizes[config['view_options']['window_size']]
 
-        self.setFixedWidth(width)
-        self.setFixedHeight(height + 63)
+        self.setFixedWidth(size)
+        self.setFixedHeight(size + 63)
 
-        self.art.setFixedWidth(width)
-        self.art.setFixedHeight(height)
+        self.art.setFixedWidth(size)
+        self.art.setFixedHeight(size)
 
     def create_settings_file(self):
         """Creates a copy of the settings.toml file in the user's system
