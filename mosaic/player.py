@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
                              QDockWidget, QFileDialog, QHBoxLayout, QLabel,
                              QListWidget, QMainWindow, QMessageBox, QSlider,
                              QStackedWidget, QToolBar)
-from PyQt5.QtCore import Qt, QByteArray,  QDir, QFileInfo, QTime, QUrl
+from PyQt5.QtCore import Qt, QByteArray, QFileInfo, QTime, QUrl
 import pytoml
 import sys
 
