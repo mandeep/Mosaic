@@ -9,9 +9,10 @@ setup(name='mosaic-music',
       packages=['mosaic', 'mosaic.images', 'mosaic.tests'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
+        'appdirs==1.4.0',
         'mutagen==1.34',
         'pytoml==0.1.10',
-        'appdirs==1.4.0',
+        'natsort==5.0.1'
       ],
       entry_points='''
         [console_scripts]
