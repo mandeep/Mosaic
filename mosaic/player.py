@@ -536,4 +536,3 @@ def main():
     window.move(width, height)
     dock.move(width + window.width(), height)
     sys.exit(application.exec_())
-main()
