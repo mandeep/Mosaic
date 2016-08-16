@@ -1,19 +1,16 @@
 from appdirs import AppDirs
-import mosaic.configuration
-import mosaic.metadata
-import mutagen.easyid3
-import mutagen.flac
-import mutagen.mp3
+from mosaic import configuration, metadata
+from mutagen import easyid3, flac, mp3
 import natsort
 import os
 import pkg_resources
-from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
+from PyQt5.QtCore import Qt, QByteArray, QFileInfo, QTime, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
                              QDockWidget, QFileDialog, QHBoxLayout, QLabel,
                              QListWidget, QMainWindow, QMessageBox, QSlider,
                              QStackedWidget, QToolBar)
-from PyQt5.QtCore import Qt, QByteArray, QFileInfo, QTime, QUrl
 import pytoml
 import sys
 
@@ -58,7 +55,7 @@ class MusicPlayer(QMainWindow):
         # Initiates the settings file and preferences dialog
         self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
         self.create_settings_file()
-        self.preferences_dialog = mosaic.configuration.PreferencesDialog()
+        self.preferences_dialog = configuration.PreferencesDialog()
 
         # Signals that connect to other methods when they're called
         self.player.metaDataChanged.connect(self.display_meta_data)
@@ -286,17 +283,17 @@ class MusicPlayer(QMainWindow):
         are used to extract the meta data. Once the artwork data (in bytes) is retrieved from
         the audio file, it is appeneded to a QByteArray()."""
         if file.endswith('mp3'):
-            song = mutagen.mp3.MP3(file, ID3=mutagen.easyid3.EasyID3)
+            song = mp3.MP3(file, ID3=easyid3.EasyID3)
 
-            for tag in mutagen.mp3.MP3(file):
+            for tag in mp3.MP3(file):
                 try:
                     if 'APIC' in tag:
-                        self.artwork = QByteArray().append(mutagen.mp3.MP3(file)[tag].data)
+                        self.artwork = QByteArray().append(mp3.MP3(file)[tag].data)
                 except KeyError:
                     self.artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
         elif file.endswith('flac'):
-            song = mutagen.flac.FLAC(file)
+            song = flac.FLAC(file)
 
             try:
                 self.artwork = QByteArray().append(song.pictures[0].data)
@@ -356,12 +353,12 @@ class MusicPlayer(QMainWindow):
         dialog.setWindowIcon(QIcon(info_icon))
         dialog.setFixedSize(600, 600)
         if self.player.isMetaDataAvailable():
-            media_information = mosaic.metadata.MediaInformation(
+            media_information = metadata.MediaInformation(
                 self.artist, self.album, self.date, self.title, self.track_number,
                 self.genre, self.bitrate, self.bitrate_mode, self.sample_rate,
                 self.bits_per_sample, self.description)
         else:
-            media_information = mosaic.metadata.MediaInformation()
+            media_information = metadata.MediaInformation()
 
         page = QStackedWidget()
         page.addWidget(media_information)
@@ -539,3 +536,4 @@ def main():
     window.move(width, height)
     dock.move(width + window.width(), height)
     sys.exit(application.exec_())
+main()
