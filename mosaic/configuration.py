@@ -4,7 +4,7 @@ import pytoml
 from appdirs import AppDirs
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QCheckBox, QDialog, QFileDialog, QGroupBox,
+from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QFileDialog, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QStackedWidget,
                              QVBoxLayout, QWidget)
@@ -134,6 +134,66 @@ class MediaLibrary(QWidget):
             self.media_library_line.setText(library)
 
 
+class ViewOptions(QWidget):
+    """Contains all of the user configurable options related to the UI functionality
+    of the music player."""
+
+    def __init__(self, parent=None):
+        """Initiates the View Options page in the preferences dialog."""
+        super(ViewOptions, self).__init__(parent)
+
+        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+                                             'settings.toml')
+
+        view_options_config = QGroupBox("View Configuration")
+
+        size_option = QLabel('Window Size', self)
+       
+        self.dropdown_box = QComboBox()
+        self.dropdown_box.addItem('900 x 900')
+        self.dropdown_box.addItem('800 x 800')
+        self.dropdown_box.addItem('700 x 700')
+        self.dropdown_box.addItem('600 x 600')
+        self.dropdown_box.addItem('500 x 500')
+        self.dropdown_box.addItem('400 x 400')
+
+        view_config_layout = QHBoxLayout()
+        view_config_layout.addWidget(size_option)
+        view_config_layout.addWidget(self.dropdown_box)
+
+        view_options_config.setLayout(view_config_layout)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(view_options_config)
+        main_layout.addStretch(1)
+        self.setLayout(main_layout)
+
+        self.check_window_size()
+
+        self.dropdown_box.currentIndexChanged.connect(self.change_size)
+
+    def change_size(self):
+        """Records the change in window size to the settings.toml file."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        if self.dropdown_box.currentIndex() != -1:
+            config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
+
+        with open(settings_stream, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_window_size(self):
+        """Sets the dropdown box to the current window size provided by the settings.toml
+        file."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
+
+
 class PreferencesDialog(QDialog):
     """Creates a dialog that shows the user all of the user configurable
     options. A list on the left shows all of the available pages, with
@@ -153,6 +213,7 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
 
         self.pages.addWidget(FileOptions())
+        self.pages.addWidget(ViewOptions())
         self.pages.addWidget(MediaLibrary())
         self.list_items()
 
@@ -172,8 +233,13 @@ class PreferencesDialog(QDialog):
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.contents.setCurrentRow(0)
 
+        view_options = QListWidgetItem(self.contents)
+        view_options.setText('View Options')
+        view_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
         media_library_options = QListWidgetItem(self.contents)
         media_library_options.setText('Media Library')
+        media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def change_page(self, current, previous):
         """Changes the page according to the clicked list item."""
