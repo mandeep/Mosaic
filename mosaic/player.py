@@ -4,6 +4,7 @@ import mosaic.metadata
 import mutagen.easyid3
 import mutagen.flac
 import mutagen.mp3
+import natsort
 import os
 import pkg_resources
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
@@ -60,6 +61,7 @@ class MusicPlayer(QMainWindow):
         self.player.stateChanged.connect(self.set_state)
         self.playlist_view.currentRowChanged.connect(self.change_item)
         self.playlist.currentIndexChanged.connect(self.change_index)
+        self.player.currentMediaChanged.connect(self.player.play)
         self.preferences_dialog.finished.connect(self.window_size)
         self.art.mousePressEvent = self.press_playback
 
@@ -187,7 +189,6 @@ class MusicPlayer(QMainWindow):
             self.player.setPlaylist(self.playlist)
             self.playlist_view.addItem(file_info)
             self.playlist_view.setCurrentRow(0)
-            self.player.play()
 
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
@@ -197,13 +198,12 @@ class MusicPlayer(QMainWindow):
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
-            for file in filenames:
+            for file in natsort.natsorted(filenames, alg=natsort.ns.PATH):
                 file_info = QFileInfo(file).fileName()
                 self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                 self.player.setPlaylist(self.playlist)
                 self.playlist_view.addItem(file_info)
                 self.playlist_view.setCurrentRow(0)
-            self.player.play()
 
     def open_playlist(self):
         """Loads an m3u or pls file into an empty playlist and adds the
@@ -217,7 +217,6 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.clear()
             self.playlist.load(playlist)
             self.player.setPlaylist(self.playlist)
-            self.player.play()
 
             for song_index in range(self.playlist.mediaCount()+1):
                 song = self.playlist.media(song_index).canonicalUrl().fileName()
@@ -237,7 +236,7 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.clear()
 
             if config['file_options']['recursive_directory'] is False:
-                for filename in os.listdir(directory):
+                for filename in natsort.natsorted(os.listdir(directory), alg=natsort.ns.PATH):
                     file = os.path.join(directory, filename)
                     if filename.endswith('mp3') or filename.endswith('flac'):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
@@ -245,7 +244,7 @@ class MusicPlayer(QMainWindow):
 
             elif config['file_options']['recursive_directory'] is True:
                 for dirpath, dirnames, files in os.walk(directory):
-                    for filename in files:
+                    for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
                         file = os.path.join(dirpath, filename)
                         if filename.endswith('mp3') or filename.endswith('flac'):
                             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
@@ -253,7 +252,6 @@ class MusicPlayer(QMainWindow):
 
             self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
-            self.player.play()
 
     def exit_application(self):
         """Closes the window and quits the music player application."""
