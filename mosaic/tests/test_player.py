@@ -55,7 +55,7 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         qtbot.keyClick(self.music_player.file, Qt.Key_Down)
         mock.patch.object(QFileDialog, 'getOpenFileNames', return_value=(
-                          ['test.flac', 'test.mp3'], '*.flac *.mp3'))
+                          ['test.flac', '01_Ghosts_I_320kb.mp3'], '*.flac *.mp3'))
         qtbot.keyClick(self.music_player.file, Qt.Key_Enter)
 
     def test_open_playlist(self, qtbot, mock):
@@ -102,8 +102,17 @@ class TestMusicPlayer:
         QDialog window while Key_Enter executes it."""
         qtbot.mouseClick(self.music_player.edit, Qt.LeftButton)
         qtbot.keyClick(self.music_player.edit, Qt.Key_Down)
-        mock.patch.object(QDialog, 'exec_', return_value='')
+        mock.patch.object(QDialog, 'exec_', return_value='accept')
         qtbot.keyClick(self.music_player.edit, Qt.Key_Enter)
+
+    def test_about_dialog(self, qtbot, mock):
+        """Qtbot clicks on the help menu then Qt.Key_Down highlights
+        the about item. The mock plugin creates a mock of the
+        QMessageBox window while Key_Enter executes it."""
+        qtbot.mouseClick(self.music_player.help_, Qt.LeftButton)
+        qtbot.keyClick(self.music_player.help_, Qt.Key_Down)
+        mock.patch.object(QMessageBox, 'exec_', return_value='')
+        qtbot.keyClick(self.music_player.help_, Qt.Key_Enter)
 
     def test_playlist_view(self, qtbot, mock):
         """Qtbot selects the view menu then keys down to the view playlist
@@ -121,15 +130,6 @@ class TestMusicPlayer:
         qtbot.keyClick(self.music_player.view, Qt.Key_Down)
         mock.patch.object(QDialog, 'exec_', return_value='accept')
         qtbot.keyClick(self.music_player.view, Qt.Key_Enter)
-
-    def test_about_dialog(self, qtbot, mock):
-        """Qtbot clicks on the help menu then Qt.Key_Down highlights
-        the about item. The mock plugin creates a mock of the
-        QMessageBox window while Key_Enter executes it."""
-        qtbot.mouseClick(self.music_player.help_, Qt.LeftButton)
-        qtbot.keyClick(self.music_player.help_, Qt.Key_Down)
-        mock.patch.object(QMessageBox, 'exec_', return_value='')
-        qtbot.keyClick(self.music_player.help_, Qt.Key_Enter)
 
     def test_checkbox(self, qtbot, mock):
         """Qtbot clicks on the edit menu then Qt.Key_Down highlights
