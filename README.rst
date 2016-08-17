@@ -26,7 +26,12 @@ If you would rather install from source, run the following commands::
     cd Mosaic
     python setup.py install
 
-When the package has finished installing, Mosaic can be run with the following command::
+
+******
+Usage
+******
+
+Mosaic can be run with the following command::
 
     mosaic
 
