@@ -12,6 +12,7 @@ def window(qtbot):
     as the menu bar and the toolbar. Since the window would crash if these items
     did not exist or did not show, they are covered by this setup method."""
     music_player = player.MusicPlayer()
+    qtbot.add_widget(music_player)
     music_player.show()
     return music_player
 
@@ -19,6 +20,7 @@ def window(qtbot):
 @pytest.fixture
 def config(qtbot):
     config_file = configuration.FileOptions()
+    qtbot.add_widget(config_file)
     return config_file
 
 
