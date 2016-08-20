@@ -1,6 +1,6 @@
 .. image:: mosaic/images/album.png
 
-|travis| |coverage| |pypi| |pyversions| |license|
+|travis| |coverage| |pypi| |pyversions| |wheel| |license|
 
 Mosaic is a cover art focused media player built with Python and the PyQt5 library. The application displays in the main window the cover art of the song currently playing.
 
@@ -51,6 +51,8 @@ Mosaic can be run with the following command::
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/mosaic-music.svg
+    :target: https://pypi.python.org/pypi/mosaic-music
+.. |wheel| image:: https://img.shields.io/pypi/format/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
