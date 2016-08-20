@@ -41,7 +41,7 @@ Mosaic can be run with the following command::
     :target: https://codecov.io/gh/mandeepbhutani/Mosaic
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
-.. |pyversions| .. image:: https://img.shields.io/pypi/pyversions/mosaic-music.svg
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
