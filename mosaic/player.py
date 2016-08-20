@@ -481,7 +481,10 @@ class MusicPlayer(QMainWindow):
 
         sizes = [900, 800, 700, 600, 500, 400]
 
-        size = sizes[config['view_options']['window_size']]
+        try:
+            size = sizes[config['view_options']['window_size']]
+        except KeyError:
+            size = 900
 
         self.setFixedWidth(size)
         self.setFixedHeight(size + 63)

@@ -191,7 +191,10 @@ class ViewOptions(QWidget):
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
 
-        self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
+        try:
+            self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
+        except KeyError:
+            self.dropdown_box.setCurrentIndex(0)
 
 
 class PreferencesDialog(QDialog):
