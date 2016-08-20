@@ -2,13 +2,22 @@
 
 |travis| |coverage| |pypi| |pyversions| |license|
 
-Mosaic is a cover art focused media player built with Python and the PyQt5 library. The application displays in the main window the cover art of the song currently playing. The goal of the application is to be a media player that allows the user to browse their media library by the cover art of the albums in the library. Supported file formats are MP3 and FLAC.
+Mosaic is a cover art focused media player built with Python and the PyQt5 library. The application displays in the main window the cover art of the song currently playing.
 
 .. image:: mosaic/images/screen.png
 
 .. image:: mosaic/images/screen2.png
 
 .. image:: mosaic/images/screen3.png
+
+
+*********
+Features
+*********
+
+* Displays cover art meta data in the main window
+* Provides media information including bitrate, bits per sample, and sample rate
+* Supports FLAC and MP3 file formats
 
 *************
 Installation
