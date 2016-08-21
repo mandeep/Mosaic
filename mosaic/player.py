@@ -10,7 +10,7 @@ from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
                              QDockWidget, QFileDialog, QHBoxLayout, QLabel,
                              QListWidget, QMainWindow, QMessageBox, QSlider,
-                             QStackedWidget, QToolBar)
+                             QTabWidget, QToolBar)
 import pytoml
 import sys
 
@@ -75,6 +75,7 @@ class MusicPlayer(QMainWindow):
 
         # Creating variables to be used for meta data
         self.duration = 0
+        self.metadata = None
         self.artwork = None
         self.album = None
         self.artist = None
@@ -302,6 +303,7 @@ class MusicPlayer(QMainWindow):
 
         song_data = dict(song.tags)
         song_data = dict((k, "".join(v)) for k, v in song_data.items())
+        self.metadata = song_data
         self.album = song_data.get('album', '??')
         self.artist = song_data.get('artist', '??')
         self.title = song_data.get('title', '??')
@@ -344,7 +346,7 @@ class MusicPlayer(QMainWindow):
 
     def view_media_info(self):
         """Creates a dialog window displaying all of the metadata
-        available in the audio file. mosaic.metadata.MediaInformation
+        available in the audio file. mosaic.metadata.GeneralInformation
         is instantiated to fill the dialog window with the necessary
         widgets and layouts."""
         dialog = QDialog()
@@ -353,15 +355,18 @@ class MusicPlayer(QMainWindow):
         dialog.setWindowIcon(QIcon(info_icon))
         dialog.setFixedSize(600, 600)
         if self.player.isMetaDataAvailable():
-            media_information = metadata.MediaInformation(
+            media_information = metadata.GeneralInformation(
                 self.artist, self.album, self.date, self.title, self.track_number,
                 self.genre, self.bitrate, self.bitrate_mode, self.sample_rate,
                 self.bits_per_sample, self.description)
+            metadata_information = metadata.FullInformation(self.metadata)
         else:
-            media_information = metadata.MediaInformation()
+            media_information = metadata.GeneralInformation()
+            metadata_information = metadata.FullInformation()
 
-        page = QStackedWidget()
-        page.addWidget(media_information)
+        page = QTabWidget()
+        page.addTab(media_information, 'General')
+        page.addTab(metadata_information, 'Metadata')
 
         dialog_layout = QHBoxLayout()
         dialog_layout.addWidget(page)
@@ -513,7 +518,7 @@ class MusicPlayer(QMainWindow):
         self.preferences_dialog.exec_()
 
     def about_dialog(self):
-        """Pops up a dialog that shows application informaion."""
+        """Pops up a dialog that shows application information."""
         message = QMessageBox()
         message.setWindowTitle('About')
         help_icon = pkg_resources.resource_filename('mosaic.images', 'md_help.png')

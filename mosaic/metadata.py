@@ -1,11 +1,10 @@
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit,
+from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QTableWidget, QTableWidgetItem,
                              QTextEdit, QVBoxLayout, QWidget)
 
 
-class MediaInformation(QWidget):
+class GeneralInformation(QWidget):
     """MediaInformation houses all of the widgets and layouts necessary
-    to create a dialog filled with audio metadata."""
+    to create a dialog filled with general audio metadata."""
 
     def __init__(self, artist=None, album=None, date=None, title=None,
                  number=None, genre=None, bitrate=None, bitrate_mode=None,
@@ -13,7 +12,7 @@ class MediaInformation(QWidget):
                  parent=None):
         """Initializes the widgets and layouts needed to create a
         dialog containing audio metadata."""
-        super(MediaInformation, self).__init__(parent)
+        super(GeneralInformation, self).__init__(parent)
 
         artist_label = QLabel('Artist', self)
         artist_label.setStyleSheet('font-weight: bold')
@@ -145,3 +144,28 @@ class MediaInformation(QWidget):
         media_information_layout.addStretch(1)
 
         self.setLayout(media_information_layout)
+
+
+class FullInformation(QWidget):
+    """Provides data on every tag embedded within the audio file."""
+
+    def __init__(self, information=None, parent=None):
+        super(FullInformation, self).__init__(parent)
+
+        table_layout = QHBoxLayout()
+        table = QTableWidget()
+        table.setColumnCount(2)
+        table.setColumnWidth(0, 270)
+        table.setColumnWidth(1, 270)
+        table.verticalHeader().hide()
+        table.horizontalHeader().hide()
+
+        if information is not None:
+            table.setRowCount(len(information))
+            for i, (tag, data) in enumerate(sorted(information.items())):
+                table.setItem(i, 0, QTableWidgetItem(tag))
+                table.setItem(i, 1, QTableWidgetItem(data))
+
+        table_layout.addWidget(table)
+
+        self.setLayout(table_layout)
