@@ -11,3 +11,5 @@ window_size = 0
 [media_library]
 
 media_library_path = ""
+
+show_on_start = false

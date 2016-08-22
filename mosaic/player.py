@@ -75,13 +75,14 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.currentRowChanged.connect(self.playlist_item)
         self.library_view.activated.connect(self.media_library_item)
         self.playlist.currentIndexChanged.connect(self.change_index)
-        self.preferences_dialog.finished.connect(self.window_size)
+        self.preferences_dialog.finished.connect(self.check_on_close)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
         self.window_size()
+        self.media_library_on_start()
 
         # Creating variables to be used for meta data
         self.duration = 0
@@ -511,6 +512,11 @@ class MusicPlayer(QMainWindow):
 
         return config['media_library']['media_library_path']
 
+    def check_on_close(self):
+        """Settings to check when the preferences dialog closes."""
+        self.window_size()
+        self.media_library_on_start()
+
     def window_size(self):
         """Sets the user defined window size as the size of the current window. The
         sizes list contains widths from 900 to 400. Because the width of the window
@@ -533,6 +539,20 @@ class MusicPlayer(QMainWindow):
 
         self.art.setFixedWidth(size)
         self.art.setFixedHeight(size)
+
+    def media_library_on_start(self):
+        """Checks the state of the media library view checkbox in settings.toml and sets
+        the media library dock view accordingly."""
+        settings_stream = os.path.join(self.config_directory, 'settings.toml')
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            checkbox_state = config['media_library']['show_on_start']
+        except KeyError:
+            checkbox_state = False
+
+        self.library.setVisible(checkbox_state)
 
     def create_settings_file(self):
         """Creates a copy of the settings.toml file in the user's system

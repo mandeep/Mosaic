@@ -90,14 +90,25 @@ class MediaLibrary(QWidget):
         self.media_library_line.setReadOnly(True)
         self.media_library_button = QPushButton('Select Path')
 
+        self.media_library_view_button = QCheckBox('Show Media Library on Start', self)
+
         self.media_library_button.clicked.connect(self.select_media_library)
+        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
+
+        media_library_layout = QVBoxLayout()
 
         media_library_config_layout = QHBoxLayout()
         media_library_config_layout.addWidget(self.media_library_label)
         media_library_config_layout.addWidget(self.media_library_line)
         media_library_config_layout.addWidget(self.media_library_button)
 
-        media_library_config.setLayout(media_library_config_layout)
+        media_library_view_layout = QHBoxLayout()
+        media_library_view_layout.addWidget(self.media_library_view_button)
+
+        media_library_layout.addLayout(media_library_config_layout)
+        media_library_layout.addLayout(media_library_view_layout)
+
+        media_library_config.setLayout(media_library_layout)
 
         main_layout = QVBoxLayout()
         main_layout.addWidget(media_library_config)
@@ -105,6 +116,7 @@ class MediaLibrary(QWidget):
         self.setLayout(main_layout)
 
         self.media_library_settings()
+        self.check_media_library()
 
     def select_media_library(self):
         """Opens a file dialog to allow the user to select the media library
@@ -118,7 +130,7 @@ class MediaLibrary(QWidget):
 
             config['media_library']['media_library_path'] = library
 
-            with open(settings_stream, 'w') as conffile:           
+            with open(settings_stream, 'w') as conffile:
                 pytoml.dump(conffile, config)
 
     def media_library_settings(self):
@@ -133,19 +145,48 @@ class MediaLibrary(QWidget):
         if os.path.isdir(library):
             self.media_library_line.setText(library)
 
+    def media_library_view_settings(self):
+        """This setting changes the behavior of the Media Library dock widget.
+        The default setting hides the dock on application start. With this option
+        checked, the media library dock will show on start."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
 
-class ViewOptions(QWidget):
-    """Contains all of the user configurable options related to the UI functionality
+        if self.media_library_view_button.isChecked():
+            config.setdefault('media_library', {})['show_on_start'] = True
+
+        elif not self.media_library_view_button.isChecked():
+            config.setdefault('media_library', {})['show_on_start'] = False
+
+        with open(settings_stream, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_media_library(self):
+        """Retrieves the media library checkbox state from settings.toml and sets the
+        state of the checkbox accordingly."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
+        except KeyError:
+            self.media_library_view_button.setChecked(False)
+
+
+class WindowOptions(QWidget):
+    """Contains all of the user configurable options related to the window functionality
     of the music player."""
 
     def __init__(self, parent=None):
         """Initiates the View Options page in the preferences dialog."""
-        super(ViewOptions, self).__init__(parent)
+        super(WindowOptions, self).__init__(parent)
 
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
 
-        view_options_config = QGroupBox("View Configuration")
+        window_config = QGroupBox("Window Configuration")
 
         size_option = QLabel('Window Size', self)
        
@@ -157,14 +198,14 @@ class ViewOptions(QWidget):
         self.dropdown_box.addItem('500 x 500')
         self.dropdown_box.addItem('400 x 400')
 
-        view_config_layout = QHBoxLayout()
-        view_config_layout.addWidget(size_option)
-        view_config_layout.addWidget(self.dropdown_box)
+        window_size_layout = QHBoxLayout()
+        window_size_layout.addWidget(size_option)
+        window_size_layout.addWidget(self.dropdown_box)
 
-        view_options_config.setLayout(view_config_layout)
+        window_config.setLayout(window_size_layout)
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(view_options_config)
+        main_layout.addWidget(window_config)
         main_layout.addStretch(1)
         self.setLayout(main_layout)
 
@@ -216,8 +257,8 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
 
         self.pages.addWidget(FileOptions())
-        self.pages.addWidget(ViewOptions())
         self.pages.addWidget(MediaLibrary())
+        self.pages.addWidget(WindowOptions())
         self.list_items()
 
         layout = QHBoxLayout()
@@ -236,13 +277,13 @@ class PreferencesDialog(QDialog):
         file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.contents.setCurrentRow(0)
 
-        view_options = QListWidgetItem(self.contents)
-        view_options.setText('View Options')
-        view_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-
         media_library_options = QListWidgetItem(self.contents)
         media_library_options.setText('Media Library')
         media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+        window_options = QListWidgetItem(self.contents)
+        window_options.setText('Window Options')
+        window_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def change_page(self, current, previous):
         """Changes the page according to the clicked list item."""
