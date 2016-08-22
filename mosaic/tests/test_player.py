@@ -1,4 +1,4 @@
-from mosaic import player, configuration
+from mosaic import player, configuration, library
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
@@ -144,6 +144,7 @@ def test_media_information(qtbot, mock, window):
     qtbot.mouseClick(window.view, Qt.LeftButton)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Down)
     mock.patch.object(QDialog, 'exec_', return_value='accept')
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
@@ -169,3 +170,12 @@ def test_checkbox(qtbot, mock, window, config):
     qtbot.keyClick(window.file, Qt.Key_Down)
     mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
     qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
+def test_media_library(qtbot, window):
+    """Qtbot clicks on the view menu then navigates to the View Media Library
+    item and uses Qt.Key_Enter to select it."""
+    qtbot.mouseClick(window.view, Qt.LeftButton)
+    qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Enter)

@@ -1,5 +1,5 @@
 from appdirs import AppDirs
-from mosaic import configuration, metadata
+from mosaic import configuration, library, metadata
 from mutagen import easyid3, flac, mp3
 import natsort
 import os
@@ -36,7 +36,10 @@ class MusicPlayer(QMainWindow):
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
         self.sidebar = QDockWidget('Playlist', self)
+        self.library = QDockWidget('Media Library', self)
         self.playlist_view = QListWidget()
+        self.library_view = library.MediaLibraryView()
+        self.library_model = library.MediaLibraryModel()
 
         # Sets the cover art as the central widget of the main window
         self.setCentralWidget(self.art)
@@ -47,6 +50,12 @@ class MusicPlayer(QMainWindow):
         self.sidebar.setFloating(True)
         self.sidebar.resize(300, 800)
         self.sidebar.setVisible(False)
+
+        self.addDockWidget(Qt.RightDockWidgetArea, self.library)
+        self.library.setWidget(self.library_view)
+        self.library.setFloating(True)
+        self.library.resize(400, 800)
+        self.library.setVisible(False)
 
         # Sets the range of the playback slider and sets the playback mode as looping
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -63,7 +72,8 @@ class MusicPlayer(QMainWindow):
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
-        self.playlist_view.currentRowChanged.connect(self.change_item)
+        self.playlist_view.currentRowChanged.connect(self.playlist_item)
+        self.library_view.activated.connect(self.media_library_item)
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.preferences_dialog.finished.connect(self.window_size)
         self.art.mousePressEvent = self.press_playback
@@ -181,11 +191,15 @@ class MusicPlayer(QMainWindow):
         self.dock_action = self.sidebar.toggleViewAction()
         self.dock_action.setShortcut('CTRL+ALT+P')
 
+        self.library_dock_action = self.library.toggleViewAction()
+        self.library_dock_action.setShortcut('CTRL+ALT+L')
+
         self.view_media_info_action = QAction('Media Information', self)
         self.view_media_info_action.setShortcut('CTRL+SHIFT+M')
         self.view_media_info_action.triggered.connect(self.view_media_info)
 
         self.view.addAction(self.dock_action)
+        self.view.addAction(self.library_dock_action)
         self.view.addAction(self.view_media_info_action)
 
     def help_menu(self):
@@ -455,11 +469,34 @@ class MusicPlayer(QMainWindow):
             repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat.png')
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
-    def change_item(self, row):
+    def playlist_item(self, row):
         """Changes the current media to the index of the media selected
         in the playlist view by the user."""
         if self.playlist.currentIndex() != row:
             self.playlist.setCurrentIndex(row)
+
+    def media_library_item(self, index):
+        """Allows the user to add a directory or audio file from the media library
+        to a new playlist."""
+        self.playlist.clear()
+        self.playlist_view.clear()
+
+        if self.library_model.fileName(index).endswith(('mp3', 'flac')):
+            self.playlist.addMedia(
+                QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
+            self.playlist_view.addItem(self.library_model.fileName(index))
+
+        elif self.library_model.isDir(index):
+            directory = self.library_model.filePath(index)
+            for dirpath, dirnames, files in os.walk(directory):
+                for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
+                    file = os.path.join(dirpath, filename)
+                    if filename.endswith(('mp3', 'flac')):
+                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist_view.addItem(filename)
+
+        self.player.setPlaylist(self.playlist)
+        self.player.play()
 
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
@@ -536,11 +573,13 @@ class MusicPlayer(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
-    dock = window.sidebar
+    playlist = window.sidebar
+    library = window.library
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
     height = (desktop.height() - window.height()) / 2
     window.show()
     window.move(width, height)
-    dock.move(width + window.width(), height)
+    playlist.move(width + window.width(), height)
+    library.move(width - library.width(), height)
     sys.exit(application.exec_())
