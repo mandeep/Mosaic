@@ -145,7 +145,7 @@ def test_media_information(qtbot, mock, window):
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='accept')
+    mock.patch.object(QDialog, 'exec_', return_value='finished')
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
