@@ -1,5 +1,6 @@
 from appdirs import AppDirs
 import os
+import pkg_resources
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView
 import pytoml
 
@@ -14,11 +15,16 @@ class MediaLibraryModel(QFileSystemModel):
 
         self.setNameFilters(['*.mp3', '*.flac'])
 
-        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        settings_stream = os.path.join(self.config_directory, 'settings.toml')
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
+        try:
+            settings_stream = os.path.join(self.config_directory, 'settings.toml')
+            with open(settings_stream) as conffile:
+                config = pytoml.load(conffile)
 
+        except FileNotFoundError:
+            settings = pkg_resources.resource_filename(__name__, 'settings.toml')
+            with open(settings) as default_config:
+                config = default_config.read()
+        
         self.library = config['media_library']['media_library_path']
 
         if os.path.isdir(self.library):
