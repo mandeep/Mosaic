@@ -574,12 +574,12 @@ def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
     playlist = window.sidebar
-    library = window.library
+    media_library = window.library
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
     height = (desktop.height() - window.height()) / 2
     window.show()
     window.move(width, height)
     playlist.move(width + window.width(), height)
-    library.move(width - library.width(), height)
+    media_library.move(width - library.width(), height)
     sys.exit(application.exec_())
