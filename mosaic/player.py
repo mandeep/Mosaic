@@ -581,5 +581,5 @@ def main():
     window.show()
     window.move(width, height)
     playlist.move(width + window.width(), height)
-    media_library.move(width - library.width(), height)
+    media_library.move(width - media_library.width(), height)
     sys.exit(application.exec_())
