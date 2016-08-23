@@ -18,10 +18,10 @@ def window(qtbot):
 
 
 @pytest.fixture
-def config(qtbot):
-    config_file = configuration.FileOptions()
-    qtbot.add_widget(config_file)
-    return config_file
+def file_config(qtbot):
+    config = configuration.FileOptions()
+    qtbot.add_widget(config)
+    return config
 
 
 def test_window(window):
@@ -149,7 +149,7 @@ def test_media_information(qtbot, mock, window):
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
-def test_checkbox(qtbot, mock, window, config):
+def test_checkbox(qtbot, mock, window, file_config):
     """Qtbot clicks on the edit menu then Qt.Key_Down highlights
     the preferences item. The mock plugin creates a mock of the
     QDialog window and the QCheckBox. The Qtbot's keyClick executes
@@ -160,8 +160,8 @@ def test_checkbox(qtbot, mock, window, config):
     mock.patch.object(QDialog, 'exec_', return_value='')
     mock.patch.object(QCheckBox, 'toggle', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
-    qtbot.mouseClick(config.recursive_directory, Qt.LeftButton)
-    qtbot.mouseClick(config.recursive_directory, Qt.LeftButton)
+    qtbot.mouseClick(file_config.recursive_directory, Qt.LeftButton)
+    qtbot.mouseClick(file_config.recursive_directory, Qt.LeftButton)
     file = pkg_resources.resource_filename('mosaic.tests', '')
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
