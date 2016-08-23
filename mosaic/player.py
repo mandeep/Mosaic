@@ -9,8 +9,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
                              QDockWidget, QFileDialog, QHBoxLayout, QLabel,
-                             QListWidget, QMainWindow, QMessageBox, QSlider,
-                             QTabWidget, QToolBar)
+                             QListWidget, QMainWindow, QMessageBox, QSizePolicy, QSlider,
+                             QTabWidget, QToolBar, QVBoxLayout, QWidget)
 import pytoml
 import sys
 
@@ -40,9 +40,13 @@ class MusicPlayer(QMainWindow):
         self.playlist_view = QListWidget()
         self.library_view = library.MediaLibraryView()
         self.library_model = library.MediaLibraryModel()
+        self.widget = QWidget()
+        self.layout = QVBoxLayout(self.widget)
 
         # Sets the cover art as the central widget of the main window
-        self.setCentralWidget(self.art)
+        self.setCentralWidget(self.widget)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Initiates the playlist dock widget and sets it as invisible until toggled on
         self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
@@ -359,11 +363,13 @@ class MusicPlayer(QMainWindow):
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
 
+            self.layout.addWidget(self.art)
+
     def view_media_info(self):
         """Creates a dialog window displaying all of the metadata
         available in the audio file. mosaic.metadata.GeneralInformation
         is instantiated to fill the dialog window with the necessary
-        widgets and layouts."""
+        widgets and ."""
         dialog = QDialog()
         dialog.setWindowTitle('Media Information')
         info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
@@ -534,11 +540,8 @@ class MusicPlayer(QMainWindow):
         except KeyError:
             size = 900
 
-        self.setFixedWidth(size)
-        self.setFixedHeight(size + 63)
+        self.resize(size, size)
 
-        self.art.setFixedWidth(size)
-        self.art.setFixedHeight(size)
 
     def media_library_on_start(self):
         """Checks the state of the media library view checkbox in settings.toml and sets
