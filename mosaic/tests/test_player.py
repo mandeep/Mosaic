@@ -1,4 +1,4 @@
-from mosaic import player, configuration, library
+from mosaic import player, configuration
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
