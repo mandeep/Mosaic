@@ -540,7 +540,7 @@ class MusicPlayer(QMainWindow):
         except KeyError:
             size = 900
 
-        self.resize(size, size)
+        self.resize(size, size + 63)
 
 
     def media_library_on_start(self):
