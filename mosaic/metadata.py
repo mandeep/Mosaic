@@ -1,171 +1,70 @@
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QTableWidget, QTableWidgetItem,
-                             QTextEdit, QVBoxLayout, QWidget)
+from mutagen import easyid3, flac, mp3
+import pkg_resources
+from PyQt5.QtCore import QByteArray
 
 
-class GeneralInformation(QWidget):
-    """MediaInformation houses all of the widgets and layouts necessary
-    to create a dialog filled with general audio metadata."""
+def identify_filetype(file):
+    """Identifies the file as either mp3 or flac. Because both filetypes use different tags
+    for artwork, the cover art is extracted and appended to a QByteArray to be used by the
+    music player to display."""
 
-    def __init__(self, artist=None, album=None, date=None, title=None,
-                 number=None, genre=None, bitrate=None, bitrate_mode=None,
-                 sample_rate=None, bits_per_sample=None, description=None,
-                 parent=None):
-        """Initializes the widgets and layouts needed to create a
-        dialog containing audio metadata."""
-        super(GeneralInformation, self).__init__(parent)
+    if file.endswith('mp3'):
+        audio_file = mp3.MP3(file, ID3=easyid3.EasyID3)
 
-        artist_label = QLabel('Artist', self)
-        artist_label.setStyleSheet('font-weight: bold')
-        artist_line = QLineEdit()
-        artist_line.setText(artist)
-        artist_line.setReadOnly(True)
-        artist_box = QVBoxLayout()
-        artist_box.addWidget(artist_label)
-        artist_box.addWidget(artist_line)
+        for tag in mp3.MP3(file):
+            try:
+                if 'APIC' in tag:
+                    artwork = QByteArray().append(mp3.MP3(file)[tag].data)
+            except KeyError:
+                artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
-        album_label = QLabel('Album', self)
-        album_label.setStyleSheet('font-weight: bold')
-        album_line = QLineEdit()
-        album_line.setText(album)
-        album_line.setReadOnly(True)
-        album_box = QVBoxLayout()
-        album_box.addWidget(album_label)
-        album_box.addWidget(album_line)
+    elif file.endswith('flac'):
+        audio_file = flac.FLAC(file)
 
-        album_date_label = QLabel('Album Date', self)
-        album_date_label.setStyleSheet('font-weight: bold')
-        album_date_line = QLineEdit()
-        album_date_line.setText(date)
-        album_date_line.setReadOnly(True)
-        album_date_line.setFixedWidth(70)
-        date_box = QVBoxLayout()
-        date_box.addWidget(album_date_label)
-        date_box.addWidget(album_date_line)
+        try:
+            artwork = QByteArray().append(audio_file.pictures[0].data)
+        except IndexError:
+            artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
-        track_label = QLabel('Track Title', self)
-        track_label.setStyleSheet('font-weight: bold')
-        track_line = QLineEdit()
-        track_line.setText(title)
-        track_line.setReadOnly(True)
-        track_box = QVBoxLayout()
-        track_box.addWidget(track_label)
-        track_box.addWidget(track_line)
-
-        track_number_label = QLabel('Track Number', self)
-        track_number_label.setStyleSheet('font-weight: bold')
-        track_number_line = QLineEdit()
-        track_number_line.setText(number)
-        track_number_line.setReadOnly(True)
-        track_number_line.setFixedWidth(90)
-        number_box = QVBoxLayout()
-        number_box.addWidget(track_number_label)
-        number_box.addWidget(track_number_line)
-
-        genre_label = QLabel('Genre', self)
-        genre_label.setStyleSheet('font-weight: bold')
-        genre_line = QLineEdit()
-        genre_line.setText(genre)
-        genre_line.setReadOnly(True)
-        genre_line.setFixedWidth(100)
-        genre_box = QVBoxLayout()
-        genre_box.addWidget(genre_label)
-        genre_box.addWidget(genre_line)
-
-        bitrate_label = QLabel('Bitrate', self)
-        bitrate_label.setStyleSheet('font-weight: bold')
-        bitrate_line = QLineEdit()
-        bitrate_line.setText(bitrate)
-        bitrate_line.setReadOnly(True)
-        bitrate_line.setFixedWidth(70)
-        bitrate_box = QVBoxLayout()
-        bitrate_box.addWidget(bitrate_label)
-        bitrate_box.addWidget(bitrate_line)
-
-        bitrate_mode_label = QLabel('Bitrate Mode', self)
-        bitrate_mode_label.setStyleSheet('font-weight: bold')
-        bitrate_mode_line = QLineEdit()
-        bitrate_mode_line.setText(bitrate_mode)
-        bitrate_mode_line.setReadOnly(True)
-        bitrate_mode_box = QVBoxLayout()
-        bitrate_mode_box.addWidget(bitrate_mode_label)
-        bitrate_mode_box.addWidget(bitrate_mode_line)
-
-        sample_rate_label = QLabel('Sample Rate', self)
-        sample_rate_label.setStyleSheet('font-weight: bold')
-        sample_rate_line = QLineEdit()
-        sample_rate_line.setText(sample_rate)
-        sample_rate_line.setReadOnly(True)
-        sample_rate_box = QVBoxLayout()
-        sample_rate_box.addWidget(sample_rate_label)
-        sample_rate_box.addWidget(sample_rate_line)
-
-        bits_per_sample_label = QLabel('Bits Per Sample', self)
-        bits_per_sample_label.setStyleSheet('font-weight: bold')
-        bits_per_sample_line = QLineEdit()
-        bits_per_sample_line.setText(bits_per_sample)
-        bits_per_sample_line.setReadOnly(True)
-        bits_per_sample_box = QVBoxLayout()
-        bits_per_sample_box.addWidget(bits_per_sample_label)
-        bits_per_sample_box.addWidget(bits_per_sample_line)
-
-        audio_description_label = QLabel('Description', self)
-        audio_description_label.setStyleSheet('font-weight: bold')
-        audio_description_line = QTextEdit()
-        audio_description_line.setText(description)
-        audio_description_line.setReadOnly(True)
-        audio_description_box = QVBoxLayout()
-        audio_description_box.addWidget(audio_description_label)
-        audio_description_box.addWidget(audio_description_line)
-
-        artist_info = QHBoxLayout()
-        artist_info.addLayout(artist_box)
-        artist_info.addLayout(album_box)
-        artist_info.addLayout(date_box)
-
-        song_info = QHBoxLayout()
-        song_info.addLayout(track_box)
-        song_info.addLayout(number_box)
-        song_info.addLayout(genre_box)
-
-        audio_info = QHBoxLayout()
-        audio_info.addLayout(bitrate_box)
-        audio_info.addLayout(bitrate_mode_box)
-        audio_info.addLayout(sample_rate_box)
-        audio_info.addLayout(bits_per_sample_box)
-
-        song_description = QHBoxLayout()
-        song_description.addLayout(audio_description_box)
-
-        media_information_layout = QVBoxLayout()
-        media_information_layout.addLayout(artist_info)
-        media_information_layout.addLayout(song_info)
-        media_information_layout.addLayout(audio_info)
-        media_information_layout.addLayout(song_description)
-        media_information_layout.addStretch(1)
-
-        self.setLayout(media_information_layout)
+    return [audio_file, artwork]
 
 
-class FullInformation(QWidget):
-    """Provides data on every tag embedded within the audio file."""
+def extract_meta_data(file):
+    """Extracts all of the metadata embedded within the audio file and creates a
+    dictionary with the tag and data pairs."""
 
-    def __init__(self, information=None, parent=None):
-        super(FullInformation, self).__init__(parent)
+    audio_file, __ = identify_filetype(file)
+    tags_dictionary = dict(audio_file.tags)
+    metadata_dictionary = dict((k, "".join(v)) for k, v in tags_dictionary.items())
+    return metadata_dictionary
 
-        table_layout = QHBoxLayout()
-        table = QTableWidget()
-        table.setColumnCount(2)
-        table.setColumnWidth(0, 270)
-        table.setColumnWidth(1, 270)
-        table.verticalHeader().hide()
-        table.horizontalHeader().hide()
 
-        if information is not None:
-            table.setRowCount(len(information))
-            for i, (tag, data) in enumerate(sorted(information.items())):
-                table.setItem(i, 0, QTableWidgetItem(tag))
-                table.setItem(i, 1, QTableWidgetItem(data))
+def metadata(file):
+    """Returns the extracted meta data as a list to be used by the music player's
+    window as well as the media information dialog."""
 
-        table_layout.addWidget(table)
+    audio_file, artwork = identify_filetype(file)
+    file_metadata = extract_meta_data(file)
 
-        self.setLayout(table_layout)
+    album = file_metadata.get('album', '??')
+    artist = file_metadata.get('artist', '??')
+    title = file_metadata.get('title', '??')
+    track_number = file_metadata.get('tracknumber', '??')
+    date = file_metadata.get('date', '')
+    genre = file_metadata.get('genre', '')
+    description = file_metadata.get('description', '')
+    sample_rate = "{} Hz" .format(audio_file.info.sample_rate)
+
+    try:  # Bitrate only applies to mp3 files
+        bitrate = "{} kb/s" .format(audio_file.info.bitrate // 1000)
+        bitrate_mode = "{}" .format(audio_file.info.bitrate_mode)
+    except AttributeError:
+        bitrate = ''
+        bitrate_mode = ''
+    try:  # Bits per sample only applies to flac files
+        bits_per_sample = "{}" .format(audio_file.info.bits_per_sample)
+    except AttributeError:
+        bits_per_sample = ''
+
+    return [album, artist, title, track_number, date, genre, description, sample_rate,
+            bitrate, bitrate_mode, bits_per_sample, artwork]
