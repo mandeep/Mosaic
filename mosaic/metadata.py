@@ -42,6 +42,7 @@ def metadata(file):
     genre = file_metadata.get('genre', '')
     description = file_metadata.get('description', '')
     sample_rate = "{} Hz" .format(audio_file.info.sample_rate)
+    artwork = None  # During tests, artwork not being assigned will cause problems
 
     try:  # Bitrate only applies to mp3 files
         bitrate = "{} kb/s" .format(audio_file.info.bitrate // 1000)
