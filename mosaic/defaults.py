@@ -40,3 +40,12 @@ class Settings(object):
             checkbox_state = False
 
         return checkbox_state
+
+    def media_library_path(self):
+        """Sets the user defined media library path as the default path
+        in file dialogs."""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        return config['media_library']['media_library_path']
