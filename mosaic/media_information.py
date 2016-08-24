@@ -189,7 +189,7 @@ class InformationDialog(QDialog):
         info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
         self.setWindowIcon(QIcon(info_icon))
         self.setFixedSize(600, 600)
-        
+
         media_information = GeneralInformation(file)
         metadata_information = FullInformation(file)
 
