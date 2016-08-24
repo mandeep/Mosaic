@@ -4,9 +4,7 @@ from PyQt5.QtCore import QByteArray
 
 
 def identify_filetype(file):
-    """Identifies the file as either mp3 or flac. Because both filetypes use different tags
-    for artwork, the cover art is extracted and appended to a QByteArray to be used by the
-    music player to display."""
+    """Identifies the file as either mp3 or flac via the mutagen library."""
 
     if file.endswith('mp3'):
         audio_file = mp3.MP3(file, ID3=easyid3.EasyID3)
