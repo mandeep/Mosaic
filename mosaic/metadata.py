@@ -11,29 +11,17 @@ def identify_filetype(file):
     if file.endswith('mp3'):
         audio_file = mp3.MP3(file, ID3=easyid3.EasyID3)
 
-        for tag in mp3.MP3(file):
-            try:
-                if 'APIC' in tag:
-                    artwork = QByteArray().append(mp3.MP3(file)[tag].data)
-            except KeyError:
-                artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
-
     elif file.endswith('flac'):
         audio_file = flac.FLAC(file)
 
-        try:
-            artwork = QByteArray().append(audio_file.pictures[0].data)
-        except IndexError:
-            artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
-
-    return [audio_file, artwork]
+    return audio_file
 
 
 def extract_meta_data(file):
     """Extracts all of the metadata embedded within the audio file and creates a
     dictionary with the tag and data pairs."""
 
-    audio_file, __ = identify_filetype(file)
+    audio_file = identify_filetype(file)
     tags_dictionary = dict(audio_file.tags)
     metadata_dictionary = dict((k, "".join(v)) for k, v in tags_dictionary.items())
     return metadata_dictionary
@@ -43,7 +31,7 @@ def metadata(file):
     """Returns the extracted meta data as a list to be used by the music player's
     window as well as the media information dialog."""
 
-    audio_file, artwork = identify_filetype(file)
+    audio_file = identify_filetype(file)
     file_metadata = extract_meta_data(file)
 
     album = file_metadata.get('album', '??')
@@ -65,6 +53,18 @@ def metadata(file):
         bits_per_sample = "{}" .format(audio_file.info.bits_per_sample)
     except AttributeError:
         bits_per_sample = ''
+
+    try:  # Searches for artwork in mp3 files
+        for tag in mp3.MP3(file):
+            if 'APIC' in tag:
+                artwork = QByteArray().append(mp3.MP3(file)[tag].data)
+    except (KeyError, mp3.HeaderNotFoundError):
+        artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
+
+    try:  # Searches for artwork in flac files
+        artwork = QByteArray().append(audio_file.pictures[0].data)
+    except (IndexError, flac.FLACNoHeaderError):
+        artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
     return [album, artist, title, track_number, date, genre, description, sample_rate,
             bitrate, bitrate_mode, bits_per_sample, artwork]
