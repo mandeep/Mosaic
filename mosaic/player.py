@@ -438,7 +438,8 @@ class MusicPlayer(QMainWindow):
         return config['media_library']['media_library_path']
 
     def check_on_close(self):
-        """Settings to check when the preferences dialog closes."""
+        """Settings to check when the preferences dialog closes. If changes are detected,
+        the window will react accordingly."""
         self.window_size()
         self.media_library_on_start()
 
