@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt, QFileInfo, QTime, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
-                             QLabel, QListWidget, QMainWindow, QMessageBox, QSizePolicy, QSlider,
+                             QLabel, QListWidget, QMainWindow, QSizePolicy, QSlider,
                              QToolBar, QVBoxLayout, QWidget)
 import pytoml
 import sys
