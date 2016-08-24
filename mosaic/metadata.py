@@ -54,16 +54,15 @@ def metadata(file):
     except AttributeError:
         bits_per_sample = ''
 
-    try:  # Searches for artwork in mp3 files
+    try:  # Searches for cover art in flac files
+        artwork = QByteArray().append(audio_file.pictures[0].data)
+    except (IndexError, flac.FLACNoHeaderError):
+        artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
+    except AttributeError:  # Searches for cover art in mp3 files
         for tag in mp3.MP3(file):
             if 'APIC' in tag:
                 artwork = QByteArray().append(mp3.MP3(file)[tag].data)
     except (KeyError, mp3.HeaderNotFoundError):
-        artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
-
-    try:  # Searches for artwork in flac files
-        artwork = QByteArray().append(audio_file.pictures[0].data)
-    except (IndexError, flac.FLACNoHeaderError):
         artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
     return [album, artist, title, track_number, date, genre, description, sample_rate,
