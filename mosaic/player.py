@@ -171,7 +171,7 @@ class MusicPlayer(QMainWindow):
 
         self.exit_action = QAction('Quit', self)
         self.exit_action.setShortcut('CTRL+Q')
-        self.exit_action.triggered.connect(self.exit_application)
+        self.exit_action.triggered.connect(lambda: QApplication.quit())
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
@@ -185,7 +185,7 @@ class MusicPlayer(QMainWindow):
         the options of the music player."""
         self.preferences_action = QAction('Preferences', self)
         self.preferences_action.setShortcut('CTRL+SHIFT+P')
-        self.preferences_action.triggered.connect(self.preferences)
+        self.preferences_action.triggered.connect(lambda: self.preferences_dialog.exec_())
 
         self.edit.addAction(self.preferences_action)
 
@@ -504,10 +504,6 @@ class MusicPlayer(QMainWindow):
             with open(user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
 
-    def preferences(self):
-        """Opens a dialog with user configurable options."""
-        self.preferences_dialog.exec_()
-
     def about_dialog(self):
         """Pops up a dialog that shows application information."""
         message = QMessageBox()
@@ -518,10 +514,6 @@ class MusicPlayer(QMainWindow):
         message.setInformativeText('Material design icons created by Google\n\n'
                                    'GitHub: mandeepbhutani')
         message.exec_()
-
-    def exit_application(self):
-        """Closes the window and quits the music player application."""
-        QApplication.quit()
 
 
 def main():
