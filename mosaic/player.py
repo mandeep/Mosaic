@@ -24,6 +24,7 @@ class MusicPlayer(QMainWindow):
         self.setWindowTitle('Mosaic')
         window_icon = pkg_resources.resource_filename('mosaic.images', 'icon.png')
         self.setWindowIcon(QIcon(window_icon))
+        self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
         # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
@@ -84,7 +85,6 @@ class MusicPlayer(QMainWindow):
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
-        self.window_size()
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
@@ -423,25 +423,6 @@ class MusicPlayer(QMainWindow):
             file_path = None
         dialog = media_information.InformationDialog(file_path)
         dialog.exec_()
-
-    def window_size(self):
-        """Sets the user defined window size as the size of the current window. The
-        sizes list contains widths from 900 to 400. Because the width of the window
-        will be the same as the height, there's no need to differentiate between the two. The
-        index contained in the settings.toml selects the index from the sizes list and sets
-        the window and image size accordingly."""
-        settings_stream = os.path.join(self.config_directory, 'settings.toml')
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        sizes = [900, 800, 700, 600, 500, 400]
-
-        try:
-            size = sizes[config['view_options']['window_size']]
-        except KeyError:
-            size = 900
-
-        self.resize(size, size + 63)
 
 
 def main():
