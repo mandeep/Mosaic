@@ -200,7 +200,7 @@ class MusicPlayer(QMainWindow):
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
         filename, ok = QFileDialog.getOpenFileName(
-            self, 'Open File', self.media_library_path(), 'Audio (*.mp3 *.flac)', '',
+            self, 'Open File', defaults.Settings().media_library_path(), 'Audio (*.mp3 *.flac)', '',
             QFileDialog.ReadOnly)
         if ok:
             file_info = QFileInfo(filename).fileName()
@@ -215,8 +215,8 @@ class MusicPlayer(QMainWindow):
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
         filenames, ok = QFileDialog.getOpenFileNames(
-            self, 'Open Multiple Files', self.media_library_path(), 'Audio (*.mp3 *.flac)', '',
-            QFileDialog.ReadOnly)
+            self, 'Open Multiple Files', defaults.Settings().media_library_path(),
+            'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -232,8 +232,8 @@ class MusicPlayer(QMainWindow):
         """Loads an m3u or pls file into an empty playlist and adds the
         content of the chosen playlist to playlist_view."""
         playlist, ok = QFileDialog.getOpenFileName(
-            self, 'Open Playlist', self.media_library_path(), 'Playlist (*.m3u *.pls)', '',
-            QFileDialog.ReadOnly)
+            self, 'Open Playlist', defaults.Settings().media_library_path(),
+            'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
         if ok:
             playlist = QUrl.fromLocalFile(playlist)
             self.playlist.clear()
@@ -255,7 +255,7 @@ class MusicPlayer(QMainWindow):
             config = pytoml.load(conffile)
 
         directory = QFileDialog.getExistingDirectory(
-            self, 'Open Directory', self.media_library_path(), QFileDialog.ReadOnly)
+            self, 'Open Directory', defaults.Settings().media_library_path(), QFileDialog.ReadOnly)
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -423,15 +423,6 @@ class MusicPlayer(QMainWindow):
             file_path = None
         dialog = media_information.InformationDialog(file_path)
         dialog.exec_()
-
-    def media_library_path(self):
-        """Sets the user defined media library path as the default path
-        in file dialogs."""
-        settings_stream = os.path.join(self.config_directory, 'settings.toml')
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['media_library']['media_library_path']
 
     def window_size(self):
         """Sets the user defined window size as the size of the current window. The
