@@ -89,19 +89,6 @@ class MusicPlayer(QMainWindow):
 
         # Creating variables to be used for meta data
         self.duration = 0
-        self.metadata = None
-        self.artwork = None
-        self.album = None
-        self.artist = None
-        self.title = None
-        self.track_number = None
-        self.date = None
-        self.genre = None
-        self.description = None
-        self.sample_rate = None
-        self.bitrate = None
-        self.bitrate_mode = None
-        self.bits_per_sample = None
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
@@ -529,4 +516,3 @@ def main():
     playlist.move(width + window.width(), height)
     media_library.move(width - media_library.width(), height)
     sys.exit(application.exec_())
-main()
