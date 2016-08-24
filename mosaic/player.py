@@ -78,7 +78,7 @@ class MusicPlayer(QMainWindow):
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
         self.playlist_view.currentRowChanged.connect(self.playlist_item)
-        self.library_view.activated.connect(self.media_library_item)
+        self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.art.mousePressEvent = self.press_playback
 
@@ -279,6 +279,29 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
+    def open_media_library(self, index):
+        """Allows the user to add a directory or audio file from the media library
+        to a new playlist."""
+        self.playlist.clear()
+        self.playlist_view.clear()
+
+        if self.library_model.fileName(index).endswith(('mp3', 'flac')):
+            self.playlist.addMedia(
+                QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
+            self.playlist_view.addItem(self.library_model.fileName(index))
+
+        elif self.library_model.isDir(index):
+            directory = self.library_model.filePath(index)
+            for dirpath, dirnames, files in os.walk(directory):
+                for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
+                    file = os.path.join(dirpath, filename)
+                    if filename.endswith(('mp3', 'flac')):
+                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist_view.addItem(filename)
+
+        self.player.setPlaylist(self.playlist)
+        self.player.play()
+
     def display_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
         displays the image in QMainWindow. When a file is loaded, this function
@@ -388,29 +411,6 @@ class MusicPlayer(QMainWindow):
         in the playlist view by the user."""
         if self.playlist.currentIndex() != row:
             self.playlist.setCurrentIndex(row)
-
-    def media_library_item(self, index):
-        """Allows the user to add a directory or audio file from the media library
-        to a new playlist."""
-        self.playlist.clear()
-        self.playlist_view.clear()
-
-        if self.library_model.fileName(index).endswith(('mp3', 'flac')):
-            self.playlist.addMedia(
-                QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
-            self.playlist_view.addItem(self.library_model.fileName(index))
-
-        elif self.library_model.isDir(index):
-            directory = self.library_model.filePath(index)
-            for dirpath, dirnames, files in os.walk(directory):
-                for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
-                    file = os.path.join(dirpath, filename)
-                    if filename.endswith(('mp3', 'flac')):
-                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                        self.playlist_view.addItem(filename)
-
-        self.player.setPlaylist(self.playlist)
-        self.player.play()
 
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
