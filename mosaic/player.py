@@ -1,10 +1,9 @@
 from appdirs import AppDirs
-from mosaic import configuration, library, metadata
-from mutagen import easyid3, flac, mp3
+from mosaic import configuration, library, media_information, metadata
 import natsort
 import os
 import pkg_resources
-from PyQt5.QtCore import Qt, QByteArray, QFileInfo, QTime, QUrl
+from PyQt5.QtCore import Qt, QFileInfo, QTime, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
@@ -201,7 +200,7 @@ class MusicPlayer(QMainWindow):
 
         self.view_media_info_action = QAction('Media Information', self)
         self.view_media_info_action.setShortcut('CTRL+SHIFT+M')
-        self.view_media_info_action.triggered.connect(self.view_media_info)
+        self.view_media_info_action.triggered.connect(lambda: self.media_information_dialog)
 
         self.view.addAction(self.dock_action)
         self.view.addAction(self.library_dock_action)
@@ -297,103 +296,28 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
-    def retrieve_meta_data(self, file):
-        """The mutagen library is imported to retrieve meta data from the opened audio file.
-        Mp3s and FLAC audio formats house pictures differently, so two different methods
-        are used to extract the meta data. Once the artwork data (in bytes) is retrieved from
-        the audio file, it is appeneded to a QByteArray()."""
-        if file.endswith('mp3'):
-            song = mp3.MP3(file, ID3=easyid3.EasyID3)
-
-            for tag in mp3.MP3(file):
-                try:
-                    if 'APIC' in tag:
-                        self.artwork = QByteArray().append(mp3.MP3(file)[tag].data)
-                except KeyError:
-                    self.artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
-
-        elif file.endswith('flac'):
-            song = flac.FLAC(file)
-
-            try:
-                self.artwork = QByteArray().append(song.pictures[0].data)
-            except IndexError:
-                self.artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
-
-        song_data = dict(song.tags)
-        song_data = dict((k, "".join(v)) for k, v in song_data.items())
-        self.metadata = song_data
-        self.album = song_data.get('album', '??')
-        self.artist = song_data.get('artist', '??')
-        self.title = song_data.get('title', '??')
-        self.track_number = song_data.get('tracknumber', '??')
-        self.date = song_data.get('date', '')
-        self.genre = song_data.get('genre', '')
-        self.description = song_data.get('description', '')
-        self.sample_rate = "{} Hz" .format(song.info.sample_rate)
-
-        try:  # Bitrate only applies to mp3 files
-            self.bitrate = "{} kb/s" .format(song.info.bitrate // 1000)
-            self.bitrate_mode = "{}" .format(song.info.bitrate_mode)
-        except AttributeError:
-            self.bitrate = ''
-            self.bitrate_mode = ''
-        try:  # Bits per sample only applies to flac files
-            self.bits_per_sample = "{}" .format(song.info.bits_per_sample)
-        except AttributeError:
-            self.bits_per_sample = ''
-
     def display_meta_data(self):
         """QPixmap() is initiated in order to send an image to QLabel() which then
         displays the image in QMainWindow. When a file is loaded, this function
         affirms that meta data in the audio file exists."""
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
-            self.retrieve_meta_data(file_path)
+            (album, artist, title, track_number, date, genre, description, sample_rate,
+             bitrate, bitrate_mode, bits_per_sample, artwork) = metadata.metadata(file_path)
 
             try:
-                self.pixmap.loadFromData(self.artwork)
+                self.pixmap.loadFromData(artwork)
             except:
-                self.pixmap = QPixmap(self.artwork)
+                self.pixmap = QPixmap(artwork)
 
             meta_data = '{} - {} - {} - {}' .format(
-                    self.track_number, self.artist, self.album, self.title)
+                    track_number, artist, album, title)
             self.setWindowTitle(meta_data)
 
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
 
             self.layout.addWidget(self.art)
-
-    def view_media_info(self):
-        """Creates a dialog window displaying all of the metadata
-        available in the audio file. mosaic.metadata.GeneralInformation
-        is instantiated to fill the dialog window with the necessary
-        widgets and ."""
-        dialog = QDialog()
-        dialog.setWindowTitle('Media Information')
-        info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
-        dialog.setWindowIcon(QIcon(info_icon))
-        dialog.setFixedSize(600, 600)
-        if self.player.isMetaDataAvailable():
-            media_information = metadata.GeneralInformation(
-                self.artist, self.album, self.date, self.title, self.track_number,
-                self.genre, self.bitrate, self.bitrate_mode, self.sample_rate,
-                self.bits_per_sample, self.description)
-            metadata_information = metadata.FullInformation(self.metadata)
-        else:
-            media_information = metadata.GeneralInformation()
-            metadata_information = metadata.FullInformation()
-
-        page = QTabWidget()
-        page.addTab(media_information, 'General')
-        page.addTab(metadata_information, 'Metadata')
-
-        dialog_layout = QHBoxLayout()
-        dialog_layout.addWidget(page)
-
-        dialog.setLayout(dialog_layout)
-        dialog.exec_()
 
     def press_playback(self, event):
         """On mouse event, the player will play the media if the player is
@@ -509,6 +433,14 @@ class MusicPlayer(QMainWindow):
         """Changes the playlist view in relation to the current media."""
         self.playlist_view.setCurrentRow(row)
 
+    def media_information_dialog(self):
+        if self.player.isMetaDataAvailable():
+            file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
+        else:
+            file_path = None
+        dialog = media_information.InformationDialog(file_path)
+        dialog.exec_()
+
     def media_library_path(self):
         """Sets the user defined media library path as the default path
         in file dialogs."""
@@ -541,7 +473,6 @@ class MusicPlayer(QMainWindow):
             size = 900
 
         self.resize(size, size + 63)
-
 
     def media_library_on_start(self):
         """Checks the state of the media library view checkbox in settings.toml and sets
@@ -606,3 +537,4 @@ def main():
     playlist.move(width + window.width(), height)
     media_library.move(width - media_library.width(), height)
     sys.exit(application.exec_())
+main()
