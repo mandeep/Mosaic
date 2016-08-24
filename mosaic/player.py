@@ -1,5 +1,5 @@
 from appdirs import AppDirs
-from mosaic import configuration, library, media_information, metadata
+from mosaic import about, configuration, library, media_information, metadata
 import natsort
 import os
 import pkg_resources
@@ -40,6 +40,7 @@ class MusicPlayer(QMainWindow):
         self.library_model = library.MediaLibraryModel()
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
+        self.about = about.AboutDialog()
         self.duration = 0
 
         # Sets QWidget() as the central widget of the main window
@@ -194,7 +195,7 @@ class MusicPlayer(QMainWindow):
         """Provides informational items regarding the application."""
         self.about_action = QAction('About', self)
         self.about_action.setShortcut('CTRL+H')
-        self.about_action.triggered.connect(self.about_dialog)
+        self.about_action.triggered.connect(lambda: self.about.exec_())
 
         self.help_.addAction(self.about_action)
 
@@ -488,17 +489,6 @@ class MusicPlayer(QMainWindow):
         if not os.path.isfile(user_config_file):
             with open(user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
-
-    def about_dialog(self):
-        """Pops up a dialog that shows application information."""
-        message = QMessageBox()
-        message.setWindowTitle('About')
-        help_icon = pkg_resources.resource_filename('mosaic.images', 'md_help.png')
-        message.setWindowIcon(QIcon(help_icon))
-        message.setText('Created by Mandeep Bhutani')
-        message.setInformativeText('Material design icons created by Google\n\n'
-                                   'GitHub: mandeepbhutani')
-        message.exec_()
 
 
 def main():
