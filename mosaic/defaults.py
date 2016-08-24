@@ -27,6 +27,25 @@ class Settings(object):
             with open(self.config_path, 'a') as new_config_file:
                 new_config_file.write(config)
 
+    def window_size(self):
+        """Sets the user defined window size as the size of the current window. The
+        sizes list contains widths from 900 to 400. Because the width of the window
+        will be the same as the height, there's no need to differentiate between the two. The
+        index contained in the settings.toml selects the index from the sizes list and sets
+        the window and image size accordingly."""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        sizes = [900, 800, 700, 600, 500, 400]
+
+        try:
+            size = sizes[config['view_options']['window_size']]
+        except KeyError:
+            size = 900
+
+        return size
+
     def media_library_on_start(self):
         """Checks the state of the media library view checkbox in settings.toml and returns this
         state for use by the Music Player application."""
