@@ -6,10 +6,9 @@ import pkg_resources
 from PyQt5.QtCore import Qt, QFileInfo, QTime, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
-from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDialog,
-                             QDockWidget, QFileDialog, QHBoxLayout, QLabel,
-                             QListWidget, QMainWindow, QMessageBox, QSizePolicy, QSlider,
-                             QTabWidget, QToolBar, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
+                             QLabel, QListWidget, QMainWindow, QMessageBox, QSizePolicy, QSlider,
+                             QToolBar, QVBoxLayout, QWidget)
 import pytoml
 import sys
 
@@ -35,12 +34,13 @@ class MusicPlayer(QMainWindow):
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
         self.playlist_dock = QDockWidget('Playlist', self)
-        self.library = QDockWidget('Media Library', self)
+        self.library_dock = QDockWidget('Media Library', self)
         self.playlist_view = QListWidget()
         self.library_view = library.MediaLibraryView()
         self.library_model = library.MediaLibraryModel()
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
+        self.duration = 0
 
         # Sets QWidget() as the central widget of the main window
         self.setCentralWidget(self.widget)
@@ -54,11 +54,11 @@ class MusicPlayer(QMainWindow):
         self.playlist_dock.resize(300, 800)
         self.playlist_dock.setVisible(False)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, self.library)
-        self.library.setWidget(self.library_view)
-        self.library.setFloating(True)
-        self.library.resize(400, 800)
-        self.library.setVisible(False)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.library_dock)
+        self.library_dock.setWidget(self.library_view)
+        self.library_dock.setFloating(True)
+        self.library_dock.resize(400, 800)
+        self.library_dock.setVisible(False)
 
         # Sets the range of the playback slider and sets the playback mode as looping
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -86,9 +86,6 @@ class MusicPlayer(QMainWindow):
         self.media_controls()
         self.window_size()
         self.media_library_on_start()
-
-        # Creating variables to be used for meta data
-        self.duration = 0
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
@@ -182,7 +179,7 @@ class MusicPlayer(QMainWindow):
         self.dock_action = self.playlist_dock.toggleViewAction()
         self.dock_action.setShortcut('CTRL+ALT+P')
 
-        self.library_dock_action = self.library.toggleViewAction()
+        self.library_dock_action = self.library_dock.toggleViewAction()
         self.library_dock_action.setShortcut('CTRL+ALT+L')
 
         self.view_media_info_action = QAction('Media Information', self)
@@ -474,7 +471,7 @@ class MusicPlayer(QMainWindow):
         except KeyError:
             checkbox_state = False
 
-        self.library.setVisible(checkbox_state)
+        self.library_dock.setVisible(checkbox_state)
 
     def create_settings_file(self):
         """Creates a copy of the settings.toml file in the user's system
@@ -508,7 +505,7 @@ def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
     playlist = window.playlist_dock
-    media_library = window.library
+    media_library = window.library_dock
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
     height = (desktop.height() - window.height()) / 2
