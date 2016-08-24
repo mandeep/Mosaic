@@ -200,7 +200,7 @@ class MusicPlayer(QMainWindow):
 
         self.view_media_info_action = QAction('Media Information', self)
         self.view_media_info_action.setShortcut('CTRL+SHIFT+M')
-        self.view_media_info_action.triggered.connect(lambda: self.media_information_dialog)
+        self.view_media_info_action.triggered.connect(self.media_information_dialog)
 
         self.view.addAction(self.dock_action)
         self.view.addAction(self.library_dock_action)
