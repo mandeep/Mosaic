@@ -26,7 +26,7 @@ class MusicPlayer(QMainWindow):
         window_icon = pkg_resources.resource_filename('mosaic.images', 'icon.png')
         self.setWindowIcon(QIcon(window_icon))
 
-        # Initiate Qt objects to be used by MusicPlayer
+        # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.content = QMediaContent()
@@ -34,7 +34,7 @@ class MusicPlayer(QMainWindow):
         self.pixmap = QPixmap()
         self.slider = QSlider(Qt.Horizontal)
         self.duration_label = QLabel()
-        self.sidebar = QDockWidget('Playlist', self)
+        self.playlist_dock = QDockWidget('Playlist', self)
         self.library = QDockWidget('Media Library', self)
         self.playlist_view = QListWidget()
         self.library_view = library.MediaLibraryView()
@@ -42,17 +42,17 @@ class MusicPlayer(QMainWindow):
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
 
-        # Sets the cover art as the central widget of the main window
+        # Sets QWidget() as the central widget of the main window
         self.setCentralWidget(self.widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Initiates the playlist dock widget and sets it as invisible until toggled on
-        self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
-        self.sidebar.setWidget(self.playlist_view)
-        self.sidebar.setFloating(True)
-        self.sidebar.resize(300, 800)
-        self.sidebar.setVisible(False)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.playlist_dock)
+        self.playlist_dock.setWidget(self.playlist_view)
+        self.playlist_dock.setFloating(True)
+        self.playlist_dock.resize(300, 800)
+        self.playlist_dock.setVisible(False)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.library)
         self.library.setWidget(self.library_view)
@@ -179,7 +179,7 @@ class MusicPlayer(QMainWindow):
     def view_menu(self):
         """Provides items that allow the user to customize the viewing
         experience of the main window."""
-        self.dock_action = self.sidebar.toggleViewAction()
+        self.dock_action = self.playlist_dock.toggleViewAction()
         self.dock_action.setShortcut('CTRL+ALT+P')
 
         self.library_dock_action = self.library.toggleViewAction()
@@ -507,7 +507,7 @@ class MusicPlayer(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     window = MusicPlayer()
-    playlist = window.sidebar
+    playlist = window.playlist_dock
     media_library = window.library
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
