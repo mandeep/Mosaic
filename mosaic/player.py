@@ -1,5 +1,5 @@
 from appdirs import AppDirs
-from mosaic import about, configuration, library, media_information, metadata
+from mosaic import about, configuration, defaults, library, media_information, metadata
 import natsort
 import os
 import pkg_resources
@@ -48,7 +48,7 @@ class MusicPlayer(QMainWindow):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
-        # Initiates the playlist dock widget and sets it as invisible until toggled on
+        # Initiates the playlist dock widget and the library dock widget
         self.addDockWidget(Qt.RightDockWidgetArea, self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
         self.playlist_dock.setFloating(True)
@@ -59,7 +59,7 @@ class MusicPlayer(QMainWindow):
         self.library_dock.setWidget(self.library_view)
         self.library_dock.setFloating(True)
         self.library_dock.resize(400, 800)
-        self.library_dock.setVisible(False)
+        self.library_dock.setVisible(defaults.Settings().media_library_on_start())
 
         # Sets the range of the playback slider and sets the playback mode as looping
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -67,7 +67,7 @@ class MusicPlayer(QMainWindow):
 
         # Initiates the settings file and preferences dialog
         self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
-        self.create_settings_file()
+        defaults.Settings()
         self.preferences_dialog = configuration.PreferencesDialog()
 
         # Signals that connect to other methods when they're called
@@ -79,14 +79,12 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.currentRowChanged.connect(self.playlist_item)
         self.library_view.activated.connect(self.media_library_item)
         self.playlist.currentIndexChanged.connect(self.change_index)
-        self.preferences_dialog.finished.connect(self.check_on_close)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
         self.window_size()
-        self.media_library_on_start()
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
@@ -435,12 +433,6 @@ class MusicPlayer(QMainWindow):
 
         return config['media_library']['media_library_path']
 
-    def check_on_close(self):
-        """Settings to check when the preferences dialog closes. If changes are detected,
-        the window will react accordingly."""
-        self.window_size()
-        self.media_library_on_start()
-
     def window_size(self):
         """Sets the user defined window size as the size of the current window. The
         sizes list contains widths from 900 to 400. Because the width of the window
@@ -459,36 +451,6 @@ class MusicPlayer(QMainWindow):
             size = 900
 
         self.resize(size, size + 63)
-
-    def media_library_on_start(self):
-        """Checks the state of the media library view checkbox in settings.toml and sets
-        the media library dock view accordingly."""
-        settings_stream = os.path.join(self.config_directory, 'settings.toml')
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            checkbox_state = config['media_library']['show_on_start']
-        except KeyError:
-            checkbox_state = False
-
-        self.library_dock.setVisible(checkbox_state)
-
-    def create_settings_file(self):
-        """Creates a copy of the settings.toml file in the user's system
-        config directory. This copy then becomes the default config file
-        for user configurable settings."""
-        if not os.path.exists(self.config_directory):
-            os.makedirs(self.config_directory)
-
-        settings = pkg_resources.resource_filename(__name__, 'settings.toml')
-        with open(settings) as default_config:
-            config = default_config.read()
-
-        user_config_file = os.path.join(self.config_directory, 'settings.toml')
-        if not os.path.isfile(user_config_file):
-            with open(user_config_file, 'a') as new_config_file:
-                new_config_file.write(config)
 
 
 def main():
