@@ -34,17 +34,6 @@ def test_window(window):
     assert window.windowIcon().isNull() is False
 
 
-def test_open_mp3_file(qtbot, mock, window):
-    """Qtbot clicks on the file menu then Qt.Key_Down highlights
-    the open file item. The mock plugin creates a mock of the
-    QFileDialog window while Key_Enter executes it."""
-    file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
-    qtbot.mouseClick(window.file, Qt.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.mp3'))
-    qtbot.keyClick(window.file, Qt.Key_Enter)
-
-
 def test_open_flac_file(qtbot, mock, window):
     """Qtbot clicks on the file menu then Qt.Key_Down highlights
     the open file item. The mock plugin creates a mock of the
@@ -91,6 +80,17 @@ def test_open_directory(qtbot, mock, window):
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
+    qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
+def test_open_mp3_file(qtbot, mock, window):
+    """Qtbot clicks on the file menu then Qt.Key_Down highlights
+    the open file item. The mock plugin creates a mock of the
+    QFileDialog window while Key_Enter executes it."""
+    file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(file, '*.mp3'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
