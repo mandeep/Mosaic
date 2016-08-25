@@ -10,68 +10,6 @@ from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QFileDialog, QGroupB
                              QVBoxLayout, QWidget)
 
 
-class FileOptions(QWidget):
-    """Contains all of the user configurable options related to the
-    file menu."""
-
-    def __init__(self, parent=None):
-        """Initializes a page of options to be shown in the
-        preferences dialog."""
-        super(FileOptions, self).__init__(parent)
-
-        file_config = QGroupBox("File Menu Configuration")
-
-        self.recursive_directory = QCheckBox(
-            'Recursively Open Directories (open files in all subdirectories)', self)
-
-        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
-                                             'settings.toml')
-
-        self.check_directory_option()
-
-        file_config_layout = QHBoxLayout()
-        file_config_layout.addWidget(self.recursive_directory)
-
-        file_config.setLayout(file_config_layout)
-
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(file_config)
-        main_layout.addStretch(1)
-        self.setLayout(main_layout)
-
-        self.recursive_directory.stateChanged.connect(self.recursive_directory_option)
-
-    def recursive_directory_option(self):
-        """This setting changes the behavior of the Open Directory item in
-        the file menu. The default setting only opens songs in the
-        selected directory. With this option checked, Open Directory will
-        open all songs in the directory and its subdirectories."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        if self.recursive_directory.isChecked():
-            config['file_options']['recursive_directory'] = True
-
-        elif not self.recursive_directory.isChecked():
-            config['file_options']['recursive_directory'] = False
-
-        with open(settings_stream, 'w') as conffile:            
-            pytoml.dump(conffile, config)
-
-    def check_directory_option(self):
-        """Sets the options in the preferences dialog to the
-        settings defined in settings.toml."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        if config['file_options']['recursive_directory'] is True:
-            self.recursive_directory.setChecked(True)
-        elif config['file_options']['recursive_directory'] is False:
-            self.recursive_directory.setChecked(False)
-
-
 class MediaLibrary(QWidget):
     """Contains all of the user configurable options related to the
     media library."""
@@ -256,7 +194,6 @@ class PreferencesDialog(QDialog):
         self.contents = QListWidget()
         self.pages = QStackedWidget()
 
-        self.pages.addWidget(FileOptions())
         self.pages.addWidget(MediaLibrary())
         self.pages.addWidget(WindowOptions())
         self.list_items()
@@ -272,14 +209,10 @@ class PreferencesDialog(QDialog):
     def list_items(self):
         """Lists all of the pages available to the user. Each page houses
         its own user configurable options."""
-        file_options = QListWidgetItem(self.contents)
-        file_options.setText('File Options')
-        file_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-        self.contents.setCurrentRow(0)
-
         media_library_options = QListWidgetItem(self.contents)
         media_library_options.setText('Media Library')
         media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        self.contents.setCurrentRow(0)
 
         window_options = QListWidgetItem(self.contents)
         window_options.setText('Window Options')
