@@ -1,8 +1,8 @@
-from mosaic import player, configuration, media_information
+from mosaic import player, configuration, information
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
 
 
 @pytest.fixture
@@ -172,7 +172,7 @@ def test_media_library(qtbot, window):
 def test_media_information_directly(qtbot, flac_file, mp3_file):
     """Creates an instance of the GenralInformation and FullInformation classes to see
     if there are any errors."""
-    media_information.GeneralInformation(flac_file)
-    media_information.FullInformation(flac_file)
-    media_information.GeneralInformation(mp3_file)
-    media_information.FullInformation(mp3_file)
+    information.GeneralInformation(flac_file)
+    information.FullInformation(flac_file)
+    information.GeneralInformation(mp3_file)
+    information.FullInformation(mp3_file)
