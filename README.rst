@@ -46,8 +46,8 @@ Mosaic can be run with the following command::
 
 .. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
     :target: https://travis-ci.org/mandeepbhutani/Mosaic
-.. |coverage| image:: https://coveralls.io/repos/github/mandeepbhutani/Mosaic/badge.svg?branch=master
-    :target: https://coveralls.io/github/mandeepbhutani/Mosaic?branch=master
+.. |coverage| image:: https://img.shields.io/coveralls/mandeepbhutani/Mosaic/master.svg
+    :target: https://coveralls.io/github/mandeepbhutani/Mosaic
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/mosaic-music.svg
