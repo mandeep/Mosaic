@@ -1,4 +1,4 @@
-from mosaic import about, configuration, defaults, library, media_information, metadata
+from mosaic import about, configuration, defaults, information, library, metadata
 import natsort
 import os
 import pkg_resources
@@ -405,7 +405,7 @@ class MusicPlayer(QMainWindow):
             file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
         else:
             file_path = None
-        dialog = media_information.InformationDialog(file_path)
+        dialog = information.InformationDialog(file_path)
         dialog.exec_()
 
 
