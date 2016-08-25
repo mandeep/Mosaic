@@ -160,29 +160,6 @@ def test_media_information(qtbot, mock, window):
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
-def test_checkbox(qtbot, mock, window, file_config):
-    """Qtbot clicks on the edit menu then Qt.Key_Down highlights
-    the preferences item. The mock plugin creates a mock of the
-    QDialog window and the QCheckBox. The Qtbot's keyClick executes
-    the QDialog while its mouseClick clicks on the checkbox to test
-    for activity. """
-    qtbot.mouseClick(window.edit, Qt.LeftButton)
-    qtbot.keyClick(window.edit, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='')
-    mock.patch.object(QCheckBox, 'toggle', return_value='')
-    qtbot.keyClick(window.edit, Qt.Key_Enter)
-    qtbot.mouseClick(file_config.recursive_directory, Qt.LeftButton)
-    qtbot.mouseClick(file_config.recursive_directory, Qt.LeftButton)
-    file = pkg_resources.resource_filename('mosaic.tests', '')
-    qtbot.mouseClick(window.file, Qt.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
-    qtbot.keyClick(window.file, Qt.Key_Enter)
-
-
 def test_media_library(qtbot, window):
     """Qtbot clicks on the view menu then navigates to the View Media Library
     item and uses Qt.Key_Enter to select it."""
