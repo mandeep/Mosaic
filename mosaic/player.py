@@ -73,7 +73,7 @@ class MusicPlayer(QMainWindow):
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
-        self.playlist_view.currentRowChanged.connect(self.playlist_item)
+        self.playlist_view.itemActivated.connect(self.playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.art.mousePressEvent = self.press_playback
