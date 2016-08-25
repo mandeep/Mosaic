@@ -1,4 +1,3 @@
-from appdirs import AppDirs
 from mosaic import about, configuration, defaults, library, media_information, metadata
 import natsort
 import os
@@ -9,7 +8,6 @@ from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
                              QLabel, QListWidget, QMainWindow, QSizePolicy, QSlider,
                              QToolBar, QVBoxLayout, QWidget)
-import pytoml
 import sys
 
 
@@ -66,10 +64,8 @@ class MusicPlayer(QMainWindow):
         self.slider.setRange(0, self.player.duration() / 1000)
         self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
 
-        # Initiates the settings file and preferences dialog
-        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        # Initiates Settings in the defaults module to give access to settings.toml
         defaults.Settings()
-        self.preferences_dialog = configuration.PreferencesDialog()
 
         # Signals that connect to other methods when they're called
         self.player.metaDataChanged.connect(self.display_meta_data)
@@ -168,7 +164,7 @@ class MusicPlayer(QMainWindow):
         the options of the music player."""
         self.preferences_action = QAction('Preferences', self)
         self.preferences_action.setShortcut('CTRL+SHIFT+P')
-        self.preferences_action.triggered.connect(lambda: self.preferences_dialog.exec_())
+        self.preferences_action.triggered.connect(lambda: configuration.PreferencesDialog().exec_())
 
         self.edit.addAction(self.preferences_action)
 
@@ -250,30 +246,18 @@ class MusicPlayer(QMainWindow):
     def open_directory(self):
         """Opens the chosen directory and adds supported audio filetypes within
         the directory to an empty playlist."""
-        settings_stream = os.path.join(self.config_directory, 'settings.toml')
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         directory = QFileDialog.getExistingDirectory(
             self, 'Open Directory', defaults.Settings().media_library_path(), QFileDialog.ReadOnly)
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
-
-            if config['file_options']['recursive_directory'] is False:
-                for filename in natsort.natsorted(os.listdir(directory), alg=natsort.ns.PATH):
-                    file = os.path.join(directory, filename)
+            for dirpath, dirnames, files in os.walk(directory):
+                for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
+                    file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                         self.playlist_view.addItem(filename)
-
-            elif config['file_options']['recursive_directory'] is True:
-                for dirpath, dirnames, files in os.walk(directory):
-                    for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
-                        file = os.path.join(dirpath, filename)
-                        if filename.endswith(('mp3', 'flac')):
-                            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                            self.playlist_view.addItem(filename)
 
             self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
