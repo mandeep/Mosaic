@@ -18,6 +18,7 @@ class MusicPlayer(QMainWindow):
     def __init__(self, parent=None):
         """Initializes the QMainWindow widget and calls methods that house
         other widgets that need to be displayed in the main window."""
+
         super(MusicPlayer, self).__init__(parent)
         self.setWindowTitle('Mosaic')
         window_icon = pkg_resources.resource_filename('mosaic.images', 'icon.png')
@@ -84,6 +85,7 @@ class MusicPlayer(QMainWindow):
 
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
+
         self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
         self.edit = self.menu.addMenu('Edit')
@@ -97,6 +99,7 @@ class MusicPlayer(QMainWindow):
 
     def media_controls(self):
         """Creates the bottom toolbar and controls used for media playback."""
+
         self.toolbar = QToolBar()
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
@@ -132,6 +135,7 @@ class MusicPlayer(QMainWindow):
     def file_menu(self):
         """Adds a file menu to the menu bar. Allows the user to choose actions
         related to audio files."""
+
         self.open_action = QAction('Open File', self)
         self.open_action.setShortcut('CTRL+O')
         self.open_action.triggered.connect(self.open_file)
@@ -162,6 +166,7 @@ class MusicPlayer(QMainWindow):
     def edit_menu(self):
         """Provides items that allow the user to customize
         the options of the music player."""
+
         self.preferences_action = QAction('Preferences', self)
         self.preferences_action.setShortcut('CTRL+SHIFT+P')
         self.preferences_action.triggered.connect(lambda: configuration.PreferencesDialog().exec_())
@@ -171,6 +176,7 @@ class MusicPlayer(QMainWindow):
     def view_menu(self):
         """Provides items that allow the user to customize the viewing
         experience of the main window."""
+
         self.dock_action = self.playlist_dock.toggleViewAction()
         self.dock_action.setShortcut('CTRL+ALT+P')
 
@@ -187,6 +193,7 @@ class MusicPlayer(QMainWindow):
 
     def help_menu(self):
         """Provides informational items regarding the application."""
+
         self.about_action = QAction('About', self)
         self.about_action.setShortcut('CTRL+H')
         self.about_action.triggered.connect(lambda: self.about.exec_())
@@ -195,6 +202,7 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Opens the selected file and adds it to a new playlist."""
+
         filename, ok = QFileDialog.getOpenFileName(
             self, 'Open File', defaults.Settings().media_library_path(), 'Audio (*.mp3 *.flac)', '',
             QFileDialog.ReadOnly)
@@ -210,6 +218,7 @@ class MusicPlayer(QMainWindow):
 
     def open_multiple_files(self):
         """Opens the selected files and adds them to a new playlist."""
+
         filenames, ok = QFileDialog.getOpenFileNames(
             self, 'Open Multiple Files', defaults.Settings().media_library_path(),
             'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
@@ -227,6 +236,7 @@ class MusicPlayer(QMainWindow):
     def open_playlist(self):
         """Loads an m3u or pls file into an empty playlist and adds the
         content of the chosen playlist to playlist_view."""
+
         playlist, ok = QFileDialog.getOpenFileName(
             self, 'Open Playlist', defaults.Settings().media_library_path(),
             'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
@@ -266,6 +276,7 @@ class MusicPlayer(QMainWindow):
     def open_media_library(self, index):
         """Allows the user to add a directory or audio file from the media library
         to a new playlist."""
+
         self.playlist.clear()
         self.playlist_view.clear()
 
@@ -290,6 +301,7 @@ class MusicPlayer(QMainWindow):
         """QPixmap() is initiated in order to send an image to QLabel() which then
         displays the image in QMainWindow. When a file is loaded, this function
         affirms that meta data in the audio file exists."""
+
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
             (album, artist, title, track_number, date, genre, description, sample_rate,
@@ -313,6 +325,7 @@ class MusicPlayer(QMainWindow):
         """On mouse event, the player will play the media if the player is
         either paused or stopped. If the media is playing, the media is set
         to pause."""
+
         if (self.player.state() == QMediaPlayer.StoppedState or
                 self.player.state() == QMediaPlayer.PausedState):
             self.player.play()
@@ -322,10 +335,12 @@ class MusicPlayer(QMainWindow):
     def seek(self, seconds):
         """When the user drags the horizontal slider, this function sets
         the position of the song to the position dragged to."""
+
         self.player.setPosition(seconds * 1000)
 
     def song_duration(self, duration):
         """Sets the slider to the duration of the currently played media."""
+
         duration /= 1000
         self.duration = duration
         self.slider.setMaximum(duration)
@@ -334,6 +349,7 @@ class MusicPlayer(QMainWindow):
         """As the song plays, the slider moves in sync with the duration
         of the song. The progress is relayed to update_duration() in order
         to display the time label next to the slider."""
+
         progress /= 1000
 
         if not self.slider.isSliderDown():
@@ -345,7 +361,9 @@ class MusicPlayer(QMainWindow):
         """Calculates the time played and length of the song in time. Both
         of these times are sent to duration_label() in order to display the
         times on the toolbar."""
+
         duration = self.duration
+
         if current_duration or duration:
             time_played = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
                                 (current_duration % 60), (current_duration * 1000) % 1000)
@@ -368,6 +386,7 @@ class MusicPlayer(QMainWindow):
         """Changes the play icon to the pause icon when a song is playing and
         changes the pause icon back to the play icon when either paused or
         stopped. The action of the button changes with respect to its icon."""
+
         if self.player.state() == QMediaPlayer.PlayingState:
             pause_icon = pkg_resources.resource_filename('mosaic.images', 'md_pause.png')
             self.play_action.setIcon(QIcon(pause_icon))
@@ -381,6 +400,7 @@ class MusicPlayer(QMainWindow):
     def repeat_song(self):
         """Sets the current media to repeat and changes the repeat icon
         accordingly."""
+
         if self.playlist.playbackMode() != QMediaPlaylist.CurrentItemInLoop:
             self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
             repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_on.png')
@@ -390,17 +410,23 @@ class MusicPlayer(QMainWindow):
             repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat.png')
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
-    def playlist_item(self, row):
+    def playlist_item(self, item):
         """Changes the current media to the index of the media selected
         in the playlist view by the user."""
-        if self.playlist.currentIndex() != row:
-            self.playlist.setCurrentIndex(row)
+
+        current_index = self.playlist_view.row(item)
+        if self.playlist.currentIndex() != current_index:
+            self.playlist.setCurrentIndex(current_index)
 
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
+
         self.playlist_view.setCurrentRow(row)
 
     def media_information_dialog(self):
+        """If a song is currently playing, the file path of the song is sent to the
+        media information dialog in order to show all of the avaialble metadata."""
+
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
         else:
