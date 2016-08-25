@@ -1,4 +1,4 @@
-from mosaic import player, configuration
+from mosaic import player, configuration, media_information
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
@@ -179,3 +179,11 @@ def test_media_library(qtbot, window):
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Enter)
+
+
+def test_media_information_directly(qtbot):
+    """Creates an instance of the GenralInformation and FullInformation classes to see
+    if there are any errors."""
+    file = pkg_resources.resource_filename('mosaic.tests', '02_Ghosts_I.flac')
+    media_information.GeneralInformation(file)
+    media_information.FullInformation(file)
