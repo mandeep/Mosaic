@@ -61,6 +61,7 @@ class MusicPlayer(QMainWindow):
         self.library_dock.setFloating(True)
         self.library_dock.resize(400, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
+        self.library_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         # Sets the range of the playback slider and sets the playback mode as looping
         self.slider.setRange(0, self.player.duration() / 1000)
@@ -80,6 +81,8 @@ class MusicPlayer(QMainWindow):
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.playlist_dock.dockLocationChanged.connect(self.dock_area_change)
         self.playlist_dock.topLevelChanged.connect(self.dock_area_floatable)
+        self.library_dock.dockLocationChanged.connect(self.dock_area_change)
+        self.library_dock.topLevelChanged.connect(self.dock_area_floatable)
         self.art.mousePressEvent = self.press_playback
 
         # Creating references to width and height of window when opened for use by dock widgets
