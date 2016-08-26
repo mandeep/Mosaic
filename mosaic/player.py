@@ -204,7 +204,7 @@ class MusicPlayer(QMainWindow):
         """Opens the selected file and adds it to a new playlist."""
 
         filename, ok = QFileDialog.getOpenFileName(
-            self, 'Open File', defaults.Settings().media_library_path(), 'Audio (*.mp3 *.flac)', '',
+            self, 'Open File', '', 'Audio (*.mp3 *.flac)', '',
             QFileDialog.ReadOnly)
         if ok:
             file_info = QFileInfo(filename).fileName()
@@ -220,7 +220,7 @@ class MusicPlayer(QMainWindow):
         """Opens the selected files and adds them to a new playlist."""
 
         filenames, ok = QFileDialog.getOpenFileNames(
-            self, 'Open Multiple Files', defaults.Settings().media_library_path(),
+            self, 'Open Multiple Files', '',
             'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
         if ok:
             self.playlist.clear()
@@ -238,7 +238,7 @@ class MusicPlayer(QMainWindow):
         content of the chosen playlist to playlist_view."""
 
         playlist, ok = QFileDialog.getOpenFileName(
-            self, 'Open Playlist', defaults.Settings().media_library_path(),
+            self, 'Open Playlist', '',
             'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
         if ok:
             playlist = QUrl.fromLocalFile(playlist)
@@ -258,7 +258,7 @@ class MusicPlayer(QMainWindow):
         the directory to an empty playlist."""
 
         directory = QFileDialog.getExistingDirectory(
-            self, 'Open Directory', defaults.Settings().media_library_path(), QFileDialog.ReadOnly)
+            self, 'Open Directory', '', QFileDialog.ReadOnly)
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
