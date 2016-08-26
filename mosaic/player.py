@@ -42,6 +42,7 @@ class MusicPlayer(QMainWindow):
         self.layout = QVBoxLayout(self.widget)
         self.about = about.AboutDialog()
         self.duration = 0
+        self.art.setMinimumSize(800, 800)
 
         # Sets QWidget() as the central widget of the main window
         self.setCentralWidget(self.widget)
@@ -77,6 +78,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.itemActivated.connect(self.playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
+        self.playlist_dock.topLevelChanged.connect(self.dock_area_change)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
@@ -436,6 +438,9 @@ class MusicPlayer(QMainWindow):
             file_path = None
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
+
+    def dock_area_change(self):
+        print("Hello")
 
 
 def main():
