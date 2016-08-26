@@ -302,7 +302,9 @@ class MusicPlayer(QMainWindow):
                     file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                        self.playlist_view.addItem(filename)
+                        playlist_item = QListWidgetItem(filename)
+                        playlist_item.setToolTip(filename)
+                        self.playlist_view.addItem(playlist_item)
 
         self.player.setPlaylist(self.playlist)
         self.player.play()
