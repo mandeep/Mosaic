@@ -51,14 +51,12 @@ class MusicPlayer(QMainWindow):
         # Initiates the playlist dock widget and the library dock widget
         self.addDockWidget(Qt.RightDockWidgetArea, self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
-        self.playlist_dock.setFloating(True)
         self.playlist_dock.resize(300, 800)
         self.playlist_dock.setVisible(False)
         self.playlist_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.library_dock)
         self.library_dock.setWidget(self.library_view)
-        self.library_dock.setFloating(True)
         self.library_dock.resize(400, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
         self.library_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
@@ -79,10 +77,8 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.itemActivated.connect(self.playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
-        self.playlist_dock.dockLocationChanged.connect(self.dock_area_change)
-        self.playlist_dock.topLevelChanged.connect(self.dock_area_floatable)
-        self.library_dock.dockLocationChanged.connect(self.dock_area_change)
-        self.library_dock.topLevelChanged.connect(self.dock_area_floatable)
+        self.playlist_dock.visibilityChanged.connect(self.dock_area_change)
+        self.library_dock.visibilityChanged.connect(self.dock_area_change)
         self.art.mousePressEvent = self.press_playback
 
         # Creating references to width and height of window when opened for use by dock widgets
@@ -447,13 +443,11 @@ class MusicPlayer(QMainWindow):
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
 
-    def dock_area_change(self, area):
-        if area in (1, 2):
-            self.resize(self.old_width + self.playlist_dock.width(), self.height())
-
-    def dock_area_floatable(self, boolean):
+    def dock_area_change(self, boolean):
         if boolean is True:
-            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+            self.resize(self.old_width + self.playlist_dock.width(), self.height())
+        elif boolean is False:
+            self.resize(self.old_width, self.old_height)
 
 
 def main():
