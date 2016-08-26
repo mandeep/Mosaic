@@ -411,8 +411,8 @@ class MusicPlayer(QMainWindow):
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def playlist_item(self, item):
-        """Changes the current media to the index of the media selected
-        in the playlist view by the user."""
+        """Allows the user to play a song in the playlist by double clicking that item. If
+        the media player is either paused or stopped, the song will start playing."""
 
         current_index = self.playlist_view.row(item)
         if self.playlist.currentIndex() != current_index:
