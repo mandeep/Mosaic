@@ -78,7 +78,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.itemActivated.connect(self.playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
-        self.playlist_dock.topLevelChanged.connect(self.dock_area_change)
+        self.playlist_dock.dockLocationChanged.connect(self.dock_area_change)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
@@ -439,8 +439,8 @@ class MusicPlayer(QMainWindow):
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
 
-    def dock_area_change(self):
-        print("Hello")
+    def dock_area_change(self, area):
+        print(area)
 
 
 def main():
@@ -456,3 +456,4 @@ def main():
     playlist.move(width + window.width(), height)
     media_library.move(width - media_library.width(), height)
     sys.exit(application.exec_())
+main()
