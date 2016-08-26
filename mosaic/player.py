@@ -418,6 +418,9 @@ class MusicPlayer(QMainWindow):
         if self.playlist.currentIndex() != current_index:
             self.playlist.setCurrentIndex(current_index)
 
+        if self.player.state() != QMediaPlayer.PlayingState:
+            self.player.play()
+
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
 
