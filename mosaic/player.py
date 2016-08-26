@@ -6,8 +6,8 @@ from PyQt5.QtCore import Qt, QFileInfo, QTime, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
-                             QLabel, QListWidget, QMainWindow, QSizePolicy, QSlider,
-                             QToolBar, QVBoxLayout, QWidget)
+                             QLabel, QListWidget, QListWidgetItem, QMainWindow, QSizePolicy,
+                             QSlider, QToolBar, QVBoxLayout, QWidget)
 import sys
 
 
@@ -214,11 +214,13 @@ class MusicPlayer(QMainWindow):
             QFileDialog.ReadOnly)
         if ok:
             file_info = QFileInfo(filename).fileName()
+            playlist_item = QListWidgetItem(file_info)
             self.playlist.clear()
             self.playlist_view.clear()
             self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
             self.player.setPlaylist(self.playlist)
-            self.playlist_view.addItem(file_info)
+            playlist_item.setToolTip(file_info)
+            self.playlist_view.addItem(playlist_item)
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
@@ -233,9 +235,11 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.clear()
             for file in natsort.natsorted(filenames, alg=natsort.ns.PATH):
                 file_info = QFileInfo(file).fileName()
+                playlist_item = QListWidgetItem(file_info)
                 self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
                 self.player.setPlaylist(self.playlist)
-                self.playlist_view.addItem(file_info)
+                playlist_item.setToolTip(file_info)
+                self.playlist_view.addItem(playlist_item)
                 self.playlist_view.setCurrentRow(0)
                 self.player.play()
 
@@ -254,8 +258,10 @@ class MusicPlayer(QMainWindow):
             self.player.setPlaylist(self.playlist)
 
             for song_index in range(self.playlist.mediaCount()+1):
-                song = self.playlist.media(song_index).canonicalUrl().fileName()
-                self.playlist_view.addItem(song)
+                file_info = self.playlist.media(song_index).canonicalUrl().fileName()
+                playlist_item = QListWidgetItem(file_info)
+                playlist_item.setToolTip(file_info)
+                self.playlist_view.addItem(playlist_item)
 
             self.player.play()
 
@@ -273,7 +279,9 @@ class MusicPlayer(QMainWindow):
                     file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
                         self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                        self.playlist_view.addItem(filename)
+                        playlist_item = QListWidgetItem(filename)
+                        playlist_item.setToolTip(filename)
+                        self.playlist_view.addItem(playlist_item)
 
             self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
