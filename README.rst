@@ -15,8 +15,9 @@ Mosaic is a cover art focused media player built with Python and the PyQt5 libra
 Features
 *********
 
-* Displays cover art meta data in the main window
+* Displays correctly scaled cover art meta data in the main window
 * Provides media information including bitrate, bits per sample, and sample rate
+* Media library and playlist browser for easy access listening
 * Supports FLAC and MP3 file formats
 
 *************
