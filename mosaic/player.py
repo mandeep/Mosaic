@@ -448,7 +448,7 @@ class MusicPlayer(QMainWindow):
         are opened. Reverts the main window back to its original size when both docks are closed."""
 
         if boolean is True:
-            self.resize(self.old_width + self.playlist_dock.width(), self.height())
+            self.resize(self.old_width + self.playlist_dock.width() + 6, self.height())
         elif boolean is False and not self.library_dock.isVisible() and not self.playlist_dock.isVisible():
             self.resize(self.old_width, self.old_height)
 
