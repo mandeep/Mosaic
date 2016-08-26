@@ -443,10 +443,10 @@ class MusicPlayer(QMainWindow):
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
 
-    def dock_area_change(self, boolean):
+    def dock_visiblity_change(self, boolean):
         if boolean is True:
             self.resize(self.old_width + self.playlist_dock.width(), self.height())
-        elif boolean is False:
+        elif boolean is False and not self.library_dock.isVisible() and not self.playlist_dock.isVisible():
             self.resize(self.old_width, self.old_height)
 
 
