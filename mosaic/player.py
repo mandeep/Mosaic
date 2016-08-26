@@ -54,6 +54,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_dock.setFloating(True)
         self.playlist_dock.resize(300, 800)
         self.playlist_dock.setVisible(False)
+        self.playlist_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.library_dock)
         self.library_dock.setWidget(self.library_view)
