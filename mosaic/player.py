@@ -77,8 +77,8 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.itemActivated.connect(self.playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
-        self.playlist_dock.visibilityChanged.connect(self.dock_area_change)
-        self.library_dock.visibilityChanged.connect(self.dock_area_change)
+        self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
+        self.library_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.art.mousePressEvent = self.press_playback
 
         # Creating references to width and height of window when opened for use by dock widgets
@@ -444,6 +444,9 @@ class MusicPlayer(QMainWindow):
         dialog.exec_()
 
     def dock_visiblity_change(self, boolean):
+        """Changes the size of the main window when either the playlist dock or media library dock
+        are opened. Reverts the main window back to its original size when both docks are closed."""
+
         if boolean is True:
             self.resize(self.old_width + self.playlist_dock.width(), self.height())
         elif boolean is False and not self.library_dock.isVisible() and not self.playlist_dock.isVisible():
