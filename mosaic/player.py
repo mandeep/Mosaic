@@ -438,6 +438,21 @@ class MusicPlayer(QMainWindow):
 
         self.playlist_view.setCurrentRow(row)
 
+    def dock_visiblity_change(self, visible):
+        """Changes the size of the main window when either the playlist dock or media library dock
+        are opened. Reverts the main window back to its original size when both docks are closed."""
+
+        if visible and self.playlist_dock.isVisible() and not self.library_dock.isVisible():
+            self.resize(defaults.Settings().window_size() + self.playlist_dock.width() + 6,
+                        self.height())
+
+        elif visible and not self.playlist_dock.isVisible() and self.library_dock.isVisible():
+            self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
+                        self.height())
+
+        elif not visible and not self.playlist_dock.isVisible() and not self.library_dock.isVisible():
+            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+
     def media_information_dialog(self):
         """If a song is currently playing, the file path of the song is sent to the
         media information dialog in order to show all of the avaialble metadata."""
@@ -448,21 +463,6 @@ class MusicPlayer(QMainWindow):
             file_path = None
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
-
-    def dock_visiblity_change(self, boolean):
-        """Changes the size of the main window when either the playlist dock or media library dock
-        are opened. Reverts the main window back to its original size when both docks are closed."""
-
-        if boolean is True and self.playlist_dock.isVisible() and not self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size() + self.playlist_dock.width() + 6,
-                        self.height())
-
-        elif boolean is True and not self.playlist_dock.isVisible() and self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
-                        self.height())
-
-        elif boolean is False and not self.playlist_dock.isVisible() and not self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
 
 def main():
