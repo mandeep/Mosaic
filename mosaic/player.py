@@ -78,6 +78,7 @@ class MusicPlayer(QMainWindow):
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.playlist_dock.dockLocationChanged.connect(self.dock_area_change)
+        self.playlist_dock.topLevelChanged.connect(self.dock_area_floatable)
         self.art.mousePressEvent = self.press_playback
 
         # Creating references to width and height of window when opened for use by dock widgets
@@ -445,8 +446,10 @@ class MusicPlayer(QMainWindow):
     def dock_area_change(self, area):
         if area in (1, 2):
             self.resize(self.old_width + self.playlist_dock.width(), self.height())
-        if area in (4, 8):
-            self.resize(self.width(), self.old_height + self.playlist_dock.height())
+
+    def dock_area_floatable(self, boolean):
+        if boolean is True:
+            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
 
 def main():
