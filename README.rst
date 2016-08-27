@@ -48,7 +48,7 @@ Changelog
 *********
 
 
-To see the Mosaic changelog, click here_.
+To see the Mosaic change log, click here_.
 
 
 .. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
