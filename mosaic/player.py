@@ -192,6 +192,7 @@ class MusicPlayer(QMainWindow):
 
         self.view.addAction(self.dock_action)
         self.view.addAction(self.library_dock_action)
+        self.view.addSeparator()
         self.view.addAction(self.view_media_info_action)
 
     def help_menu(self):
