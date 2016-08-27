@@ -64,4 +64,4 @@ To see the Mosaic changelog, click here_.
 .. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 
-.. _here: https://github.com/mandeepbhutani/Mosaic/CHANGELOG.rst
+.. _here: https://github.com/mandeepbhutani/Mosaic/blob/master/CHANGELOG.rst
