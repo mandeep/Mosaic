@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New CHANGELOG that describes changes between versions
 -  Added CHANGELOG link in README
@@ -18,7 +18,7 @@ Added
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Playlist items now have tooltips
 
@@ -26,19 +26,19 @@ Added
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Uploaded license to repository
 -  Window now resizes to fit media library and playlist docks so that cover art size remains the same
 -  New screenshots that showcase new features
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Items in media library browser and playlist dock now require double click to play
 
 Removed
-~~~~~~~
+^^^^^^^
 
 -  Removed setting for recursive directories as the setting is now default behavior
 -  Removed media library from file dialogs now that media library browser has been added
@@ -47,13 +47,13 @@ Removed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 - New setting that allows user to show media library on startup
 - More unit tests
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Refactored code into separate modules to increase readability
 
@@ -62,7 +62,7 @@ Changed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  63 pixels added to window height to account for menubar and toolbar pixels
 
@@ -70,13 +70,13 @@ Added
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New tab on media information dialog that shows all metadata extracted from current media
 -  New media library file browser
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  README install instructions now use pip3 instead of pip
 
@@ -84,21 +84,21 @@ Changed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New badges for PyPI version and License
 -  README now displays features
 
 0.12.3 - 2016-08-19
-------------------~
+-------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Widgets now added to Qtbot for proper closing during tests
 
 Fixed
-~~~~~
+^^^^^
 
 -  Fixed issue where player would crash if user settings file was missing settings
 
@@ -106,7 +106,7 @@ Fixed
 -------------------
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Rewrote tests to use Pytest fixtures
 
@@ -114,7 +114,7 @@ Changed
 -------------------
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Unit tests now use real audio files
 
@@ -122,18 +122,18 @@ Changed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New setting that allows user to change window size
 
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Audio files opened are now naturally sorted in playlist
 
 Fixed
-~~~~~
+^^^^^
 
 -  Fixed issue with MP3 cover art not being extracted from audio file
 
@@ -141,12 +141,12 @@ Fixed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New unit tests
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Refactored recursive open directory item
 -  File dialogs are now read only
@@ -155,7 +155,7 @@ Changed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New header image for README
 
@@ -163,7 +163,7 @@ Added
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Travis CI, Coveralls, and PyPI badges in README
 -  More unit tests for media player
@@ -171,12 +171,12 @@ Added
 -  PyPI install instructions in README
 
 Fixed
-~~~~~
+^^^^^
 
 -  Refactored QUrl().path() to QUrl().toLocalFile() for true file path discovery
 
 Removed
-~~~~~~~
+^^^^^^^
 
 -  MANIFEST.in
 
@@ -184,7 +184,7 @@ Removed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Link to PyQt5 download page in install instructions
 -  Unit tests for media player
@@ -194,14 +194,14 @@ Added
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Media information dialog that displays current media metadata
 -  Keyboard shortcut to about dialog
 -  Keyboard shortcut to media information dialog
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Set media library text box now read only
 
@@ -209,13 +209,13 @@ Changed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New method to check for settings file in user config directory
 -  New open playlist item in file menu
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Package renamed from 'player' to 'mosaic'
 -  Settings file now created on application open
@@ -223,7 +223,7 @@ Changed
 -  Changed how mutagen extracts metadata from MP3 files
 
 Fixed
-~~~~~
+^^^^^
 
 -  Fixed issue with TOML file not reading in correctly
 
@@ -231,7 +231,7 @@ Fixed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Playlist dock selects index 0 when media added
 -  New docstrings for MusicPlayer class and its methods
@@ -243,7 +243,7 @@ Added
 -  Mutagen, pytoml, and appdirs listed as requirements in setup.py
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Moved configuration page signal to __init__ 
 
@@ -251,7 +251,7 @@ Changed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New edit menu with preferences item
 -  Configuration dialog for user preferences
@@ -261,14 +261,14 @@ Added
 -  New signal for playlist dock to change index of item according to index of media playlist
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Refactored window title metadata code block for reduced redundancy
 -  Rearranged imports in alphabetical order
 -  Replaced Object.__init with super()
 
 Fixed
-~~~~~
+^^^^^
 
 -  Refactored open directory to eliminate directories being opened twice
 -  Fixed issue where current media would restart when playlist dock clicked
@@ -277,7 +277,7 @@ Fixed
 -------------------
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Playlist dock now only shows filenames of media in current playlist
 
@@ -285,7 +285,7 @@ Changed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  statusChanged signal changes toolbar icon according to playback
 -  New screenshots that showcase updated icons
@@ -301,7 +301,7 @@ Added
 
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Repeat button now repeats current media instead of repeating current playlist
 -  repeat_song docstring changed to match new repeat action
@@ -310,13 +310,13 @@ Changed
 -  Renamed open file methods to be more descriptive
 
 Fixed
-~~~~~
+^^^^^
 
 -  Fixed typo in getOpenFileNames dialog filter so that MP3 and FLAC filetypes show
 -  Current playlist now clears when directory opened
 
 Removed
-~~~~~~~
+^^^^^^^
 
 -  Status tips as there is no status bar
 -  include_package_data removed from setup.py
@@ -326,7 +326,7 @@ Removed
 ------------------
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Switched toolbar icons from system icons to Google Material Design icons
 
@@ -334,7 +334,7 @@ Changed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Import QDesktopWidget in order to move application to center of user's screen
 
@@ -342,7 +342,7 @@ Added
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Horizontal slider on media toolbar
 -  New signals to track position and duration of current media
@@ -354,7 +354,7 @@ Added
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New screenshots that show new metadata features
 -  Line breaks in code for increased readability
@@ -362,12 +362,12 @@ Added
 -  Audio files without metadata return ?? in lieu of metadata
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  FLAC metadata extraction changed from album artist to artist
 
 Fixed
-~~~~~
+^^^^^
 
 -  Search for keys containing 'APIC' in MP3 audio files instead of 'APIC' key
 
@@ -375,7 +375,7 @@ Fixed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Installation instructions, usage documentation, and screenshot of media player in README
 -  Set cover art to scale to window size
@@ -387,13 +387,13 @@ Added
 -  Media player responds to playback events when user clicks on cover art
 
 Changed
-~~~~~~~
+^^^^^^^
 
 -  Window resized to deal with cover art cutoff issues
 -  Refactored metadata extraction code to reduce redundancy
 
 Removed
-~~~~~~~
+^^^^^^^
 
 -  Filetype removed from QByteArray in order to append both 'jpg' and 'png' cover art data
 
@@ -402,14 +402,14 @@ Removed
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  __main__.py for Python discovery
 -  File loaded into music player only if user selects 'OK'
 -  Cover art and other meta data extracted from current media with mutagen library
 
 Removed
-~~~~~~~
+^^^^^^^
 
 -  PyQt5 from setup.py. Package must be installed independently
 -  Unused imports from main application
@@ -419,7 +419,7 @@ Removed
 -------------------
 
 Added
-~~~~~
+^^^^^
 
 -  New menubar on application window
 -  Setup.py with entrypoint for easy installation and use
@@ -430,7 +430,7 @@ Added
 ------------------
 
 Added
-~~~~~
+^^^^^
 
 -  Basic Music Player application built with PyQt5
 -  Empty README
