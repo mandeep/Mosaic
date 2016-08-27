@@ -60,6 +60,7 @@ class MusicPlayer(QMainWindow):
         self.library_dock.resize(400, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
         self.library_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.tabifyDockWidget(self.playlist_dock, self.library_dock)
 
         # Sets the range of the playback slider and sets the playback mode as looping
         self.slider.setRange(0, self.player.duration() / 1000)
