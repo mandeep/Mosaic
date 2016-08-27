@@ -17,30 +17,30 @@ Added
 
 
 0.14.1 - 2016-08-26
--------------------
+===================
 
 Added
-^^^^^
+-----
 
 -  Playlist items now have tooltips
 
 0.14.0 - 2016-08-25
--------------------
+===================
 
 Added
-^^^^^
+-----
 
 -  Uploaded license to repository
 -  Window now resizes to fit media library and playlist docks so that cover art size remains the same
 -  New screenshots that showcase new features
 
 Changed
-^^^^^^^
+-------
 
 -  Items in media library browser and playlist dock now require double click to play
 
 Removed
-^^^^^^^
+-------
 
 -  Removed setting for recursive directories as the setting is now default behavior
 -  Removed media library from file dialogs now that media library browser has been added
