@@ -21,7 +21,7 @@ install:
   - pip install pytest-xvfb
   - pip install pytest-faulthandler
 script:
-  - py.test -s -v --cov=./
+  - py.test -s -v -x --cov=./
 after_success:
   - coveralls
   - codecov
