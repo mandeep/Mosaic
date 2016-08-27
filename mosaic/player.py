@@ -309,6 +309,9 @@ class MusicPlayer(QMainWindow):
                         self.playlist_view.addItem(playlist_item)
 
         self.player.setPlaylist(self.playlist)
+        self.playlist_dock.setVisible(True)
+        self.playlist_dock.show()
+        self.playlist_dock.raise_()
         self.player.play()
 
     def display_meta_data(self):
