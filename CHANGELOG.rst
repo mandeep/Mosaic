@@ -53,12 +53,6 @@ Added
 - New setting that allows user to show media library on startup
 - More unit tests
 
-Changed
-^^^^^^^
-
--  Refactored code into separate modules to increase readability
-
-
 0.13.1 - 2016-08-23
 -------------------
 
@@ -149,7 +143,6 @@ Added
 Changed
 ^^^^^^^
 
--  Refactored recursive open directory item
 -  File dialogs are now read only
 
 0.11.3 - 2016-08-14
@@ -235,7 +228,6 @@ Added
 ^^^^^
 
 -  Playlist dock selects index 0 when media added
--  New docstrings for MusicPlayer class and its methods
 -  New media library path setting in preferences
 -  Keyboard shortcut for playlist dock
 -  New window title and icon for about dialog
@@ -260,13 +252,6 @@ Added
 -  Settings file in TOML format
 -  New window icon for preferences dialog
 -  New signal for playlist dock to change index of item according to index of media playlist
-
-Changed
-^^^^^^^
-
--  Refactored window title metadata code block for reduced redundancy
--  Rearranged imports in alphabetical order
--  Replaced Object.__init with super()
 
 Fixed
 ^^^^^
@@ -300,28 +285,16 @@ Added
 -  Capability to open directory
 -  New help menu with about item
 
-
 Changed
 ^^^^^^^
 
 -  Repeat button now repeats current media instead of repeating current playlist
--  repeat_song docstring changed to match new repeat action
--  Metadata code block now tries to identify filetype with string.endswith() method
--  Global filename variable changed to a local variable for each open dialog
--  Renamed open file methods to be more descriptive
 
 Fixed
 ^^^^^
 
 -  Fixed typo in getOpenFileNames dialog filter so that MP3 and FLAC filetypes show
 -  Current playlist now clears when directory opened
-
-Removed
-^^^^^^^
-
--  Status tips as there is no status bar
--  include_package_data removed from setup.py
-
 
 0.6.2 - 2016-08-04
 ------------------
@@ -348,7 +321,6 @@ Added
 -  Horizontal slider on media toolbar
 -  New signals to track position and duration of current media
 -  Exit application item in file menu
--  Docstrings written for new methods
 -  New screenshots showcasing horizontal slider
 
 0.5.0 - 2016-07-28
@@ -358,7 +330,6 @@ Added
 ^^^^^
 
 -  New screenshots that show new metadata features
--  Line breaks in code for increased readability
 -  Track number now shows in window title
 -  Audio files without metadata return ?? in lieu of metadata
 
@@ -381,7 +352,6 @@ Added
 -  Installation instructions, usage documentation, and screenshot of media player in README
 -  Set cover art to scale to window size
 -  New window icon
--  Methods now contain docstrings
 -  Blank cover image if no cover art found in media
 -  README states which file formats are supported
 -  Window title changes to include meta data of media currently playing
@@ -391,7 +361,6 @@ Changed
 ^^^^^^^
 
 -  Window resized to deal with cover art cutoff issues
--  Refactored metadata extraction code to reduce redundancy
 
 Removed
 ^^^^^^^
@@ -406,15 +375,17 @@ Added
 ^^^^^
 
 -  __main__.py for Python discovery
--  File loaded into music player only if user selects 'OK'
 -  Cover art and other meta data extracted from current media with mutagen library
+
+Changed
+^^^^^^^
+
+-  File loaded into music player only if user selects 'OK'
 
 Removed
 ^^^^^^^
 
 -  PyQt5 from setup.py. Package must be installed independently
--  Unused imports from main application
-
 
 0.2.0 - 2016-07-23
 -------------------
@@ -425,7 +396,6 @@ Added
 -  New menubar on application window
 -  Setup.py with entrypoint for easy installation and use
 -  Added QMediaPlaylist for playlist capability
-
 
 0.1.0 - 2016-07-18
 ------------------
