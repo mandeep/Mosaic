@@ -10,10 +10,12 @@ All notable changes to this project will be documented in this file.
 Added
 -----
 
+-  Playlist and media library docks now shown in tabs by default when both are open
 -  New CHANGELOG that describes changes between versions
 -  CHANGELOG link in README
 -  Test requirements in requirements folder
 -  Dependency CI and software status badge to README
+-  Separator added in view menu between docks and media information
 
 
 0.14.1 - 2016-08-26
