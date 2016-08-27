@@ -43,9 +43,9 @@ Mosaic can be run with the following command::
 
     mosaic
 
-*********
-Changelog
-*********
+***********
+Change Log
+***********
 
 
 To see the Mosaic change log, click here_.
