@@ -43,6 +43,14 @@ Mosaic can be run with the following command::
 
     mosaic
 
+*********
+Changelog
+*********
+
+
+To see the Mosaic changelog, click here_.
+
+
 .. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
     :target: https://travis-ci.org/mandeepbhutani/Mosaic
 .. |coverage| image:: https://img.shields.io/coveralls/mandeepbhutani/Mosaic/master.svg
@@ -55,3 +63,5 @@ Mosaic can be run with the following command::
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
+
+.. _here: https://github.com/mandeepbhutani/Mosaic/CHANGELOG.rst
