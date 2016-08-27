@@ -1,13 +1,14 @@
+##########
 Change Log
-==========
+##########
 
 All notable changes to this project will be documented in this file.
 
 0.14.2 - 2016-08-27
--------------------
+===================
 
 Added
-^^^^^
+-----
 
 -  New CHANGELOG that describes changes between versions
 -  CHANGELOG link in README
