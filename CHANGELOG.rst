@@ -11,6 +11,8 @@ Added
 
 -  New CHANGELOG that describes changes between versions
 -  Added CHANGELOG link in README
+-  Added test requirements
+-  Added Dependency CI badge to README
 
 0.14.1 - 2016-08-26
 -------------------
