@@ -19,6 +19,8 @@ def window(qtbot):
 
 @pytest.fixture
 def file_config(qtbot):
+    """Returns an instance of the File Options configuration page that can be
+    passed as an argument to the unit tests."""
     config = configuration.FileOptions()
     qtbot.add_widget(config)
     return config
@@ -26,12 +28,16 @@ def file_config(qtbot):
 
 @pytest.fixture
 def flac_file():
+    """Returns a resource of the test FLAC file that can be passed as an argument
+    to the unit tests."""
     file = pkg_resources.resource_filename('mosaic.tests', '02_Ghosts_I.flac')
     return file
 
 
 @pytest.fixture
 def mp3_file():
+    """Returns a resource of the test MP3 file that can be passed as an argument
+    to the unit tests. """
     file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
     return file
 
