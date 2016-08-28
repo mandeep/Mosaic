@@ -37,7 +37,7 @@ def flac_file():
 @pytest.fixture
 def mp3_file():
     """Returns a resource of the test MP3 file that can be passed as an argument
-    to the unit tests. """
+    to the unit tests."""
     file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
     return file
 
