@@ -24,6 +24,7 @@ deploy:
       MUN1UVd1bEs5eFdQVmRmbTArdmpqcVBIUXhOZXVONnpXMnUxOThXdHR1bU95d3k4MytHZDBsWHc9
   true:
     branch: master
+  distributions: "sdist bdist_wheel"
 dist: trusty
 install:
 - python setup.py install
