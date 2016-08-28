@@ -6,6 +6,8 @@ before_install:
 - sudo apt-get update
 - sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
 deploy:
+  provider: pypi
+  user: mandeepb
   password:
     secure: !!binary |
       S3lzMHdmTXY0YitxeWlBYThkZjlaay9MbXFLdFBzcVZnLy9sdHhJNHluakVqR29sSlhwY3RZZ0pT
@@ -20,8 +22,6 @@ deploy:
       N2lqbkFTM0pEWUtDUWxyY2hyelZRYlBoZy9zNmQ4a2ZqQ25pV3B2clE4K1RMZmJNNGpTMFhNMXJY
       UTJ6V0ZuL2RMWW96OUFtSWMvd2VQQnZuazlQVTZCRytocmtOaW9mOXJuT1ByN1pRTlJPLzRPZkIz
       eVZMTTJWM2ErQW14VUs4dmFsRGFCZXhnbENhMXNDSUMyQTVucnd4OTdHRHBTQjdsejBxQ2FlQ2M9
-  provider: pypi
-  user: mandeepb
   on:
     branch: master
 dist: trusty
