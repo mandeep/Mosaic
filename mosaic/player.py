@@ -299,7 +299,7 @@ class MusicPlayer(QMainWindow):
 
         elif self.library_model.isDir(index):
             directory = self.library_model.filePath(index)
-            for dirpath, dirnames, files in os.walk(directory):
+            for dirpath, __, files in os.walk(directory):
                 for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
                     file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
