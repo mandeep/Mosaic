@@ -16,7 +16,7 @@ class GeneralInformation(QWidget):
 
         if file is not None:
             (album, artist, title, track_number, date, genre, description, sample_rate,
-             bitrate, bitrate_mode, bits_per_sample, artwork) = metadata.metadata(file)
+             bitrate, bitrate_mode, bits_per_sample, *__) = metadata.metadata(file)
 
             artist_label = QLabel('Artist', self)
             artist_label.setStyleSheet('font-weight: bold')
