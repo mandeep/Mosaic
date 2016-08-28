@@ -29,6 +29,7 @@ class MusicPlayer(QMainWindow):
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.content = QMediaContent()
+        self.menu = self.menuBar()
         self.art = QLabel()
         self.pixmap = QPixmap()
         self.slider = QSlider(Qt.Horizontal)
@@ -89,7 +90,6 @@ class MusicPlayer(QMainWindow):
     def menu_controls(self):
         """Initiates the menu bar and adds it to the QMainWindow widget."""
 
-        self.menu = self.menuBar()
         self.file = self.menu.addMenu('File')
         self.edit = self.menu.addMenu('Edit')
         self.view = self.menu.addMenu('View')
