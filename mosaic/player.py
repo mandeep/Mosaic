@@ -321,8 +321,7 @@ class MusicPlayer(QMainWindow):
 
         if self.player.isMetaDataAvailable():
             file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
-            (album, artist, title, track_number, date, genre, description, sample_rate,
-             bitrate, bitrate_mode, bits_per_sample, artwork) = metadata.metadata(file_path)
+            (album, artist, title, track_number, *__, artwork) = metadata.metadata(file_path)
 
             try:
                 self.pixmap.loadFromData(artwork)
