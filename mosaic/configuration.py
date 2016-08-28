@@ -189,9 +189,10 @@ class PreferencesDialog(QDialog):
         self.setWindowTitle('Preferences')
         settings_icon = pkg_resources.resource_filename('mosaic.images', 'md_settings.png')
         self.setWindowIcon(QIcon(settings_icon))
-        self.setFixedSize(800, 700)
+        self.resize(600, 450)
 
         self.contents = QListWidget()
+        self.contents.setFixedWidth(175)
         self.pages = QStackedWidget()
 
         self.pages.addWidget(MediaLibrary())
@@ -200,7 +201,7 @@ class PreferencesDialog(QDialog):
 
         layout = QHBoxLayout()
         layout.addWidget(self.contents)
-        layout.addWidget(self.pages, 1)
+        layout.addWidget(self.pages)
 
         self.setLayout(layout)
 
