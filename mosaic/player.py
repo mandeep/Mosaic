@@ -326,7 +326,7 @@ class MusicPlayer(QMainWindow):
 
             try:
                 self.pixmap.loadFromData(artwork)
-            except:
+            except TypeError:
                 self.pixmap = QPixmap(artwork)
 
             meta_data = '{} - {} - {} - {}' .format(
