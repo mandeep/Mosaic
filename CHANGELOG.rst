@@ -4,18 +4,53 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+Unreleased
+==========
+
+Additions
+---------
+
+-  Preference to specify which side of the application the playlist and
+   media library docks should reside
+-  Preference to show playlist dock on startup
+-  Application specific right-click context menu
+-  Optional status bar with information pertaining to playlist items
+-  Toggle option for minimalistic view that only shows media controls
+-  Preference to restart current song when previous button clicked
+-  Search bar in media library dock
+
+Changes
+-------
+
+-  Playlist and media library docks will not be floatable or movable
+-  Stylized about dialog
+-  Rename Window Options in preferences menu to View Options
+-  Move Media Library checkbox to View Options
+
+0.14.3 - 2016-08-28
+===================
+
+Changed
+-------
+
+-  Preferences dialog size now smaller
+
 0.14.2 - 2016-08-27
 ===================
 
 Added
 -----
 
--  Playlist and media library docks now shown in tabs by default when both are open
 -  New CHANGELOG that describes changes between versions
 -  CHANGELOG link in README
 -  Test requirements in requirements folder
 -  Dependency CI and software status badge to README
 -  Separator added in view menu between docks and media information
+
+Changed
+-------
+
+-  Playlist and media library docks now shown in tabs by default when both are open
 
 
 0.14.1 - 2016-08-26
@@ -54,7 +89,6 @@ Added
 -----
 
 - New setting that allows user to show media library on startup
-- More unit tests
 
 0.13.1 - 2016-08-23
 ===================
@@ -84,16 +118,10 @@ Changed
 Added
 -----
 
--  New badges for PyPI version and License
 -  README now displays features
 
 0.12.3 - 2016-08-19
 ===================
-
-Added
------
-
--  Widgets now added to Qtbot for proper closing during tests
 
 Fixed
 -----
@@ -138,11 +166,6 @@ Fixed
 0.11.4 - 2016-08-15
 ===================
 
-Added
------
-
--  New unit tests
-
 Changed
 -------
 
@@ -162,20 +185,12 @@ Added
 Added
 -----
 
--  Travis CI, Coveralls, and PyPI badges in README
--  More unit tests for media player
--  More metadata in setup.py
 -  PyPI install instructions in README
 
 Fixed
 -----
 
 -  Refactored QUrl().path() to QUrl().toLocalFile() for true file path discovery
-
-Removed
--------
-
--  MANIFEST.in
 
 0.11.1 - 2016-08-12
 ===================
@@ -184,8 +199,6 @@ Added
 -----
 
 -  Link to PyQt5 download page in install instructions
--  Unit tests for media player
--  Continuous integration with Travis CI 
 
 0.11.0 - 2016-08-10
 ===================
@@ -208,16 +221,14 @@ Changed
 Added
 -----
 
--  New method to check for settings file in user config directory
+-  Check for settings file in user config directory
 -  New open playlist item in file menu
 
 Changed
 -------
 
--  Package renamed from 'player' to 'mosaic'
 -  Settings file now created on application open
 -  Settings file now uses nested settings for increased readability
--  Changed how mutagen extracts metadata from MP3 files
 
 Fixed
 -----
@@ -234,14 +245,8 @@ Added
 -  New media library path setting in preferences
 -  Keyboard shortcut for playlist dock
 -  New window title and icon for about dialog
--  Packages names added to setup.py
 -  Imported pkg_resources in order for resources to be correctly shown to users
--  Mutagen, pytoml, and appdirs listed as requirements in setup.py
 
-Changed
--------
-
--  Moved configuration page signal to __init__ 
 
 0.8.0 - 2016-08-07
 ==================
@@ -360,16 +365,12 @@ Added
 -  Window title changes to include meta data of media currently playing
 -  Media player responds to playback events when user clicks on cover art
 
-Changed
--------
+
+Fixed
+-----
 
 -  Window resized to deal with cover art cutoff issues
-
-Removed
--------
-
 -  Filetype removed from QByteArray in order to append both 'jpg' and 'png' cover art data
-
 
 0.3.0 - 2016-07-23
 ==================
