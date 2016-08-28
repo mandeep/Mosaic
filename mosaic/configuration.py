@@ -127,7 +127,7 @@ class WindowOptions(QWidget):
         window_config = QGroupBox("Window Configuration")
 
         size_option = QLabel('Window Size', self)
-       
+
         self.dropdown_box = QComboBox()
         self.dropdown_box.addItem('900 x 900')
         self.dropdown_box.addItem('800 x 800')
