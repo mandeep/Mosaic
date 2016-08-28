@@ -470,15 +470,13 @@ class MusicPlayer(QMainWindow):
 
 
 def main():
+    """Creates an instance of the music player and uses QApplication to create the GUI.
+    QDesktopWidget() is used to move the application to the center of the user's screen."""
     application = QApplication(sys.argv)
     window = MusicPlayer()
-    playlist = window.playlist_dock
-    media_library = window.library_dock
     desktop = QDesktopWidget().availableGeometry()
     width = (desktop.width() - window.width()) / 2
     height = (desktop.height() - window.height()) / 2
     window.show()
     window.move(width, height)
-    playlist.move(width + window.width(), height)
-    media_library.move(width - media_library.width(), height)
     sys.exit(application.exec_())
