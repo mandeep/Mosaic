@@ -27,6 +27,14 @@ Changes
 -  Rename Window Options in preferences menu to View Options
 -  Move Media Library checkbox to View Options
 
+0.14.4 - 2016-08-28
+===================
+
+Fixed
+-----
+
+-  Fixed issue with travis building from source rather than wheel
+
 0.14.3 - 2016-08-28
 ===================
 
