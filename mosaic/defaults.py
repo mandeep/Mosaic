@@ -27,6 +27,42 @@ class Settings(object):
             with open(self.config_path, 'a') as new_config_file:
                 new_config_file.write(config)
 
+    def media_library_path(self):
+        """Sets the user defined media library path as the default path
+        in file dialogs."""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        return config['media_library']['media_library_path']
+
+    def media_library_on_start(self):
+        """Checks the state of the media library view checkbox in settings.toml and returns this
+        state for use by the Music Player application."""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            checkbox_state = config['media_library']['show_on_start']
+        except KeyError:
+            checkbox_state = False
+
+        return checkbox_state
+
+    def playlist_on_start(self):
+        """"""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            checkbox_state = config['playlist']['show_on_start']
+        except KeyError:
+            checkbox_state = False
+
+        return checkbox_state
+
     def window_size(self):
         """Sets the user defined window size as the size of the current window. The
         sizes list contains widths from 900 to 400. Because the width of the window
@@ -45,26 +81,3 @@ class Settings(object):
             size = 900
 
         return size
-
-    def media_library_on_start(self):
-        """Checks the state of the media library view checkbox in settings.toml and returns this
-        state for use by the Music Player application."""
-
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            checkbox_state = config['media_library']['show_on_start']
-        except KeyError:
-            checkbox_state = False
-
-        return checkbox_state
-
-    def media_library_path(self):
-        """Sets the user defined media library path as the default path
-        in file dialogs."""
-
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['media_library']['media_library_path']
