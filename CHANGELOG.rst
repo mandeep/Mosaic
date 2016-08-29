@@ -12,7 +12,6 @@ Additions
 
 -  Preference to specify which side of the application the playlist and
    media library docks should reside
--  Preference to show playlist dock on startup
 -  Application specific right-click context menu
 -  Optional status bar with information pertaining to playlist items
 -  Toggle option for minimalistic view that only shows media controls
@@ -24,8 +23,20 @@ Changes
 
 -  Playlist and media library docks will not be floatable or movable
 -  Stylized about dialog
--  Rename Window Options in preferences menu to View Options
--  Move Media Library checkbox to View Options
+
+0.15.0 - 2016-08-29
+===================
+
+Added
+-----
+
+-  Preference to show playlist dock on startup
+
+Changed
+-------
+
+-  Renamed Window Options in preferences menu to View Options
+-  Moved Media Library on Start checkbox to View Options
 
 0.14.4 - 2016-08-28
 ===================
