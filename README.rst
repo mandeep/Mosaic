@@ -26,13 +26,13 @@ Mosaic requires Python and the PyQt5 library installed locally. For PyQt5 instal
 
 With your environment set, simply run the following command to install Mosaic::
 
-    pip3 install mosaic-music
+    $ pip3 install mosaic-music
 
 If you would rather install from source, run the following commands::
 
-    git clone https://github.com/mandeepbhutani/Mosaic.git
-    cd Mosaic
-    python setup.py install
+    $ git clone https://github.com/mandeepbhutani/Mosaic.git
+    $ cd Mosaic
+    $ python setup.py install
 
 
 ******
@@ -41,7 +41,7 @@ Usage
 
 Mosaic can be run with the following command::
 
-    mosaic
+    $ mosaic
 
 ***********
 Change Log
