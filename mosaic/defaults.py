@@ -51,7 +51,8 @@ class Settings(object):
         return checkbox_state
 
     def playlist_on_start(self):
-        """"""
+        """Checks the state of the playlist view checkbox in settings.toml and returns this
+        state for use by the Music Player application."""
 
         with open(self.config_path) as conffile:
             config = pytoml.load(conffile)
