@@ -90,11 +90,13 @@ class ViewOptions(QWidget):
         dock_config = QGroupBox('Dock Configuration')
 
         self.media_library_view_button = QCheckBox('Show Media Library on Start', self)
-        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
-        media_library_view_layout = QHBoxLayout()
-        media_library_view_layout.addWidget(self.media_library_view_button)
+        self.playlist_view_button = QCheckBox('Show Playlist on Start', self)
 
-        dock_config.setLayout(media_library_view_layout)
+        dock_layout = QVBoxLayout()
+        dock_layout.addWidget(self.media_library_view_button)
+        dock_layout.addWidget(self.playlist_view_button)
+
+        dock_config.setLayout(dock_layout)
 
         window_config = QGroupBox("Window Configuration")
 
@@ -122,8 +124,11 @@ class ViewOptions(QWidget):
 
         self.check_window_size()
         self.check_media_library()
+        self.check_playlist_dock()
 
         self.dropdown_box.currentIndexChanged.connect(self.change_size)
+        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
+        self.playlist_view_button.clicked.connect(self.playlist_view_settings)
 
     def change_size(self):
         """Records the change in window size to the settings.toml file."""
@@ -178,6 +183,34 @@ class ViewOptions(QWidget):
         except KeyError:
             self.media_library_view_button.setChecked(False)
 
+    def playlist_view_settings(self):
+        """This setting changes the behavior of the Playlist dock widget.
+        The default setting hides the dock on application start. With this option
+        checked, the playlist dock will show on start."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        if self.playlist_view_button.isChecked():
+            config.setdefault('playlist', {})['show_on_start'] = True
+
+        elif not self.playlist_view_button.isChecked():
+            config.setdefault('playlist', {})['show_on_start'] = False
+
+        with open(settings_stream, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_playlist_dock(self):
+        """Retrieves the playlist dock checkbox state from settings.toml and sets the
+        state of the checkbox accordingly."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
+        except KeyError:
+            self.playlist_view_button.setChecked(False)
 
 
 class PreferencesDialog(QDialog):
