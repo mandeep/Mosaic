@@ -53,7 +53,7 @@ class MusicPlayer(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
         self.playlist_dock.resize(300, 800)
-        self.playlist_dock.setVisible(False)
+        self.playlist_dock.setVisible(defaults.Settings().playlist_on_start())
         self.playlist_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.library_dock)
@@ -454,6 +454,10 @@ class MusicPlayer(QMainWindow):
             self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
                         self.height())
 
+        elif visible and self.playlist_dock.isVisible() and self.library_dock.isVisible():
+            self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
+                        self.height())
+
         elif not visible and not self.playlist_dock.isVisible() and not self.library_dock.isVisible():
             self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
@@ -480,4 +484,3 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
-main()
