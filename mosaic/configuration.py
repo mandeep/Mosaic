@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QFileDialog, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QListWidget,
-                             QListWidgetItem, QPushButton, QStackedWidget,
+                             QListWidgetItem, QPushButton, QRadioButton, QStackedWidget,
                              QVBoxLayout, QWidget)
 
 
@@ -92,11 +92,23 @@ class ViewOptions(QWidget):
         self.media_library_view_button = QCheckBox('Show Media Library on Start', self)
         self.playlist_view_button = QCheckBox('Show Playlist on Start', self)
 
-        dock_layout = QVBoxLayout()
-        dock_layout.addWidget(self.media_library_view_button)
-        dock_layout.addWidget(self.playlist_view_button)
+        dock_start_layout = QVBoxLayout()
+        dock_start_layout.addWidget(self.media_library_view_button)
+        dock_start_layout.addWidget(self.playlist_view_button)
 
-        dock_config.setLayout(dock_layout)
+        self.dock_position = QLabel('Dock Position:')
+        self.dock_left_side = QRadioButton('Left Side')
+        self.dock_right_side = QRadioButton('Right Side')
+
+        dock_position_layout = QHBoxLayout()
+        dock_position_layout.addWidget(self.dock_position)
+        dock_position_layout.addWidget(self.dock_left_side)
+        dock_position_layout.addWidget(self.dock_right_side)
+
+        main_dock_layout = QVBoxLayout()
+        main_dock_layout.addLayout(dock_start_layout)
+        main_dock_layout.addLayout(dock_position_layout)
+        dock_config.setLayout(main_dock_layout)
 
         window_config = QGroupBox("Window Configuration")
 
