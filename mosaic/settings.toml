@@ -13,3 +13,7 @@ window_size = 0
 media_library_path = ""
 
 show_on_start = false
+
+[playlist]
+
+show_on_start = false
