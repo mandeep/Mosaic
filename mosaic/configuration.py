@@ -113,13 +113,13 @@ class MediaLibrary(QWidget):
             self.media_library_view_button.setChecked(False)
 
 
-class WindowOptions(QWidget):
+class ViewOptions(QWidget):
     """Contains all of the user configurable options related to the window functionality
     of the music player."""
 
     def __init__(self, parent=None):
         """Initiates the View Options page in the preferences dialog."""
-        super(WindowOptions, self).__init__(parent)
+        super(ViewOptions, self).__init__(parent)
 
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
@@ -196,7 +196,7 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
 
         self.pages.addWidget(MediaLibrary())
-        self.pages.addWidget(WindowOptions())
+        self.pages.addWidget(ViewOptions())
         self.list_items()
 
         layout = QHBoxLayout()
@@ -216,7 +216,7 @@ class PreferencesDialog(QDialog):
         self.contents.setCurrentRow(0)
 
         window_options = QListWidgetItem(self.contents)
-        window_options.setText('Window Options')
+        window_options.setText('View Options')
         window_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def change_page(self, current, previous):
