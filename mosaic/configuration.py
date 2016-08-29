@@ -28,10 +28,7 @@ class MediaLibrary(QWidget):
         self.media_library_line.setReadOnly(True)
         self.media_library_button = QPushButton('Select Path')
 
-        self.media_library_view_button = QCheckBox('Show Media Library on Start', self)
-
         self.media_library_button.clicked.connect(self.select_media_library)
-        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
 
         media_library_layout = QVBoxLayout()
 
@@ -40,11 +37,7 @@ class MediaLibrary(QWidget):
         media_library_config_layout.addWidget(self.media_library_line)
         media_library_config_layout.addWidget(self.media_library_button)
 
-        media_library_view_layout = QHBoxLayout()
-        media_library_view_layout.addWidget(self.media_library_view_button)
-
         media_library_layout.addLayout(media_library_config_layout)
-        media_library_layout.addLayout(media_library_view_layout)
 
         media_library_config.setLayout(media_library_layout)
 
@@ -54,7 +47,6 @@ class MediaLibrary(QWidget):
         self.setLayout(main_layout)
 
         self.media_library_settings()
-        self.check_media_library()
 
     def select_media_library(self):
         """Opens a file dialog to allow the user to select the media library
@@ -82,6 +74,80 @@ class MediaLibrary(QWidget):
         library = config['media_library']['media_library_path']
         if os.path.isdir(library):
             self.media_library_line.setText(library)
+
+
+class ViewOptions(QWidget):
+    """Contains all of the user configurable options related to the window functionality
+    of the music player."""
+
+    def __init__(self, parent=None):
+        """Initiates the View Options page in the preferences dialog."""
+        super(ViewOptions, self).__init__(parent)
+
+        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+                                             'settings.toml')
+
+        dock_config = QGroupBox('Dock Configuration')
+
+        self.media_library_view_button = QCheckBox('Show Media Library on Start', self)
+        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
+        media_library_view_layout = QHBoxLayout()
+        media_library_view_layout.addWidget(self.media_library_view_button)
+
+        dock_config.setLayout(media_library_view_layout)
+
+        window_config = QGroupBox("Window Configuration")
+
+        size_option = QLabel('Window Size', self)
+
+        self.dropdown_box = QComboBox()
+        self.dropdown_box.addItem('900 x 900')
+        self.dropdown_box.addItem('800 x 800')
+        self.dropdown_box.addItem('700 x 700')
+        self.dropdown_box.addItem('600 x 600')
+        self.dropdown_box.addItem('500 x 500')
+        self.dropdown_box.addItem('400 x 400')
+
+        window_size_layout = QHBoxLayout()
+        window_size_layout.addWidget(size_option)
+        window_size_layout.addWidget(self.dropdown_box)
+
+        window_config.setLayout(window_size_layout)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(dock_config)
+        main_layout.addWidget(window_config)
+        main_layout.addStretch(1)
+        self.setLayout(main_layout)
+
+        self.check_window_size()
+        self.check_media_library()
+
+        self.dropdown_box.currentIndexChanged.connect(self.change_size)
+
+    def change_size(self):
+        """Records the change in window size to the settings.toml file."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        if self.dropdown_box.currentIndex() != -1:
+            config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
+
+        with open(settings_stream, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_window_size(self):
+        """Sets the dropdown box to the current window size provided by the settings.toml
+        file."""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
+        except KeyError:
+            self.dropdown_box.setCurrentIndex(0)
 
     def media_library_view_settings(self):
         """This setting changes the behavior of the Media Library dock widget.
@@ -112,68 +178,6 @@ class MediaLibrary(QWidget):
         except KeyError:
             self.media_library_view_button.setChecked(False)
 
-
-class ViewOptions(QWidget):
-    """Contains all of the user configurable options related to the window functionality
-    of the music player."""
-
-    def __init__(self, parent=None):
-        """Initiates the View Options page in the preferences dialog."""
-        super(ViewOptions, self).__init__(parent)
-
-        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
-                                             'settings.toml')
-
-        window_config = QGroupBox("Window Configuration")
-
-        size_option = QLabel('Window Size', self)
-
-        self.dropdown_box = QComboBox()
-        self.dropdown_box.addItem('900 x 900')
-        self.dropdown_box.addItem('800 x 800')
-        self.dropdown_box.addItem('700 x 700')
-        self.dropdown_box.addItem('600 x 600')
-        self.dropdown_box.addItem('500 x 500')
-        self.dropdown_box.addItem('400 x 400')
-
-        window_size_layout = QHBoxLayout()
-        window_size_layout.addWidget(size_option)
-        window_size_layout.addWidget(self.dropdown_box)
-
-        window_config.setLayout(window_size_layout)
-
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(window_config)
-        main_layout.addStretch(1)
-        self.setLayout(main_layout)
-
-        self.check_window_size()
-
-        self.dropdown_box.currentIndexChanged.connect(self.change_size)
-
-    def change_size(self):
-        """Records the change in window size to the settings.toml file."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        if self.dropdown_box.currentIndex() != -1:
-            config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
-
-        with open(settings_stream, 'w') as conffile:
-            pytoml.dump(conffile, config)
-
-    def check_window_size(self):
-        """Sets the dropdown box to the current window size provided by the settings.toml
-        file."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
-        except KeyError:
-            self.dropdown_box.setCurrentIndex(0)
 
 
 class PreferencesDialog(QDialog):
