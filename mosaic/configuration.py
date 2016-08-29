@@ -137,6 +137,7 @@ class ViewOptions(QWidget):
         self.check_window_size()
         self.check_media_library()
         self.check_playlist_dock()
+        self.check_dock_position()
 
         self.dropdown_box.currentIndexChanged.connect(self.change_size)
         self.media_library_view_button.clicked.connect(self.media_library_view_settings)
@@ -223,6 +224,35 @@ class ViewOptions(QWidget):
             self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
         except KeyError:
             self.playlist_view_button.setChecked(False)
+
+    def dock_positon_settings(self):
+        """"""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        if self.dock_left_side.isChecked():
+            config.setdefault('dock', {})['[position]'] = 'left'
+
+        elif self.dock_right_side.isChecked():
+            config.setdefault('dock', {})['position'] = 'right'
+
+        with open(settings_stream, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_dock_position(self):
+        """"""
+        settings_stream = self.user_config_file
+        with open(settings_stream) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            if config['dock']['position'] == 'left':
+                self.dock_left_side.setChecked(True)
+            elif config['dock']['position'] == 'right':
+                self.dock_right_side.setChecked(True)
+        except KeyError:
+            self.dock_right_side.setChecked(True)
 
 
 class PreferencesDialog(QDialog):
