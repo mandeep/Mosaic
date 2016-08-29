@@ -17,3 +17,7 @@ show_on_start = false
 [playlist]
 
 show_on_start = false
+
+[dock]
+
+position = 'right'
