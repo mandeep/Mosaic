@@ -142,6 +142,8 @@ class ViewOptions(QWidget):
         self.dropdown_box.currentIndexChanged.connect(self.change_size)
         self.media_library_view_button.clicked.connect(self.media_library_view_settings)
         self.playlist_view_button.clicked.connect(self.playlist_view_settings)
+        self.dock_left_side.clicked.connect(self.dock_positon_settings)
+        self.dock_right_side.clicked.connect(self.dock_positon_settings)
 
     def change_size(self):
         """Records the change in window size to the settings.toml file."""
@@ -232,7 +234,7 @@ class ViewOptions(QWidget):
             config = pytoml.load(conffile)
 
         if self.dock_left_side.isChecked():
-            config.setdefault('dock', {})['[position]'] = 'left'
+            config.setdefault('dock', {})['position'] = 'left'
 
         elif self.dock_right_side.isChecked():
             config.setdefault('dock', {})['position'] = 'right'
