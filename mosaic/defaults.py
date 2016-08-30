@@ -1,6 +1,7 @@
 from appdirs import AppDirs
 import os
 import pkg_resources
+from PyQt5.QtCore import Qt
 import pytoml
 
 
@@ -63,6 +64,21 @@ class Settings(object):
             checkbox_state = False
 
         return checkbox_state
+
+    def dock_position(self):
+        """Returns the dock area selected by the user in the preferences dialog."""
+
+        with open(self.config_path) as conffile:
+            config = pytoml.load(conffile)
+
+        try:
+            radio_button_state = config['dock']['position']
+            if radio_button_state == 'left':
+                return Qt.LeftDockWidgetArea
+            elif radio_button_state == 'right':
+                return Qt.RightDockWidgetArea
+        except KeyError:
+            return Qt.RightDockWidgetArea
 
     def window_size(self):
         """Sets the user defined window size as the size of the current window. The
