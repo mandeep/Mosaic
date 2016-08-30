@@ -50,17 +50,17 @@ class MusicPlayer(QMainWindow):
         self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Initiates the playlist dock widget and the library dock widget
-        self.addDockWidget(Qt.RightDockWidgetArea, self.playlist_dock)
+        self.addDockWidget(defaults.Settings().dock_position(), self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
         self.playlist_dock.resize(300, 800)
         self.playlist_dock.setVisible(defaults.Settings().playlist_on_start())
-        self.playlist_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.playlist_dock.setFeatures(QDockWidget.DockWidgetClosable)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, self.library_dock)
+        self.addDockWidget(defaults.Settings().dock_position(), self.library_dock)
         self.library_dock.setWidget(self.library_view)
         self.library_dock.resize(400, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
-        self.library_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.library_dock.setFeatures(QDockWidget.DockWidgetClosable)
         self.tabifyDockWidget(self.playlist_dock, self.library_dock)
 
         # Sets the range of the playback slider and sets the playback mode as looping
@@ -484,3 +484,4 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
+main()
