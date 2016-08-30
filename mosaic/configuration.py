@@ -228,7 +228,8 @@ class ViewOptions(QWidget):
             self.playlist_view_button.setChecked(False)
 
     def dock_positon_settings(self):
-        """"""
+        """Writes to the settings.toml the radio button chosen by the user in the preferences
+        dialog."""
         settings_stream = self.user_config_file
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
@@ -243,7 +244,7 @@ class ViewOptions(QWidget):
             pytoml.dump(conffile, config)
 
     def check_dock_position(self):
-        """"""
+        """Selects the radio button previously chosen by the user in the preferences dialog."""
         settings_stream = self.user_config_file
         with open(settings_stream) as conffile:
             config = pytoml.load(conffile)
