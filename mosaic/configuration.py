@@ -158,10 +158,7 @@ class ViewOptions(QWidget):
         """Sets the dropdown box to the current window size provided by the settings.toml
         file."""
 
-        try:
-            self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
-        except KeyError:
-            self.dropdown_box.setCurrentIndex(0)
+        self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
 
     def media_library_view_settings(self, config):
         """This setting changes the behavior of the Media Library dock widget.
@@ -181,10 +178,7 @@ class ViewOptions(QWidget):
         """Retrieves the media library checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
 
-        try:
-            self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
-        except KeyError:
-            self.media_library_view_button.setChecked(False)
+        self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
 
     def playlist_view_settings(self, config):
         """This setting changes the behavior of the Playlist dock widget.
@@ -204,10 +198,7 @@ class ViewOptions(QWidget):
         """Retrieves the playlist dock checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
 
-        try:
-            self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
-        except KeyError:
-            self.playlist_view_button.setChecked(False)
+        self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
 
     def dock_positon_settings(self, config):
         """Writes to the settings.toml the radio button chosen by the user in the preferences
@@ -225,12 +216,9 @@ class ViewOptions(QWidget):
     def check_dock_position(self, config):
         """Selects the radio button previously chosen by the user in the preferences dialog."""
 
-        try:
-            if config['dock']['position'] == 'left':
-                self.dock_left_side.setChecked(True)
-            elif config['dock']['position'] == 'right':
-                self.dock_right_side.setChecked(True)
-        except KeyError:
+        if config['dock']['position'] == 'left':
+            self.dock_left_side.setChecked(True)
+        elif config['dock']['position'] == 'right':
             self.dock_right_side.setChecked(True)
 
 
