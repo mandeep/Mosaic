@@ -130,6 +130,17 @@ def test_open_mp3_file(qtbot, mock, window, mp3_file):
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
+def test_open_blank_file(qtbot, mock, window, blank_flac_file):
+    """Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
+    The mock plugin creates a mock of the QFileDialog window while Qt.Key_Enter executes it.
+    This test opens a blank flac file to test cases where metadata is not embedded in the file."""
+
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
+    qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
 def test_quit_application(qtbot, monkeypatch, window):
     """Qtbot clicks on the file menu and Qt.Key_Down highlights the quit application
     item. Monkeypatch is set to intercept the exit call and will append 1 to exit_calls
