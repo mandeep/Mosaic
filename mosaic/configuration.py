@@ -21,6 +21,9 @@ class MediaLibrary(QWidget):
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
 
+        with open(self.user_config_file) as conffile:
+            config = pytoml.load(conffile)
+
         media_library_config = QGroupBox("Media Library Configuration")
 
         self.media_library_label = QLabel('Media Library', self)
@@ -28,7 +31,7 @@ class MediaLibrary(QWidget):
         self.media_library_line.setReadOnly(True)
         self.media_library_button = QPushButton('Select Path')
 
-        self.media_library_button.clicked.connect(self.select_media_library)
+        self.media_library_button.clicked.connect(lambda: self.select_media_library(config))
 
         media_library_layout = QVBoxLayout()
 
@@ -46,30 +49,24 @@ class MediaLibrary(QWidget):
         main_layout.addStretch(1)
         self.setLayout(main_layout)
 
-        self.media_library_settings()
+        self.media_library_settings(config)
 
-    def select_media_library(self):
+    def select_media_library(self, config):
         """Opens a file dialog to allow the user to select the media library
         path. The path is then written to settings.toml."""
         library = QFileDialog.getExistingDirectory(self, 'Select Media Library Directory')
         if library:
             self.media_library_line.setText(library)
-            settings_stream = self.user_config_file
-            with open(settings_stream) as conffile:
-                config = pytoml.load(conffile)
 
             config['media_library']['media_library_path'] = library
 
-            with open(settings_stream, 'w') as conffile:
+            with open(self.user_config_file, 'w') as conffile:
                 pytoml.dump(conffile, config)
 
-    def media_library_settings(self):
+    def media_library_settings(self, config):
         """If the user has already defined a media library path that was
         previously written to settings.toml, the path is set as the text
         of the text box on the media library options page."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         library = config['media_library']['media_library_path']
         if os.path.isdir(library):
@@ -86,6 +83,9 @@ class ViewOptions(QWidget):
 
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
+
+        with open(self.user_config_file) as conffile:
+            config = pytoml.load(conffile)
 
         dock_config = QGroupBox('Dock Configuration')
 
@@ -134,48 +134,39 @@ class ViewOptions(QWidget):
         main_layout.addStretch(1)
         self.setLayout(main_layout)
 
-        self.check_window_size()
-        self.check_media_library()
-        self.check_playlist_dock()
-        self.check_dock_position()
+        self.check_window_size(config)
+        self.check_media_library(config)
+        self.check_playlist_dock(config)
+        self.check_dock_position(config)
 
-        self.dropdown_box.currentIndexChanged.connect(self.change_size)
-        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
-        self.playlist_view_button.clicked.connect(self.playlist_view_settings)
-        self.dock_left_side.clicked.connect(self.dock_positon_settings)
-        self.dock_right_side.clicked.connect(self.dock_positon_settings)
+        self.dropdown_box.currentIndexChanged.connect(lambda: self.change_size(config))
+        self.media_library_view_button.clicked.connect(lambda: self.media_library_view_settings(config))
+        self.playlist_view_button.clicked.connect(lambda: self.playlist_view_settings(config))
+        self.dock_left_side.clicked.connect(lambda: self.dock_positon_settings(config))
+        self.dock_right_side.clicked.connect(lambda: self.dock_positon_settings(config))
 
-    def change_size(self):
+    def change_size(self, config):
         """Records the change in window size to the settings.toml file."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         if self.dropdown_box.currentIndex() != -1:
             config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
 
-        with open(settings_stream, 'w') as conffile:
+        with open(self.user_config_file, 'w') as conffile:
             pytoml.dump(conffile, config)
 
-    def check_window_size(self):
+    def check_window_size(self, config):
         """Sets the dropdown box to the current window size provided by the settings.toml
         file."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         try:
             self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
         except KeyError:
             self.dropdown_box.setCurrentIndex(0)
 
-    def media_library_view_settings(self):
+    def media_library_view_settings(self, config):
         """This setting changes the behavior of the Media Library dock widget.
         The default setting hides the dock on application start. With this option
         checked, the media library dock will show on start."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         if self.media_library_view_button.isChecked():
             config.setdefault('media_library', {})['show_on_start'] = True
@@ -183,28 +174,22 @@ class ViewOptions(QWidget):
         elif not self.media_library_view_button.isChecked():
             config.setdefault('media_library', {})['show_on_start'] = False
 
-        with open(settings_stream, 'w') as conffile:
+        with open(self.user_config_file, 'w') as conffile:
             pytoml.dump(conffile, config)
 
-    def check_media_library(self):
+    def check_media_library(self, config):
         """Retrieves the media library checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         try:
             self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
         except KeyError:
             self.media_library_view_button.setChecked(False)
 
-    def playlist_view_settings(self):
+    def playlist_view_settings(self, config):
         """This setting changes the behavior of the Playlist dock widget.
         The default setting hides the dock on application start. With this option
         checked, the playlist dock will show on start."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         if self.playlist_view_button.isChecked():
             config.setdefault('playlist', {})['show_on_start'] = True
@@ -212,27 +197,21 @@ class ViewOptions(QWidget):
         elif not self.playlist_view_button.isChecked():
             config.setdefault('playlist', {})['show_on_start'] = False
 
-        with open(settings_stream, 'w') as conffile:
+        with open(self.user_config_file, 'w') as conffile:
             pytoml.dump(conffile, config)
 
-    def check_playlist_dock(self):
+    def check_playlist_dock(self, config):
         """Retrieves the playlist dock checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         try:
             self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
         except KeyError:
             self.playlist_view_button.setChecked(False)
 
-    def dock_positon_settings(self):
+    def dock_positon_settings(self, config):
         """Writes to the settings.toml the radio button chosen by the user in the preferences
         dialog."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         if self.dock_left_side.isChecked():
             config.setdefault('dock', {})['position'] = 'left'
@@ -240,14 +219,11 @@ class ViewOptions(QWidget):
         elif self.dock_right_side.isChecked():
             config.setdefault('dock', {})['position'] = 'right'
 
-        with open(settings_stream, 'w') as conffile:
+        with open(self.user_config_file, 'w') as conffile:
             pytoml.dump(conffile, config)
 
-    def check_dock_position(self):
+    def check_dock_position(self, config):
         """Selects the radio button previously chosen by the user in the preferences dialog."""
-        settings_stream = self.user_config_file
-        with open(settings_stream) as conffile:
-            config = pytoml.load(conffile)
 
         try:
             if config['dock']['position'] == 'left':
