@@ -28,40 +28,31 @@ class Settings(object):
             with open(self.user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
 
+        with open(self.user_config_file) as conffile:
+            self.config = pytoml.load(conffile)
+
     def media_library_path(self):
         """Sets the user defined media library path as the default path
         in file dialogs."""
 
-        with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['media_library']['media_library_path']
+        return self.config['media_library']['media_library_path']
 
     def media_library_on_start(self):
         """Checks the state of the media library view checkbox in settings.toml and returns this
         state for use by the Music Player application."""
 
-        with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['media_library']['show_on_start']
+        return self.config['media_library']['show_on_start']
 
     def playlist_on_start(self):
         """Checks the state of the playlist view checkbox in settings.toml and returns this
         state for use by the Music Player application."""
 
-        with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['playlist']['show_on_start']
+        return self.config['playlist']['show_on_start']
 
     def dock_position(self):
         """Returns the dock area selected by the user in the preferences dialog."""
 
-        with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
-
-        radio_button_state = config['dock']['position']
+        radio_button_state = self.config['dock']['position']
         if radio_button_state == 'left':
             return Qt.LeftDockWidgetArea
         elif radio_button_state == 'right':
@@ -74,9 +65,6 @@ class Settings(object):
         index contained in the settings.toml selects the index from the sizes list and sets
         the window and image size accordingly."""
 
-        with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
-
         sizes = [900, 800, 700, 600, 500, 400]
 
-        return sizes[config['view_options']['window_size']]
+        return sizes[self.config['view_options']['window_size']]
