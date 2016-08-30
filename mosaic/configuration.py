@@ -134,16 +134,13 @@ class ViewOptions(QWidget):
         main_layout.addStretch(1)
         self.setLayout(main_layout)
 
-        self.check_window_size(config)
-        self.check_media_library(config)
-        self.check_playlist_dock(config)
-        self.check_dock_position(config)
-
         self.dropdown_box.currentIndexChanged.connect(lambda: self.change_size(config))
         self.media_library_view_button.clicked.connect(lambda: self.media_library_view_settings(config))
         self.playlist_view_button.clicked.connect(lambda: self.playlist_view_settings(config))
         self.dock_left_side.clicked.connect(lambda: self.dock_positon_settings(config))
         self.dock_right_side.clicked.connect(lambda: self.dock_positon_settings(config))
+
+        self.all_checks(config)
 
     def change_size(self, config):
         """Records the change in window size to the settings.toml file."""
@@ -220,6 +217,14 @@ class ViewOptions(QWidget):
             self.dock_left_side.setChecked(True)
         elif config['dock']['position'] == 'right':
             self.dock_right_side.setChecked(True)
+
+    def all_checks(self, config):
+        """Executes all of the check methods in order to detect changes."""
+
+        self.check_window_size(config)
+        self.check_media_library(config)
+        self.check_playlist_dock(config)
+        self.check_dock_position(config)
 
 
 class PreferencesDialog(QDialog):
