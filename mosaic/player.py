@@ -41,7 +41,6 @@ class MusicPlayer(QMainWindow):
         self.library_model = library.MediaLibraryModel()
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
-        self.about = about.AboutDialog()
         self.duration = 0
 
         # Sets QWidget() as the central widget of the main window
@@ -200,7 +199,7 @@ class MusicPlayer(QMainWindow):
 
         self.about_action = QAction('About', self)
         self.about_action.setShortcut('CTRL+H')
-        self.about_action.triggered.connect(lambda: self.about.exec_())
+        self.about_action.triggered.connect(lambda: about.AboutDialog().exec_())
 
         self.help_.addAction(self.about_action)
 
