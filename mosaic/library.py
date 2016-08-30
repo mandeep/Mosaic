@@ -14,15 +14,11 @@ class MediaLibraryModel(QFileSystemModel):
 
         self.setNameFilters(['*.mp3', '*.flac'])
         self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
 
-        try:
-            settings_stream = os.path.join(self.config_directory, 'settings.toml')
-            with open(settings_stream) as conffile:
-                config = pytoml.load(conffile)
-            self.library = config['media_library']['media_library_path']
-
-        except FileNotFoundError:
-            self.library = ''
+        with open(self.user_config_file) as conffile:
+            config = pytoml.load(conffile)
+        self.library = config['media_library']['media_library_path']
 
         if os.path.isdir(self.library):
             self.setRootPath(self.library)
