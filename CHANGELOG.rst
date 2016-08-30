@@ -24,6 +24,16 @@ Changes
 -  Playlist and media library docks will not be floatable or movable
 -  Stylized about dialog
 
+0.16.0 - 2016-08-29
+===================
+
+Added
+-----
+
+-  Ability to select which side of the application the playlist and
+   media library docks show
+
+
 0.15.0 - 2016-08-29
 ===================
 
