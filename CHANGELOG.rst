@@ -10,8 +10,6 @@ Unreleased
 Additions
 ---------
 
--  Preference to specify which side of the application the playlist and
-   media library docks should reside
 -  Application specific right-click context menu
 -  Optional status bar with information pertaining to playlist items
 -  Toggle option for minimalistic view that only shows media controls
