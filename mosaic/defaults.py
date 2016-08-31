@@ -23,61 +23,39 @@ class Settings(object):
         with open(settings) as default_config:
             config = default_config.read()
 
-        self.config_path = os.path.join(config_directory, 'settings.toml')
-        if not os.path.isfile(self.config_path):
-            with open(self.config_path, 'a') as new_config_file:
+        self.user_config_file = os.path.join(config_directory, 'settings.toml')
+        if not os.path.isfile(self.user_config_file):
+            with open(self.user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
+
+        with open(self.user_config_file) as conffile:
+            self.config = pytoml.load(conffile)
 
     def media_library_path(self):
         """Sets the user defined media library path as the default path
         in file dialogs."""
 
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        return config['media_library']['media_library_path']
+        return self.config['media_library']['media_library_path']
 
     def media_library_on_start(self):
         """Checks the state of the media library view checkbox in settings.toml and returns this
         state for use by the Music Player application."""
 
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            checkbox_state = config['media_library']['show_on_start']
-        except KeyError:
-            checkbox_state = False
-
-        return checkbox_state
+        return self.config['media_library']['show_on_start']
 
     def playlist_on_start(self):
         """Checks the state of the playlist view checkbox in settings.toml and returns this
         state for use by the Music Player application."""
 
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            checkbox_state = config['playlist']['show_on_start']
-        except KeyError:
-            checkbox_state = False
-
-        return checkbox_state
+        return self.config['playlist']['show_on_start']
 
     def dock_position(self):
         """Returns the dock area selected by the user in the preferences dialog."""
 
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
-        try:
-            radio_button_state = config['dock']['position']
-            if radio_button_state == 'left':
-                return Qt.LeftDockWidgetArea
-            elif radio_button_state == 'right':
-                return Qt.RightDockWidgetArea
-        except KeyError:
+        radio_button_state = self.config['dock']['position']
+        if radio_button_state == 'left':
+            return Qt.LeftDockWidgetArea
+        elif radio_button_state == 'right':
             return Qt.RightDockWidgetArea
 
     def window_size(self):
@@ -87,14 +65,6 @@ class Settings(object):
         index contained in the settings.toml selects the index from the sizes list and sets
         the window and image size accordingly."""
 
-        with open(self.config_path) as conffile:
-            config = pytoml.load(conffile)
-
         sizes = [900, 800, 700, 600, 500, 400]
 
-        try:
-            size = sizes[config['view_options']['window_size']]
-        except KeyError:
-            size = 900
-
-        return size
+        return sizes[self.config['view_options']['window_size']]
