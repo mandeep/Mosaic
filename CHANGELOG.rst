@@ -23,7 +23,11 @@ Changes
 
 0.16.1 - 2016-08-30
 ===================
-  
+
+Added
+-----
+
+-  Added OK and Cancel buttons to Preferences dialog
 
 0.16.0 - 2016-08-29
 ===================
