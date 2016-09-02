@@ -154,6 +154,8 @@ class FullInformation(QWidget):
     """Provides data on every tag embedded within the audio file."""
 
     def __init__(self, file=None, parent=None):
+        """Abstract class that provides a table with two columns. One column for the current
+        audio file's metadata tags and one column for the values of the tags."""
         super(FullInformation, self).__init__(parent)
 
         table_layout = QHBoxLayout()
@@ -183,7 +185,6 @@ class InformationDialog(QDialog):
     def __init__(self, file=None, parent=None):
         """Initializes QTabWidget with tabs of the two information pages and
         displays the QDialog widget when executed."""
-
         super(InformationDialog, self).__init__(parent)
         self.setWindowTitle('Media Information')
         info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
