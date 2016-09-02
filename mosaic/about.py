@@ -8,7 +8,6 @@ class AboutDialog(QMessageBox):
 
     def __init__(self, parent=None):
         """Displays a dialog that shows application information."""
-
         super(AboutDialog, self).__init__(parent)
 
         self.setWindowTitle('About')
