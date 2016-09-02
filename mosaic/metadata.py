@@ -5,7 +5,6 @@ from PyQt5.QtCore import QByteArray
 
 def identify_filetype(file):
     """Identifies the file as either mp3 or flac via the mutagen library."""
-
     if file.endswith('mp3'):
         audio_file = mp3.MP3(file, ID3=easyid3.EasyID3)
 
@@ -18,7 +17,6 @@ def identify_filetype(file):
 def extract_meta_data(file):
     """Extracts all of the metadata embedded within the audio file and creates a
     dictionary with the tag and data pairs."""
-
     audio_file = identify_filetype(file)
     tags_dictionary = dict(audio_file.tags)
     metadata_dictionary = dict((k, "".join(v)) for k, v in tags_dictionary.items())
@@ -28,7 +26,6 @@ def extract_meta_data(file):
 def metadata(file):
     """Returns the extracted meta data as a list to be used by the music player's
     window as well as the media information dialog."""
-
     audio_file = identify_filetype(file)
     file_metadata = extract_meta_data(file)
 
