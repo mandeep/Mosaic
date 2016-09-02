@@ -67,7 +67,6 @@ class MediaLibrary(QWidget):
         """If the user has already defined a media library path that was
         previously written to settings.toml, the path is set as the text
         of the text box on the media library options page."""
-
         library = config['media_library']['media_library_path']
         if os.path.isdir(library):
             self.media_library_line.setText(library)
@@ -147,7 +146,6 @@ class ViewOptions(QWidget):
 
     def change_size(self, config):
         """Records the change in window size to the settings.toml file."""
-
         if self.dropdown_box.currentIndex() != -1:
             config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
 
@@ -157,14 +155,12 @@ class ViewOptions(QWidget):
     def check_window_size(self, config):
         """Sets the dropdown box to the current window size provided by the settings.toml
         file."""
-
         self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
 
     def media_library_view_settings(self, config):
         """This setting changes the behavior of the Media Library dock widget.
         The default setting hides the dock on application start. With this option
         checked, the media library dock will show on start."""
-
         if self.media_library_view_button.isChecked():
             config.setdefault('media_library', {})['show_on_start'] = True
 
@@ -177,14 +173,12 @@ class ViewOptions(QWidget):
     def check_media_library(self, config):
         """Retrieves the media library checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
-
         self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
 
     def playlist_view_settings(self, config):
         """This setting changes the behavior of the Playlist dock widget.
         The default setting hides the dock on application start. With this option
         checked, the playlist dock will show on start."""
-
         if self.playlist_view_button.isChecked():
             config.setdefault('playlist', {})['show_on_start'] = True
 
@@ -197,13 +191,11 @@ class ViewOptions(QWidget):
     def check_playlist_dock(self, config):
         """Retrieves the playlist dock checkbox state from settings.toml and sets the
         state of the checkbox accordingly."""
-
         self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
 
     def dock_positon_settings(self, config):
         """Writes to the settings.toml the radio button chosen by the user in the preferences
         dialog."""
-
         if self.dock_left_side.isChecked():
             config.setdefault('dock', {})['position'] = 'left'
 
@@ -215,7 +207,6 @@ class ViewOptions(QWidget):
 
     def check_dock_position(self, config):
         """Selects the radio button previously chosen by the user in the preferences dialog."""
-
         if config['dock']['position'] == 'left':
             self.dock_left_side.setChecked(True)
         elif config['dock']['position'] == 'right':
@@ -230,7 +221,6 @@ class PreferencesDialog(QDialog):
     def __init__(self, parent=None):
         """Initializes the preferences dialog with a list box on the left
         and a content layout on the right."""
-
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
         settings_icon = pkg_resources.resource_filename('mosaic.images', 'md_settings.png')
