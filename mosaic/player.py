@@ -39,6 +39,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view = QListWidget()
         self.library_view = library.MediaLibraryView()
         self.library_model = library.MediaLibraryModel()
+        self.preferences = configuration.PreferencesDialog()
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
         self.duration = 0
@@ -80,6 +81,7 @@ class MusicPlayer(QMainWindow):
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.library_dock.visibilityChanged.connect(self.dock_visiblity_change)
+        self.preferences.accepted.connect(self.update_settings)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
@@ -166,7 +168,7 @@ class MusicPlayer(QMainWindow):
         the options of the music player."""
         self.preferences_action = QAction('Preferences', self)
         self.preferences_action.setShortcut('CTRL+SHIFT+P')
-        self.preferences_action.triggered.connect(lambda: configuration.PreferencesDialog().exec_())
+        self.preferences_action.triggered.connect(lambda: self.preferences.exec_())
 
         self.edit.addAction(self.preferences_action)
 
@@ -446,6 +448,15 @@ class MusicPlayer(QMainWindow):
             file_path = None
         dialog = information.InformationDialog(file_path)
         dialog.exec_()
+
+    def update_settings(self):
+        """Updates the settings of the music player when the user clicks 'OK' on the preferences
+        dialog."""
+        if not self.playlist_dock.isVisible() or self.library_dock.isVisible():
+            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+        else:
+            self.resize(defaults.Settings().window_size() + self.playlist_dock.width(),
+                        defaults.Settings().window_size() + 63)
 
 
 def main():
