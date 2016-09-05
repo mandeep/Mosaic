@@ -21,6 +21,15 @@ Changes
 
 -  Stylized about dialog
 
+
+0.16.2 - 2016-09-05
+===================
+
+Fixed
+-----
+
+-  Window size changes when preferences dialog is accepted if a new setting is selected
+
 0.16.1 - 2016-08-30
 ===================
 
