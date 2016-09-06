@@ -21,6 +21,13 @@ Changes
 
 -  Stylized about dialog
 
+0.16.3 - 2016-09-06
+===================
+
+Fixed
+-----
+
+-  Fixed issue with window size prefeence not correctly resizing when library dock was visible
 
 0.16.2 - 2016-09-05
 ===================
