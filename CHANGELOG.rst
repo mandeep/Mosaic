@@ -24,6 +24,11 @@ Changes
 0.16.3 - 2016-09-06
 ===================
 
+Changes
+-------
+
+-  Library dock width now same as playlist dock width
+
 Fixed
 -----
 
