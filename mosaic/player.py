@@ -58,7 +58,7 @@ class MusicPlayer(QMainWindow):
 
         self.addDockWidget(defaults.Settings().dock_position(), self.library_dock)
         self.library_dock.setWidget(self.library_view)
-        self.library_dock.resize(400, 800)
+        self.library_dock.resize(300, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
         self.library_dock.setFeatures(QDockWidget.DockWidgetClosable)
         self.tabifyDockWidget(self.playlist_dock, self.library_dock)
