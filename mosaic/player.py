@@ -452,7 +452,7 @@ class MusicPlayer(QMainWindow):
     def update_settings(self):
         """Updates the settings of the music player when the user clicks 'OK' on the preferences
         dialog."""
-        if not self.playlist_dock.isVisible() or self.library_dock.isVisible():
+        if not self.playlist_dock.isVisible() or not self.library_dock.isVisible():
             self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
         else:
             self.resize(defaults.Settings().window_size() + self.playlist_dock.width(),
