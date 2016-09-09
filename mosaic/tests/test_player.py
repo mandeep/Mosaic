@@ -2,7 +2,7 @@ from mosaic import player, configuration, information
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog
 
 
 @pytest.fixture
@@ -160,7 +160,7 @@ def test_about_dialog(qtbot, mock, window):
     QMessageBox window while Key_Enter executes it."""
     qtbot.mouseClick(window.help_, Qt.LeftButton)
     qtbot.keyClick(window.help_, Qt.Key_Down)
-    mock.patch.object(QMessageBox, 'exec_', return_value='')
+    mock.patch.object(QDialog, 'exec_', return_value='finished')
     qtbot.keyClick(window.help_, Qt.Key_Enter)
 
 
