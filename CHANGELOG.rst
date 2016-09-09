@@ -16,10 +16,13 @@ Additions
 -  Preference to restart current song when previous button clicked
 -  Search bar in media library dock
 
-Changes
--------
+0.16.4 - 2016-09-09
+===================
 
--  Stylized about dialog
+Fixes
+-----
+
+-  About dialog reformatted to display text properly
 
 0.16.3 - 2016-09-06
 ===================
