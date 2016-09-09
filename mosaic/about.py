@@ -1,6 +1,6 @@
 import pkg_resources
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QDialog
 
 
 class AboutDialog(QMessageBox):
