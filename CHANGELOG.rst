@@ -15,6 +15,7 @@ Additions
 -  Toggle option for minimalistic view that only shows media controls
 -  Preference to restart current song when previous button clicked
 -  Search bar in media library dock
+-  Option to add media library to database for later features
 
 0.16.4 - 2016-09-09
 ===================
