@@ -56,7 +56,7 @@ To see the Mosaic change log, click here_.
 .. |coverage| image:: https://img.shields.io/coveralls/mandeep/Mosaic/master.svg
     :target: https://coveralls.io/github/mandeep/Mosaic
 .. |dependency| image:: https://img.shields.io/librariesio/github/mandeep/Mosaic.svg
-    :target: https://dependencyci.com/github/mandeep/Mosaic
+    :target: https://dependencyci.com/github/mandeepbhutani/Mosaic
 .. |codacy| image:: https://img.shields.io/codacy/grade/bae3a2a675c84a5da7863e46f25441fe.svg
     :target: https://www.codacy.com/app/bhutanimandeep/Mosaic/dashboard
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
