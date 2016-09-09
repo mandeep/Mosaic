@@ -53,7 +53,7 @@ To see the Mosaic change log, click here_.
 
 .. |travis| image:: https://travis-ci.org/mandeep/Mosaic.svg?branch=master
     :target: https://travis-ci.org/mandeep/Mosaic
-.. |coverage| image:: https://img.shields.io/coveralls/mandeepbhutani/Mosaic/master.svg
+.. |coverage| image:: https://img.shields.io/coveralls/mandeep/Mosaic/master.svg
     :target: https://coveralls.io/github/mandeep/Mosaic
 .. |dependency| image:: https://img.shields.io/librariesio/github/mandeep/Mosaic.svg
     :target: https://dependencyci.com/github/mandeep/Mosaic
