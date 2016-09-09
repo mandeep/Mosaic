@@ -51,12 +51,12 @@ Change Log
 To see the Mosaic change log, click here_.
 
 
-.. |travis| image:: https://travis-ci.org/mandeepbhutani/Mosaic.svg?branch=master
-    :target: https://travis-ci.org/mandeepbhutani/Mosaic
+.. |travis| image:: https://travis-ci.org/mandeep/Mosaic.svg?branch=master
+    :target: https://travis-ci.org/mandeep/Mosaic
 .. |coverage| image:: https://img.shields.io/coveralls/mandeepbhutani/Mosaic/master.svg
-    :target: https://coveralls.io/github/mandeepbhutani/Mosaic
-.. |dependency| image:: https://img.shields.io/librariesio/github/mandeepbhutani/Mosaic.svg
-    :target: https://dependencyci.com/github/mandeepbhutani/Mosaic
+    :target: https://coveralls.io/github/mandeep/Mosaic
+.. |dependency| image:: https://img.shields.io/librariesio/github/mandeep/Mosaic.svg
+    :target: https://dependencyci.com/github/mandeep/Mosaic
 .. |codacy| image:: https://img.shields.io/codacy/grade/bae3a2a675c84a5da7863e46f25441fe.svg
     :target: https://www.codacy.com/app/bhutanimandeep/Mosaic/dashboard
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
@@ -70,4 +70,4 @@ To see the Mosaic change log, click here_.
 .. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 
-.. _here: https://github.com/mandeepbhutani/Mosaic/blob/master/CHANGELOG.rst
+.. _here: https://github.com/mandeep/Mosaic/blob/master/CHANGELOG.rst
