@@ -181,12 +181,19 @@ class MusicPlayer(QMainWindow):
         self.library_dock_action = self.library_dock.toggleViewAction()
         self.library_dock_action.setShortcut('CTRL+ALT+L')
 
+        self.minimalist_view_action = QAction('Minimalist View', self)
+        self.minimalist_view_action.setShortcut('CTRL+ALT+M')
+        self.minimalist_view_action.setCheckable(True)
+        self.minimalist_view_action.triggered.connect(self.minimalist_view)
+
         self.view_media_info_action = QAction('Media Information', self)
         self.view_media_info_action.setShortcut('CTRL+SHIFT+M')
         self.view_media_info_action.triggered.connect(self.media_information_dialog)
 
         self.view.addAction(self.dock_action)
         self.view.addAction(self.library_dock_action)
+        self.view.addSeparator()
+        self.view.addAction(self.minimalist_view_action)
         self.view.addSeparator()
         self.view.addAction(self.view_media_info_action)
 
@@ -421,6 +428,14 @@ class MusicPlayer(QMainWindow):
     def change_index(self, row):
         """Changes the playlist view in relation to the current media."""
         self.playlist_view.setCurrentRow(row)
+
+    def minimalist_view(self):
+        """Resizes the window to only show the menu bar and tool bar. Restores the window
+        size when the menu item is unchecked."""
+        if self.minimalist_view_action.isChecked():
+            self.resize(500, 0)
+        else:
+            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
     def dock_visiblity_change(self, visible):
         """Changes the size of the main window when either the playlist dock or media library dock
