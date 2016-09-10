@@ -329,11 +329,12 @@ class MusicPlayer(QMainWindow):
         """On mouse event, the player will play the media if the player is
         either paused or stopped. If the media is playing, the media is set
         to pause."""
-        if (self.player.state() == QMediaPlayer.StoppedState or
-                self.player.state() == QMediaPlayer.PausedState):
-            self.player.play()
-        elif self.player.state() == QMediaPlayer.PlayingState:
-            self.player.pause()
+        if event.button() == 1:
+            if (self.player.state() == QMediaPlayer.StoppedState or
+                    self.player.state() == QMediaPlayer.PausedState):
+                self.player.play()
+            elif self.player.state() == QMediaPlayer.PlayingState:
+                self.player.pause()
 
     def seek(self, seconds):
         """When the user drags the horizontal slider, this function sets
