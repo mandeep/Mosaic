@@ -16,6 +16,20 @@ Additions
 -  Preference to restart current song when previous button clicked
 -  Search bar in media library dock
 -  Option to add media library to database for later features
+-  Option to change cover art playback click feature
+
+0.17.0 - 2016-09-10
+===================
+
+Added
+-----
+
+-  Minimalist View in view menu shows only menu bar and tool bar when selected
+
+Changes
+-------
+
+-  Mouse press event on cover art now occurs only on left mouse button click
 
 0.16.4 - 2016-09-09
 ===================
