@@ -12,7 +12,6 @@ Additions
 
 -  Application specific right-click context menu
 -  Optional status bar with information pertaining to playlist items
--  Toggle option for minimalistic view that only shows media controls
 -  Preference to restart current song when previous button clicked
 -  Search bar in media library dock
 -  Option to add media library to database for later features
