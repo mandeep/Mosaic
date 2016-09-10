@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.16.4',
+      version='0.17.0',
       author='Mandeep Bhutani',
       author_email='info@mandeep.xyz',
       url='https://github.com/mandeepbhutani/Mosaic',
       description='A cross-platform cover art focused music player.',
-      license='GPL',
+      license='GPLv3+',
       packages=['mosaic', 'mosaic.images', 'mosaic.tests'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
