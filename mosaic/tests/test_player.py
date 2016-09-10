@@ -172,11 +172,22 @@ def test_playlist_view(qtbot, mock, window):
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
+def test_minimalist_view(qtbot, window):
+    """Qtbot clicks on the view menu then Qt.Key_Down highlights the
+    minimalist view item and selects it."""
+    qtbot.mouseClick(window.view, Qt.LeftButton)
+    qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Down)
+    qtbot.keyClick(window.view, Qt.Key_Enter)
+
+
 def test_media_information(qtbot, mock, window):
     """Qtbot clicks on the view menu then Qt.Key_Down highlights
     the media information item. The mock plugin creates a mock of the
     QDialog window while Key_Enter executes it."""
     qtbot.mouseClick(window.view, Qt.LeftButton)
+    qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
