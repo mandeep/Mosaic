@@ -69,6 +69,8 @@ def test_open_flac_file(qtbot, mock, window, flac_file):
     mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(flac_file, '*.flac'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
     qtbot.mouseClick(window.art, Qt.LeftButton)
+    window.player.play()
+    qtbot.mouseClick(window.art, Qt.LeftButton)
 
 
 def test_open_blank_file(qtbot, mock, window, blank_flac_file):
