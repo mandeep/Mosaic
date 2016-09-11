@@ -1,4 +1,4 @@
-from mosaic import player, configuration, information
+from mosaic import configuration, information, player
 import pkg_resources
 import pytest
 from PyQt5.QtCore import Qt
@@ -15,15 +15,6 @@ def window(qtbot):
     qtbot.add_widget(music_player)
     music_player.show()
     return music_player
-
-
-@pytest.fixture
-def file_config(qtbot):
-    """Returns an instance of the File Options configuration page that can be
-    passed as an argument to the unit tests."""
-    config = configuration.FileOptions()
-    qtbot.add_widget(config)
-    return config
 
 
 @pytest.fixture
@@ -152,6 +143,20 @@ def test_preferences(qtbot, mock, window):
     qtbot.keyClick(window.edit, Qt.Key_Down)
     mock.patch.object(QDialog, 'exec_', return_value='accept')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
+
+
+def test_media_library_path(qtbot, mock, tmpdir, window):
+    """Qtbot tests the media library path selection by opening the preferences
+    dialog, clicking on the set path button, and using the tmpdir fixture to provide
+    a temporary directory."""
+    config = configuration.PreferencesDialog()
+    qtbot.add_widget(config)
+    qtbot.mouseClick(window.edit, Qt.LeftButton)
+    qtbot.keyClick(window.edit, Qt.Key_Down)
+    mock.patch.object(QDialog, 'exec_', return_value='')
+    qtbot.keyClick(window.edit, Qt.Key_Enter)
+    mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=str(tmpdir))
+    qtbot.mouseClick(config.dialog_media_library.media_library_button, Qt.LeftButton)
 
 
 def test_about_dialog(qtbot, mock, window):
