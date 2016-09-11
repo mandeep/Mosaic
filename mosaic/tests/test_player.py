@@ -68,6 +68,27 @@ def test_open_flac_file(qtbot, mock, window, flac_file):
     qtbot.keyClick(window.file, Qt.Key_Down)
     mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(flac_file, '*.flac'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
+    qtbot.mouseClick(window.art, Qt.LeftButton)
+
+
+def test_open_blank_file(qtbot, mock, window, blank_flac_file):
+    """Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
+    The mock plugin creates a mock of the QFileDialog window while Qt.Key_Enter executes it.
+    This test opens a blank flac file to test cases where metadata is not embedded in the file."""
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
+    qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
+def test_open_mp3_file(qtbot, mock, window, mp3_file):
+    """Qtbot clicks on the file menu then Qt.Key_Down highlights
+    the open file item. The mock plugin creates a mock of the
+    QFileDialog window while Key_Enter executes it."""
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(mp3_file, '*.mp3'))
+    qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
 def test_open_files(qtbot, mock, window, flac_file, mp3_file):
@@ -105,26 +126,6 @@ def test_open_directory(qtbot, mock, window):
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
-    qtbot.keyClick(window.file, Qt.Key_Enter)
-
-
-def test_open_mp3_file(qtbot, mock, window, mp3_file):
-    """Qtbot clicks on the file menu then Qt.Key_Down highlights
-    the open file item. The mock plugin creates a mock of the
-    QFileDialog window while Key_Enter executes it."""
-    qtbot.mouseClick(window.file, Qt.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(mp3_file, '*.mp3'))
-    qtbot.keyClick(window.file, Qt.Key_Enter)
-
-
-def test_open_blank_file(qtbot, mock, window, blank_flac_file):
-    """Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
-    The mock plugin creates a mock of the QFileDialog window while Qt.Key_Enter executes it.
-    This test opens a blank flac file to test cases where metadata is not embedded in the file."""
-    qtbot.mouseClick(window.file, Qt.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
