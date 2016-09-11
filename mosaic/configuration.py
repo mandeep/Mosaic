@@ -232,8 +232,10 @@ class PreferencesDialog(QDialog):
         self.pages = QStackedWidget()
         self.button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
 
-        self.pages.addWidget(MediaLibrary())
-        self.pages.addWidget(ViewOptions())
+        self.dialog_media_library = MediaLibrary()
+        self.dialog_view_options = ViewOptions()
+        self.pages.addWidget(self.dialog_media_library)
+        self.pages.addWidget(self.dialog_view_options)
         self.list_items()
 
         stack_layout = QVBoxLayout()
