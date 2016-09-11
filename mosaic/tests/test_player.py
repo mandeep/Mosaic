@@ -18,6 +18,14 @@ def window(qtbot):
 
 
 @pytest.fixture
+def config(qtbot):
+    """Provides the preferences dialog as a fixture to the tests."""
+    preferences = configuration.PreferencesDialog()
+    qtbot.add_widget(preferences)
+    return preferences
+
+
+@pytest.fixture
 def flac_file():
     """Returns a resource of the test FLAC file that can be passed as an argument
     to the unit tests."""
@@ -145,18 +153,34 @@ def test_preferences(qtbot, mock, window):
     qtbot.keyClick(window.edit, Qt.Key_Enter)
 
 
-def test_media_library_path(qtbot, mock, tmpdir, window):
+def test_media_library_path(qtbot, mock, tmpdir, window, config):
     """Qtbot tests the media library path selection by opening the preferences
     dialog, clicking on the set path button, and using the tmpdir fixture to provide
     a temporary directory."""
-    config = configuration.PreferencesDialog()
-    qtbot.add_widget(config)
     qtbot.mouseClick(window.edit, Qt.LeftButton)
     qtbot.keyClick(window.edit, Qt.Key_Down)
     mock.patch.object(QDialog, 'exec_', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
     mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=str(tmpdir))
     qtbot.mouseClick(config.dialog_media_library.media_library_button, Qt.LeftButton)
+
+
+def test_view_options(qtbot, mock, window, config):
+    """Qtbot tests the functionality of the items in the View Options page of
+    the preferences dialog. All of the checkboxes and radio buttons are selected,
+    and the window size dropdown box is set to the 400x400 window size."""
+    qtbot.mouseClick(window.edit, Qt.LeftButton)
+    qtbot.keyClick(window.edit, Qt.Key_Down)
+    mock.patch.object(QDialog, 'exec_', return_value='')
+    qtbot.keyClick(window.edit, Qt.Key_Enter)
+    config.contents.setCurrentRow(1)
+    qtbot.mouseClick(config.dialog_view_options.media_library_view_button, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_view_options.media_library_view_button, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_view_options.playlist_view_button, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_view_options.playlist_view_button, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_view_options.dock_left_side, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_view_options.dock_right_side, Qt.LeftButton)
+    config.dialog_view_options.dropdown_box.setCurrentIndex(5)
 
 
 def test_about_dialog(qtbot, mock, window):
