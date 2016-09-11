@@ -20,6 +20,22 @@ def flac_file():
     return file
 
 
+@pytest.fixture
+def blank_flac_file():
+    """Returns a resource of the test FLAC file that can be passed as an argument
+    to the unit tests. This particular file has had all metadata removed from it."""
+    file = pkg_resources.resource_filename('mosaic.tests', '03_Ghosts_I.flac')
+    return file
+
+
+@pytest.fixture
+def blank_mp3_file():
+    """Returns a resource of the test MP3 file that can be passed as an argument
+    to the unit tests. This particular file has had all metadata removed from it."""
+    file = pkg_resources.resource_filename('mosaic.tests', '04_Ghosts_I_320kb.mp3')
+    return file
+
+
 def test_identify_mp3_filetype(mp3_file):
     """Asserts that the identify_filetype function returns an MP3 object created by mutagen."""
     assert metadata.identify_filetype(mp3_file) == mp3.MP3(mp3_file, ID3=easyid3.EasyID3)
@@ -58,3 +74,11 @@ def test_flac_metadata(flac_file):
     assert data[0] == 'Ghosts I-IV'
     assert data[1] == 'Nine Inch Nails'
     assert data[2] == '2 Ghosts I'
+
+
+def test_blank_metadata(blank_flac_file, blank_mp3_file):
+    """Checks that a file with no metadata behaves accordingly."""
+    data = metadata.metadata(blank_flac_file)
+    assert data[0] == '??'
+    assert data[1] == '??'
+    assert data[2] == '??'
