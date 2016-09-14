@@ -187,7 +187,6 @@ def test_view_options(qtbot, mock, window, config):
     config.dialog_view_options.dropdown_box.setCurrentIndex(0)
 
 
-
 def test_about_dialog(qtbot, mock, window):
     """Qtbot clicks on the help menu then Qt.Key_Down highlights
     the about item. The mock plugin creates a mock of the
