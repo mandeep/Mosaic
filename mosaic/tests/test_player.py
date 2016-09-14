@@ -184,6 +184,8 @@ def test_view_options(qtbot, mock, window, config):
     qtbot.mouseClick(config.dialog_view_options.dock_left_side, Qt.LeftButton)
     qtbot.mouseClick(config.dialog_view_options.dock_right_side, Qt.LeftButton)
     config.dialog_view_options.dropdown_box.setCurrentIndex(5)
+    config.dialog_view_options.dropdown_box.setCurrentIndex(0)
+
 
 
 def test_about_dialog(qtbot, mock, window):
