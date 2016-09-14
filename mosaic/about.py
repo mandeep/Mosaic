@@ -22,7 +22,7 @@ class AboutDialog(QDialog):
         icons = QLabel('Material design icons created by Google')
         icons.setAlignment(Qt.AlignCenter)
 
-        github = QLabel('GitHub: mandeepbhutani')
+        github = QLabel('GitHub: mandeep')
         github.setAlignment(Qt.AlignCenter)
 
         self.layout = QVBoxLayout()
