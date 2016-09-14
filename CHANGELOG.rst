@@ -17,6 +17,16 @@ Additions
 -  Option to add media library to database for later features
 -  Option to change cover art playback click feature
 
+0.17.1 - 2016-09-13
+===================
+
+Fixes
+-----
+
+-  When the window size is changed in preferences, the library dock and playlist dock close
+   in order to properly resize the window
+-  Minimalist View now resizes properly when playlist dock or library dock are open
+
 0.17.0 - 2016-09-10
 ===================
 
