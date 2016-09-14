@@ -2,7 +2,7 @@ from mosaic import about, configuration, defaults, information, library, metadat
 import natsort
 import os
 import pkg_resources
-from PyQt5.QtCore import Qt, QFileInfo, QTime, QUrl
+from PyQt5.QtCore import Qt, QFileInfo, QTime, QTimer, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
@@ -52,13 +52,11 @@ class MusicPlayer(QMainWindow):
         # Initiates the playlist dock widget and the library dock widget
         self.addDockWidget(defaults.Settings().dock_position(), self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
-        self.playlist_dock.resize(300, 800)
         self.playlist_dock.setVisible(defaults.Settings().playlist_on_start())
         self.playlist_dock.setFeatures(QDockWidget.DockWidgetClosable)
 
         self.addDockWidget(defaults.Settings().dock_position(), self.library_dock)
         self.library_dock.setWidget(self.library_view)
-        self.library_dock.resize(300, 800)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start())
         self.library_dock.setFeatures(QDockWidget.DockWidgetClosable)
         self.tabifyDockWidget(self.playlist_dock, self.library_dock)
@@ -433,7 +431,9 @@ class MusicPlayer(QMainWindow):
         """Resizes the window to only show the menu bar and tool bar. Restores the window
         size when the menu item is unchecked."""
         if self.minimalist_view_action.isChecked():
-            self.resize(500, 0)
+            self.library_dock.close()
+            self.playlist_dock.close()
+            QTimer.singleShot(10, lambda: self.resize(500, 0))
         else:
             self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
@@ -468,11 +468,9 @@ class MusicPlayer(QMainWindow):
     def update_settings(self):
         """Updates the settings of the music player when the user clicks 'OK' on the preferences
         dialog."""
-        if not self.playlist_dock.isVisible() or not self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
-        else:
-            self.resize(defaults.Settings().window_size() + self.playlist_dock.width(),
-                        defaults.Settings().window_size() + 63)
+        self.playlist_dock.close()
+        self.library_dock.close()
+        self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
 
 
 def main():
