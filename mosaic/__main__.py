@@ -1,3 +1,3 @@
-from mosaic import main
+from mosaic.player import main
 
 main()
