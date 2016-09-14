@@ -17,6 +17,14 @@ Additions
 -  Option to add media library to database for later features
 -  Option to change cover art playback click feature
 
+0.17.2 - 2016-09-13
+===================
+
+Fixes
+-----
+
+-  python -m mosaic now correctly discovers music player application
+
 0.17.1 - 2016-09-13
 ===================
 
