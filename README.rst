@@ -30,7 +30,7 @@ With your environment set, simply run the following command to install Mosaic::
 
 If you would rather install from source, run the following commands::
 
-    $ git clone https://github.com/mandeepbhutani/Mosaic.git
+    $ git clone https://github.com/mandeep/Mosaic.git
     $ cd Mosaic
     $ python setup.py install
 
