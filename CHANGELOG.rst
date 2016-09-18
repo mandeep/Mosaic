@@ -17,6 +17,12 @@ Additions
 -  Option to add media library to database for later features
 -  Option to change cover art playback click feature
 
+0.18.0 - 2016-09-18
+===================
+
+Added
+-----
+
 0.17.2 - 2016-09-13
 ===================
 
