@@ -113,7 +113,7 @@ class MusicPlayer(QMainWindow):
 
         previous_icon = pkg_resources.resource_filename('mosaic.images', 'md_previous.png')
         self.previous_action = QAction(QIcon(previous_icon), 'Previous', self)
-        self.previous_action.triggered.connect(self.playlist.previous)
+        self.previous_action.triggered.connect(self.previous)
 
         next_icon = pkg_resources.resource_filename('mosaic.images', 'md_next.png')
         self.next_action = QAction(QIcon(next_icon), 'Next', self)
@@ -400,6 +400,14 @@ class MusicPlayer(QMainWindow):
             self.play_action.triggered.connect(self.player.play)
             play_icon = pkg_resources.resource_filename('mosaic.images', 'md_play.png')
             self.play_action.setIcon(QIcon(play_icon))
+
+    def previous(self):
+        """Moves to the previous song in the playlist if the current song is less
+        than five seconds in. Otherwise, restarts the current song."""
+        if self.player.position() <= 5000:
+            self.playlist.previous()
+        else:
+            self.player.setPosition(0)
 
     def repeat_song(self):
         """Sets the current media to repeat and changes the repeat icon
