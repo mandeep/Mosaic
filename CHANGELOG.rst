@@ -23,6 +23,11 @@ Additions
 Added
 -----
 
+-  Current song restarts when previous button clicked unless song is less
+   than five seconds in
+-  New playback preference item where user can change whether or not
+   playback can be controlled via cover art mouse clicks
+
 0.17.2 - 2016-09-13
 ===================
 
