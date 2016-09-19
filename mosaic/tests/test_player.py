@@ -50,6 +50,15 @@ def blank_flac_file():
     return file
 
 
+@pytest.fixture
+def blank_mp3_file():
+    """Returns a resource of a test FLAC file that can be passed as an argument to the
+    unit tests. The metadata from this file has been removed to test cases where a file
+    has no metadata."""
+    file = pkg_resources.resource_filename('mosaic.tests', '04_Ghosts_I_320kb.mp3')
+    return file
+
+
 def test_window(window):
     """Asserts that the window contains the proper title as well as the
     propeer height and width. Also asserts that the window icon appears
@@ -73,13 +82,23 @@ def test_open_flac_file(qtbot, mock, window, flac_file):
     qtbot.mouseClick(window.art, Qt.LeftButton)
 
 
-def test_open_blank_file(qtbot, mock, window, blank_flac_file):
+def test_open_blank_flac_file(qtbot, mock, window, blank_flac_file):
     """Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
     The mock plugin creates a mock of the QFileDialog window while Qt.Key_Enter executes it.
     This test opens a blank flac file to test cases where metadata is not embedded in the file."""
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
     mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
+    qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
+def test_open_blank_mp3_file(qtbot, mock, window, blank_mp3_file):
+    """Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
+    The mock plugin creates a mock of the QFileDialog window while Qt.Key_Enter executes it.
+    This test opens a blank flac file to test cases where metadata is not embedded in the file."""
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_mp3_file, '*.mp3'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
