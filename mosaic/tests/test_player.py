@@ -168,6 +168,19 @@ def test_media_library_path(qtbot, mock, tmpdir, window, config):
     qtbot.mouseClick(config.dialog_media_library.media_library_button, Qt.LeftButton)
 
 
+def test_playback_options(qtbot, mock, window, config):
+    """Qtbot tests the functionality of the items in the Playback page of
+    the preferences dialog. All of the checkboxes are selected and de-selected in
+    order to test for segmentation faults."""
+    qtbot.mouseClick(window.edit, Qt.LeftButton)
+    qtbot.keyClick(window.edit, Qt.Key_Down)
+    mock.patch.object(QDialog, 'exec_', return_value='')
+    qtbot.keyClick(window.edit, Qt.Key_Enter)
+    config.contents.setCurrentRow(1)
+    qtbot.mouseClick(config.dialog_playback.cover_art_playback, Qt.LeftButton)
+    qtbot.mouseClick(config.dialog_playback.cover_art_playback, Qt.LeftButton)
+
+
 def test_view_options(qtbot, mock, window, config):
     """Qtbot tests the functionality of the items in the View Options page of
     the preferences dialog. All of the checkboxes and radio buttons are selected,
@@ -176,7 +189,7 @@ def test_view_options(qtbot, mock, window, config):
     qtbot.keyClick(window.edit, Qt.Key_Down)
     mock.patch.object(QDialog, 'exec_', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
-    config.contents.setCurrentRow(1)
+    config.contents.setCurrentRow(2)
     qtbot.mouseClick(config.dialog_view_options.media_library_view_button, Qt.LeftButton)
     qtbot.mouseClick(config.dialog_view_options.media_library_view_button, Qt.LeftButton)
     qtbot.mouseClick(config.dialog_view_options.playlist_view_button, Qt.LeftButton)
