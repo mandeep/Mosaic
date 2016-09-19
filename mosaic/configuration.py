@@ -72,6 +72,54 @@ class MediaLibrary(QWidget):
             self.media_library_line.setText(library)
 
 
+class Playback(QWidget):
+    """Contains all of the user configurable options related to the playback functionality
+    of the music player."""
+
+    def __init__(self, parent=None):
+        """Initiates the abstract widget that is displayed in the preferences dialog."""
+        super(Playback, self).__init__(parent)
+        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+                                             'settings.toml')
+
+        with open(self.user_config_file) as conffile:
+            config = pytoml.load(conffile)
+
+        playback_config = QGroupBox('Playback Configuration')
+        playback_config_layout = QVBoxLayout()
+        playback_config_layout.setAlignment(Qt.AlignTop)
+
+        self.cover_art_playback = QCheckBox('Cover Art Playback')
+        playback_config_layout.addWidget(self.cover_art_playback)
+        playback_config.setLayout(playback_config_layout)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(playback_config)
+
+        self.setLayout(main_layout)
+
+        self.check_playback_setting(config)
+        self.cover_art_playback.clicked.connect(lambda: self.cover_art_playback_setting(config))
+
+    def cover_art_playback_setting(self, config):
+        """This setting changes the playback behavior of the music player in relation to
+        mouse button clicks on the cover art. The default setting allows for the current media
+        to be paused and played with mouse button clicks on the cover art."""
+        if self.cover_art_playback.isChecked():
+            config.setdefault('playback', {})['cover_art'] = True
+
+        elif not self.cover_art_playback.isChecked():
+            config.setdefault('playback', {})['cover_art'] = False
+
+        with open(self.user_config_file, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
+    def check_playback_setting(self, config):
+        """Retrieves the cover art playback checkbox state from settings.toml and sets the
+        state of the checkbox accordingly."""
+        self.cover_art_playback.setChecked(config['playback']['cover_art'])
+
+
 class ViewOptions(QWidget):
     """Contains all of the user configurable options related to the window functionality
     of the music player."""
@@ -233,8 +281,10 @@ class PreferencesDialog(QDialog):
         self.button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
 
         self.dialog_media_library = MediaLibrary()
+        self.dialog_playback = Playback()
         self.dialog_view_options = ViewOptions()
         self.pages.addWidget(self.dialog_media_library)
+        self.pages.addWidget(self.dialog_playback)
         self.pages.addWidget(self.dialog_view_options)
         self.list_items()
 
@@ -260,9 +310,13 @@ class PreferencesDialog(QDialog):
         media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.contents.setCurrentRow(0)
 
-        window_options = QListWidgetItem(self.contents)
-        window_options.setText('View Options')
-        window_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        playback_options = QListWidgetItem(self.contents)
+        playback_options.setText('Playback')
+        playback_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+        view_options = QListWidgetItem(self.contents)
+        view_options.setText('View Options')
+        view_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def change_page(self, current, previous):
         """Changes the page according to the clicked list item."""
