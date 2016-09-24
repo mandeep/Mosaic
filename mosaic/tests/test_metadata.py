@@ -78,7 +78,7 @@ def test_flac_metadata(flac_file):
 
 def test_blank_metadata(blank_flac_file, blank_mp3_file):
     """Checks that a file with no metadata behaves accordingly."""
-    data = metadata.metadata(blank_flac_file)
-    assert data[0] == '??'
-    assert data[1] == '??'
-    assert data[2] == '??'
+    flac_data = metadata.metadata(blank_flac_file)
+    mp3_data = metadata.metadata(blank_mp3_file)
+    assert flac_data[0] == '??'
+    assert mp3_data[0] == '??'
