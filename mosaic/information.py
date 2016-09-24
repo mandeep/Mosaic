@@ -167,7 +167,7 @@ class FullInformation(QWidget):
         table.horizontalHeader().hide()
 
         if file is not None:
-            file = metadata.extract_meta_data(file)
+            file = metadata.extract_metadata(file)
             table.setRowCount(len(file))
             for i, (tag, data) in enumerate(sorted(file.items())):
                 table.setItem(i, 0, QTableWidgetItem(tag))
