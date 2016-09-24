@@ -14,7 +14,7 @@ def identify_filetype(file):
     return audio_file
 
 
-def extract_meta_data(file):
+def extract_metadata(file):
     """Extracts all of the metadata embedded within the audio file and creates a
     dictionary with the tag and data pairs."""
     audio_file = identify_filetype(file)
@@ -32,7 +32,7 @@ def metadata(file):
     """Returns the extracted meta data as a list to be used by the music player's
     window as well as the media information dialog."""
     audio_file = identify_filetype(file)
-    file_metadata = extract_meta_data(file)
+    file_metadata = extract_metadata(file)
 
     album = file_metadata.get('album', '??')
     artist = file_metadata.get('artist', '??')
