@@ -47,17 +47,17 @@ def test_identify_flac_filetype(flac_file):
 
 
 def test_mp3_tags(mp3_file):
-    """Asserts that the extract_meta_data function returns all of the MP3 tags necessary for the
+    """Asserts that the extract_metadata function returns all of the MP3 tags necessary for the
     music player to use."""
-    assert isinstance(metadata.extract_meta_data(mp3_file), dict)
-    assert 'Ghosts I-IV' in metadata.extract_meta_data(mp3_file).values()
+    assert isinstance(metadata.extract_metadata(mp3_file), dict)
+    assert 'Ghosts I-IV' in metadata.extract_metadata(mp3_file).values()
 
 
 def test_flac_tags(flac_file):
-    """Asserts that the extract_meta_data function returns all of the FLAC tags necessary for the
+    """Asserts that the extract_metadata function returns all of the FLAC tags necessary for the
     music player to use."""
-    assert isinstance(metadata.extract_meta_data(flac_file), dict)
-    assert 'Ghosts I-IV' in metadata.extract_meta_data(flac_file).values()
+    assert isinstance(metadata.extract_metadata(flac_file), dict)
+    assert 'Ghosts I-IV' in metadata.extract_metadata(flac_file).values()
 
 
 def test_mp3_metadata(mp3_file):
