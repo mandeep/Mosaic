@@ -15,6 +15,15 @@ Additions
 -  Search bar in media library dock
 -  Option to add media library to database for later features
 
+0.18.1 - 2016-09-23
+===================
+
+Fixed
+-----
+
+-  Mosaic no longer crashes when file without metadata is opened
+-  No Cover image now shows when file without metadata is playing
+
 0.18.0 - 2016-09-18
 ===================
 
