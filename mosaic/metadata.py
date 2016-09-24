@@ -63,8 +63,6 @@ def metadata(file):
         for tag in mp3.MP3(file):
             if 'APIC' in tag:
                 artwork = QByteArray().append(mp3.MP3(file)[tag].data)
-    except (KeyError, mp3.HeaderNotFoundError):
-        artwork = pkg_resources.resource_filename('mosaic.images', 'nocover.png')
 
     return [album, artist, title, track_number, date, genre, description, sample_rate,
             bitrate, bitrate_mode, bits_per_sample, artwork]
