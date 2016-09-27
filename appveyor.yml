@@ -12,7 +12,6 @@ install:
   - "pip install --disable-pip-version-check --user --upgrade pip"
   - "pip install PyQt5"
   - "pip install coverage"
-  - "pip install coveralls"
   - "pip install pytest"
   - "pip install pytest-qt"
   - "pip install pytest-mock"
@@ -23,5 +22,3 @@ build_script:
   - "%CMD_IN_ENV% python setup.py install"
 test_script:
   - "%CMD_IN_ENV% py.test -s -v -x --cov=./"
-on_success:
-  - "coveralls"
