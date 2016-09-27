@@ -10,6 +10,7 @@ branches:
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "pip install --disable-pip-version-check --user --upgrade pip"
+  - "pip install PyQt5"
   - "pip install coverage"
   - "pip install coveralls"
   - "pip install pytest"
