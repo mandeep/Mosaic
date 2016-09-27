@@ -8,6 +8,8 @@ branches:
   only:
     - master
 install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "pip install --disable-pip-version-check --user --upgrade pip"
   - "python setup.py install"
   - "pip install coverage"
   - "pip install coveralls"
