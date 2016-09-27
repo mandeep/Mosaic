@@ -64,8 +64,6 @@ def test_window(window):
     propeer height and width. Also asserts that the window icon appears
     correctly."""
     assert window.windowTitle() == 'Mosaic'
-    assert window.width() == 900
-    assert window.height() == 963
     assert window.windowIcon().isNull() is False
 
 
