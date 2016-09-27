@@ -4,16 +4,16 @@ branches:
     - master
 install:
   - ps:
-    - python setup.py install
-    - pip install coverage
-    - pip install coveralls
-    - pip install pytest
-    - pip install pytest-qt
-    - pip install pytest-mock
-    - pip install pytest-cov
-    - pip install pytest-xvfb
-    - pip install pytest-faulthandler
+    - "python setup.py install"
+    - "pip install coverage"
+    - "pip install coveralls"
+    - "pip install pytest"
+    - "pip install pytest-qt"
+    - "pip install pytest-mock"
+    - "pip install pytest-cov"
+    - "pip install pytest-xvfb"
+    - "pip install pytest-faulthandler"
 test_script:
-- py.test -s -v -x --cov=./
+- "py.test -s -v -x --cov=./"
 after_test:
-- coveralls
+- "coveralls"
