@@ -1,3 +1,8 @@
+environment:
+  matrix:
+      - PYTHON: "C:\\Python35-x64"
+        PYTHON_VERSION: "3.5.0"
+        PYTHON_ARCH: "64"
 version: 1.0.{build}
 branches:
   only:
