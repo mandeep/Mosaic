@@ -39,5 +39,5 @@ class MediaLibraryView(QTreeView):
         if os.path.isdir(self.model.library):
             self.setRootIndex(self.model.index(self.model.library))
 
-        for i in range(1, 4):
-            self.hideColumn(i)
+        for column in range(1, 4):
+            self.hideColumn(column)
