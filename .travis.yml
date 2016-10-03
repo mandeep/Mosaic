@@ -1,13 +1,18 @@
 notifications:
   email: false
-dist: trusty
-sudo: required
 language: python
-python:
-- 3.4_with_system_site_packages
+matrix:
+  include:
+    - os: linux
+    dist: trusty
+    sudo: required    
+    python: 3.4_with_system_site_packages
+    -os: osx
+    language: generic
 before_install:
-- sudo apt-get update
-- sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get update
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then pip install PyQt5
 deploy:
   provider: pypi
   user: mandeepb
@@ -29,16 +34,16 @@ deploy:
     branch: master
   distributions: "sdist bdist_wheel"
 install:
-- python setup.py install
-- pip install coverage
-- pip install coveralls
-- pip install pytest
-- pip install pytest-qt
-- pip install pytest-mock
-- pip install pytest-cov
-- pip install pytest-xvfb
-- pip install pytest-faulthandler
+  - python setup.py install
+  - pip install coverage
+  - pip install coveralls
+  - pip install pytest
+  - pip install pytest-qt
+  - pip install pytest-mock
+  - pip install pytest-cov
+  - pip install pytest-xvfb
+  - pip install pytest-faulthandler
 script:
-- py.test -s -v -x --cov=./
+  - py.test -s -v -x --cov=./
 after_success:
-- coveralls
+  - coveralls
