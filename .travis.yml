@@ -1,11 +1,11 @@
 notifications:
   email: never
 dist: trusty
-language: python
-python: 3.4_with_system_site_packages
 sudo: required
 matrix:
   include:
+    - os: linux
+      language: 3.4
     - os: osx
       language: generic
 before_install:
@@ -16,6 +16,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install pyqt5; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia; fi
+  - 'export PATH="/usr/bin:$PATH"'
 deploy:
   provider: pypi
   user: mandeepb
