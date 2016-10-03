@@ -3,13 +3,11 @@ notifications:
 language: python
 matrix:
   include:
-    os: 
-      - linux
-      - osx
-    dist: if [[ $TRAVIS_OS_NAME == 'linux' ]]; then trusty; fi
-    sudo: required    
-    python: 3.4_with_system_site_packages
-    language: generic
+    - os: linux
+      dist: trusty
+      sudo: required    
+      python: 3.4_with_system_site_packages
+    - os: osx
 before_install:
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get update; fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia; fi
