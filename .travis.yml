@@ -5,7 +5,8 @@ sudo: required
 matrix:
   include:
     - os: linux
-      language: 3.4
+      language: python
+      python: 3.4
     - os: osx
       language: generic
 before_install:
