@@ -1,24 +1,13 @@
 notifications:
-  email: never
+  email: false
 dist: trusty
 sudo: required
-matrix:
-  include:
-    - os: linux
-      language: python
-      python: 3.4
-    - os: osx
-      language: generic
-virtualenv:
-  system_site_packages: true
+language: python
+python:
+  - 3.4_with_system_site_packages
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install python3; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then virtualenv venv -p python3; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source venv/bin/activate; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install pyqt5; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia; fi
+  - sudo apt-get update
+  - sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
 deploy:
   provider: pypi
   user: mandeepb
@@ -36,6 +25,23 @@ deploy:
       OU5lNENsK0gvWDcxTk5VN2FWemp4ZUhReEdLTzBKZE5wYkR0dzRZYndiWkR1RWZkRFp6bGFRN3kr
       YWhxOXkyNnFHejdRZHZxVGp1VEU3QVJwcXljN2pieHBCYnQwZTdzMndJTnZ6ZkpPd2lIVk41QzMx
       MUN1UVd1bEs5eFdQVmRmbTArdmpqcVBIUXhOZXVONnpXMnUxOThXdHR1bU95d3k4MytHZDBsWHc9
+  true:
+    branch: master
+  distributions: "sdist bdist_wheel"
+install:
+  - python setup.py install
+  - pip install coverage
+  - pip install coveralls
+  - pip install pytest
+  - pip install pytest-qt
+  - pip install pytest-mock
+  - pip install pytest-cov
+  - pip install pytest-xvfb
+  - pip install pytest-faulthandler
+script:
+  - py.test -s -v -x --cov=./
+after_success:
+  - coveralls
   true:
     branch: master
   distributions: "sdist bdist_wheel"
