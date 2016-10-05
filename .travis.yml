@@ -42,9 +42,6 @@ script:
   - py.test -s -v -x --cov=./
 after_success:
   - coveralls
-  true:
-    branch: master
-  distributions: "sdist bdist_wheel"
 install:
   - python setup.py install
   - pip install coverage
