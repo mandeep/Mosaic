@@ -14,7 +14,8 @@ def window(qtbot):
     music_player = player.MusicPlayer()
     qtbot.add_widget(music_player)
     music_player.show()
-    return music_player
+    yield music_player
+    music_player.player.stop()
 
 
 @pytest.fixture
