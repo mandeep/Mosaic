@@ -8,8 +8,10 @@ class MediaLibraryModel(QFileSystemModel):
     """Creates a model of the media library to be shown in a view."""
 
     def __init__(self, parent=None):
-        """Reads the path of the media library from settings.toml and sets it as the
-        root path of the file system model."""
+        """Read the path of the media library from settings.toml.
+
+        This path is set as the root path of the file system model.
+        """
         super(MediaLibraryModel, self).__init__(parent)
 
         self.setNameFilters(['*.mp3', '*.flac'])
@@ -28,9 +30,11 @@ class MediaLibraryView(QTreeView):
     """Creates a view of the media library from a model."""
 
     def __init__(self, parent=None):
-        """Sets MediaLibraryModel as the model of the view and sets the root index as the
-        path of the media library. Removes the 2nd, 3rd, and 4th columns which display
-        size, type, and date modified."""
+        """Set MediaLibraryModel as the model of the view.
+
+        Sets the root index as the path of the media library. Removes
+        the 2nd, 3rd, and 4th columns which display size, type, and date modified.
+        """
         super(MediaLibraryView, self).__init__(parent)
 
         self.model = MediaLibraryModel()
