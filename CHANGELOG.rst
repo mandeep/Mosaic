@@ -13,7 +13,14 @@ Additions
 -  Application specific right-click context menu
 -  Optional status bar with information pertaining to playlist items
 -  Search bar in media library dock
--  Option to add media library to database for later features
+
+0.18.2 - 2016-10-06
+===================
+
+Fixed
+-----
+
+-  Media library now updates without restart when library path changed
 
 0.18.1 - 2016-09-23
 ===================
@@ -38,7 +45,7 @@ Added
 0.17.2 - 2016-09-13
 ===================
 
-Fixes
+Fixed
 -----
 
 -  python -m mosaic now correctly discovers music player application
@@ -46,7 +53,7 @@ Fixes
 0.17.1 - 2016-09-13
 ===================
 
-Fixes
+Fixed
 -----
 
 -  When the window size is changed in preferences, the library dock and playlist dock close
@@ -61,7 +68,7 @@ Added
 
 -  Minimalist View in view menu shows only menu bar and tool bar when selected
 
-Changes
+Changed
 -------
 
 -  Mouse press event on cover art now occurs only on left mouse button click
@@ -69,7 +76,7 @@ Changes
 0.16.4 - 2016-09-09
 ===================
 
-Fixes
+Fixed
 -----
 
 -  About dialog reformatted to display text properly
@@ -77,7 +84,7 @@ Fixes
 0.16.3 - 2016-09-06
 ===================
 
-Changes
+Changed
 -------
 
 -  Library dock width now same as playlist dock width
@@ -112,7 +119,7 @@ Added
 -  Ability to select which side of the application the playlist and
    media library docks show
 
-Changes
+Changed
 -------
 
 -  Playlist and media library docks are no longer floatable or movable
