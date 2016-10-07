@@ -5,10 +5,10 @@ from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
 
 
 class AboutDialog(QDialog):
-    """Contains the necessary elements to show helpful text in a dialog."""
+    """Contains the necessary elements to show the about dialog."""
 
     def __init__(self, parent=None):
-        """Displays a dialog that shows application information."""
+        """Display a dialog that shows application information."""
         super(AboutDialog, self).__init__(parent)
 
         self.setWindowTitle('About')
