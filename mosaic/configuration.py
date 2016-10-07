@@ -11,12 +11,10 @@ from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QFileDialog, QGroupB
 
 
 class MediaLibrary(QWidget):
-    """Contains all of the user configurable options related to the
-    media library."""
+    """Contains all of the user configurable options related to the media library."""
 
     def __init__(self, parent=None):
-        """Initializes a page of options to be shown in the
-        preferences dialog."""
+        """Initialize a page of options to be shown in the preferences dialog."""
         super(MediaLibrary, self).__init__(parent)
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
@@ -52,8 +50,10 @@ class MediaLibrary(QWidget):
         self.media_library_settings(config)
 
     def select_media_library(self, config):
-        """Opens a file dialog to allow the user to select the media library
-        path. The path is then written to settings.toml."""
+        """Open a file dialog to allow the user to select the media library path.
+
+        The selected path is written to settings.toml.
+        """
         library = QFileDialog.getExistingDirectory(self, 'Select Media Library Directory')
         if library:
             self.media_library_line.setText(library)
@@ -64,20 +64,22 @@ class MediaLibrary(QWidget):
                 pytoml.dump(conffile, config)
 
     def media_library_settings(self, config):
-        """If the user has already defined a media library path that was
-        previously written to settings.toml, the path is set as the text
-        of the text box on the media library options page."""
+        """Set the media library text box to the path of the media library.
+
+        If the user has already defined a media library path that was
+        previously written to settings.toml, the path is shown when the
+        preferences dialog is opened.
+        """
         library = config['media_library']['media_library_path']
         if os.path.isdir(library):
             self.media_library_line.setText(library)
 
 
 class Playback(QWidget):
-    """Contains all of the user configurable options related to the playback functionality
-    of the music player."""
+    """Contains all of the user configurable options related to media playback."""
 
     def __init__(self, parent=None):
-        """Initiates the abstract widget that is displayed in the preferences dialog."""
+        """Initiate the abstract widget that is displayed in the preferences dialog."""
         super(Playback, self).__init__(parent)
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
@@ -102,9 +104,11 @@ class Playback(QWidget):
         self.cover_art_playback.clicked.connect(lambda: self.cover_art_playback_setting(config))
 
     def cover_art_playback_setting(self, config):
-        """This setting changes the playback behavior of the music player in relation to
-        mouse button clicks on the cover art. The default setting allows for the current media
-        to be paused and played with mouse button clicks on the cover art."""
+        """Change the cover art playback behavior of the music player.
+
+        The default setting allows for the current media
+        to be paused and played with mouse button clicks on the cover art.
+        """
         if self.cover_art_playback.isChecked():
             config.setdefault('playback', {})['cover_art'] = True
 
@@ -115,17 +119,15 @@ class Playback(QWidget):
             pytoml.dump(conffile, config)
 
     def check_playback_setting(self, config):
-        """Retrieves the cover art playback checkbox state from settings.toml and sets the
-        state of the checkbox accordingly."""
+        """Set the cover art playback checkbox state from settings.toml."""
         self.cover_art_playback.setChecked(config['playback']['cover_art'])
 
 
 class ViewOptions(QWidget):
-    """Contains all of the user configurable options related to the window functionality
-    of the music player."""
+    """Contains all of the user configurable options related to the music player window."""
 
     def __init__(self, parent=None):
-        """Initiates the View Options page in the preferences dialog."""
+        """Initiate the View Options page in the preferences dialog."""
         super(ViewOptions, self).__init__(parent)
 
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
@@ -193,7 +195,7 @@ class ViewOptions(QWidget):
         self.dock_right_side.clicked.connect(lambda: self.dock_positon_settings(config))
 
     def change_size(self, config):
-        """Records the change in window size to the settings.toml file."""
+        """Record the change in window size to the settings.toml file."""
         if self.dropdown_box.currentIndex() != -1:
             config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
 
@@ -201,14 +203,15 @@ class ViewOptions(QWidget):
             pytoml.dump(conffile, config)
 
     def check_window_size(self, config):
-        """Sets the dropdown box to the current window size provided by the settings.toml
-        file."""
+        """Set the dropdown box to the current window size provided by settings.toml."""
         self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
 
     def media_library_view_settings(self, config):
-        """This setting changes the behavior of the Media Library dock widget.
+        """Change the behavior of the Media Library dock widget.
+
         The default setting hides the dock on application start. With this option
-        checked, the media library dock will show on start."""
+        checked, the media library dock will show on start.
+        """
         if self.media_library_view_button.isChecked():
             config.setdefault('media_library', {})['show_on_start'] = True
 
@@ -219,14 +222,15 @@ class ViewOptions(QWidget):
             pytoml.dump(conffile, config)
 
     def check_media_library(self, config):
-        """Retrieves the media library checkbox state from settings.toml and sets the
-        state of the checkbox accordingly."""
+        """Set the media library checkbox state from settings.toml."""
         self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
 
     def playlist_view_settings(self, config):
-        """This setting changes the behavior of the Playlist dock widget.
+        """Change the behavior of the Playlist dock widget.
+
         The default setting hides the dock on application start. With this option
-        checked, the playlist dock will show on start."""
+        checked, the playlist dock will show on start.
+        """
         if self.playlist_view_button.isChecked():
             config.setdefault('playlist', {})['show_on_start'] = True
 
@@ -237,13 +241,11 @@ class ViewOptions(QWidget):
             pytoml.dump(conffile, config)
 
     def check_playlist_dock(self, config):
-        """Retrieves the playlist dock checkbox state from settings.toml and sets the
-        state of the checkbox accordingly."""
+        """Set the playlist dock checkbox state from settings.toml."""
         self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
 
     def dock_positon_settings(self, config):
-        """Writes to the settings.toml the radio button chosen by the user in the preferences
-        dialog."""
+        """Write to the settings.toml the radio button chosen by the user."""
         if self.dock_left_side.isChecked():
             config.setdefault('dock', {})['position'] = 'left'
 
@@ -254,7 +256,7 @@ class ViewOptions(QWidget):
             pytoml.dump(conffile, config)
 
     def check_dock_position(self, config):
-        """Selects the radio button previously chosen by the user in the preferences dialog."""
+        """Select the radio button previously chosen by the user in the preferences dialog."""
         if config['dock']['position'] == 'left':
             self.dock_left_side.setChecked(True)
         elif config['dock']['position'] == 'right':
@@ -262,13 +264,14 @@ class ViewOptions(QWidget):
 
 
 class PreferencesDialog(QDialog):
-    """Creates a dialog that shows the user all of the user configurable
-    options. A list on the left shows all of the available pages, with
-    the page's contents shown on the right."""
+    """Creates a dialog that shows the user all of the user configurable options.
+
+    A list on the left shows all of the available pages, with
+    the page's contents shown on the right.
+    """
 
     def __init__(self, parent=None):
-        """Initializes the preferences dialog with a list box on the left
-        and a content layout on the right."""
+        """Initialize the preferences dialog with a list box and a content layout."""
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
         settings_icon = pkg_resources.resource_filename('mosaic.images', 'md_settings.png')
@@ -299,8 +302,7 @@ class PreferencesDialog(QDialog):
         self.contents.currentItemChanged.connect(self.change_page)
 
     def list_items(self):
-        """Lists all of the pages available to the user. Each page houses
-        its own user configurable options."""
+        """List all of the pages available to the user."""
         media_library_options = QListWidgetItem(self.contents)
         media_library_options.setText('Media Library')
         media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
@@ -315,7 +317,7 @@ class PreferencesDialog(QDialog):
         view_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def change_page(self, current, previous):
-        """Changes the page according to the clicked list item."""
+        """Change the page according to the clicked list item."""
         if not current:
             current = previous
 
