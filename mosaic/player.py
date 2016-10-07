@@ -1,3 +1,4 @@
+from appdirs import AppDirs
 from mosaic import about, configuration, defaults, information, library, metadata
 import natsort
 import os
@@ -8,6 +9,7 @@ from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
                              QLabel, QListWidget, QListWidgetItem, QMainWindow, QSizePolicy,
                              QSlider, QToolBar, QVBoxLayout, QWidget)
+import pytoml
 import sys
 
 
@@ -479,6 +481,17 @@ class MusicPlayer(QMainWindow):
         self.playlist_dock.close()
         self.library_dock.close()
         self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+
+        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
+
+        with open(self.user_config_file) as conffile:
+            config = pytoml.load(conffile)
+        self.library = config['media_library']['media_library_path']
+
+        self.library_model.setRootPath(self.library)
+        self.library_view.setModel(self.library_model)
+        self.library_view.setRootIndex(self.library_model.index(self.library))
 
 
 def main():
