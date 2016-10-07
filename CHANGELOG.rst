@@ -14,6 +14,19 @@ Additions
 -  Optional status bar with information pertaining to playlist items
 -  Search bar in media library dock
 
+0.18.3 - 2016-10-07
+===================
+
+Fixed
+-----
+
+-  The docks no longer close when options other than window size are changed
+
+Changed
+-------
+
+-  Removed the OK and Cancel buttons from the preferences dialog
+
 0.18.2 - 2016-10-06
 ===================
 
