@@ -6,12 +6,10 @@ from PyQt5.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget
 
 
 class GeneralInformation(QWidget):
-    """MediaInformation houses all of the widgets and layouts necessary
-    to create a dialog filled with general audio metadata."""
+    """MediaInformation houses all of the widgets and layouts in order to show general metadata."""
 
     def __init__(self, file=None, parent=None):
-        """Initializes the widgets and layouts needed to create a
-        dialog containing audio metadata."""
+        """Initialize the widgets and layouts needed to create a dialog."""
         super(GeneralInformation, self).__init__(parent)
 
         if file is not None:
@@ -151,11 +149,14 @@ class GeneralInformation(QWidget):
 
 
 class FullInformation(QWidget):
-    """Provides data on every tag embedded within the audio file."""
+    """Abstract class that provides a table with two columns.
+
+    One column for the current audio file's metadata tags and one column for the
+    values of the tags.
+    """
 
     def __init__(self, file=None, parent=None):
-        """Abstract class that provides a table with two columns. One column for the current
-        audio file's metadata tags and one column for the values of the tags."""
+        """Provide data on every tag embedded within the audio file."""
         super(FullInformation, self).__init__(parent)
 
         table_layout = QHBoxLayout()
@@ -179,12 +180,10 @@ class FullInformation(QWidget):
 
 
 class InformationDialog(QDialog):
-    """Displays a dialog containing tabs of General Metadata Information and
-    Full Metadata Information."""
+    """InformationDialog displays a dialog containing tabs for metadata."""
 
     def __init__(self, file=None, parent=None):
-        """Initializes QTabWidget with tabs of the two information pages and
-        displays the QDialog widget when executed."""
+        """Initialize QTabWidget with tabs for each metadata page."""
         super(InformationDialog, self).__init__(parent)
         self.setWindowTitle('Media Information')
         info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
