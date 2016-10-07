@@ -15,8 +15,11 @@ def identify_filetype(file):
 
 
 def extract_metadata(file):
-    """Extract all of the metadata embedded within the audio file and create a
-    dictionary with the tag and data pairs."""
+    """Extract all of the metadata embedded within the audio file.
+
+    Creates a dictionary with the tag and data pairs so that the MP3 and FLAC
+    tags are in the same dictionary.
+    """
     audio_file = identify_filetype(file)
 
     # Mutagen returns None if there is no metadata embedded within a file
@@ -29,8 +32,7 @@ def extract_metadata(file):
 
 
 def metadata(file):
-    """Create a list of the extracted meta data to be used by the music player's
-    window as well as the media information dialog."""
+    """Create a list of all the media file's extracted metadata."""
     audio_file = identify_filetype(file)
     file_metadata = extract_metadata(file)
 
