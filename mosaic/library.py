@@ -1,7 +1,9 @@
-from appdirs import AppDirs
 import os
-from PyQt5.QtWidgets import QFileSystemModel, QTreeView
+
+from appdirs import AppDirs
 import pytoml
+
+from PyQt5.QtWidgets import QFileSystemModel, QTreeView
 
 
 class MediaLibraryModel(QFileSystemModel):
