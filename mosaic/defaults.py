@@ -1,8 +1,10 @@
-from appdirs import AppDirs
 import os
 import pkg_resources
-from PyQt5.QtCore import Qt
+
+from appdirs import AppDirs
 import pytoml
+
+from PyQt5.QtCore import Qt
 
 
 class Settings(object):
