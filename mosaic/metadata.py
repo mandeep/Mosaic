@@ -1,5 +1,6 @@
-from mutagen import easyid3, flac, mp3
 import pkg_resources
+
+from mutagen import easyid3, flac, mp3
 from PyQt5.QtCore import QByteArray
 
 
