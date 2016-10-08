@@ -1,14 +1,17 @@
-from mosaic import about, configuration, defaults, information, library, metadata
-import natsort
 import os
 import pkg_resources
+import sys
+
+import natsort
+
 from PyQt5.QtCore import Qt, QFileInfo, QTime, QTimer, QUrl
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
 from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
                              QLabel, QListWidget, QListWidgetItem, QMainWindow, QSizePolicy,
                              QSlider, QToolBar, QVBoxLayout, QWidget)
-import sys
+
+from mosaic import about, configuration, defaults, information, library, metadata
 
 
 class MusicPlayer(QMainWindow):
