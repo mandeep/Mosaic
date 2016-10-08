@@ -1,4 +1,5 @@
 import pkg_resources
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
