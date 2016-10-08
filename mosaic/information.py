@@ -1,8 +1,10 @@
-from mosaic import metadata
 import pkg_resources
+
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QTableWidget,
                              QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
+
+from mosaic import metadata
 
 
 class GeneralInformation(QWidget):
