@@ -1,4 +1,4 @@
-.. image:: mosaic/images/album.png
+.. image:: mosaic/images/mosaic.png
 
 |travis| |appveyor| |coverage| |dependency| |codacy| |pypi| |status| |pyversions| |wheel| |license|
 
