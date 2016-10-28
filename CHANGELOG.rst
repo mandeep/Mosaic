@@ -14,6 +14,14 @@ Additions
 -  Optional status bar with information pertaining to playlist items
 -  Search bar in media library dock
 
+0.18.4 - 2016-10-08
+===================
+
+Added
+-----
+
+-  OK button to preferences dialog
+
 0.18.3 - 2016-10-07
 ===================
 
