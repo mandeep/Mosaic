@@ -6,8 +6,8 @@ import pytoml
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QFileDialog, QGroupBox,
-                             QHBoxLayout, QLabel, QLineEdit, QListWidget,
+from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QFileDialog,
+                             QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QRadioButton, QStackedWidget,
                              QVBoxLayout, QWidget)
 
@@ -283,6 +283,7 @@ class PreferencesDialog(QDialog):
         self.contents = QListWidget()
         self.contents.setFixedWidth(175)
         self.pages = QStackedWidget()
+        self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
 
         self.dialog_media_library = MediaLibrary()
         self.dialog_playback = Playback()
@@ -294,6 +295,7 @@ class PreferencesDialog(QDialog):
 
         stack_layout = QVBoxLayout()
         stack_layout.addWidget(self.pages)
+        stack_layout.addWidget(self.button_box)
 
         layout = QHBoxLayout()
         layout.addWidget(self.contents)
@@ -302,6 +304,7 @@ class PreferencesDialog(QDialog):
         self.setLayout(layout)
 
         self.contents.currentItemChanged.connect(self.change_page)
+        self.button_box.accepted.connect(self.accept)
 
     def list_items(self):
         """List all of the pages available to the user."""
