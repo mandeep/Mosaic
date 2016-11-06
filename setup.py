@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.18.3',
-      author='Mandeep Bhutani',
+      version='0.18.4',
+      author='Mandeep',
       author_email='info@mandeep.xyz',
       url='https://github.com/mandeep/Mosaic',
       description='A cross-platform cover art focused music player.',
