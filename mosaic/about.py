@@ -17,7 +17,7 @@ class AboutDialog(QDialog):
         self.setWindowIcon(QIcon(help_icon))
         self.resize(300, 200)
 
-        author = QLabel('Created by Mandeep Bhutani')
+        author = QLabel('Created by Mandeep')
         author.setAlignment(Qt.AlignCenter)
 
         icons = QLabel('Material design icons created by Google')
