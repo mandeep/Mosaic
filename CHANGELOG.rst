@@ -14,6 +14,14 @@ Additions
 -  Optional status bar with information pertaining to playlist items
 -  Search bar in media library dock
 
+0.18.5 - 2016-11-19
+===================
+
+Added
+-----
+
+-  Playlist now shown when new media added if media library dock open
+
 0.18.4 - 2016-10-08
 ===================
 
