@@ -235,6 +235,7 @@ class MusicPlayer(QMainWindow):
         filename, ok = QFileDialog.getOpenFileName(
             self, 'Open File', '', 'Audio (*.mp3 *.flac)', '',
             QFileDialog.ReadOnly)
+
         if ok:
             file_info = QFileInfo(filename).fileName()
             playlist_item = QListWidgetItem(file_info)
@@ -247,11 +248,17 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
+        if self.library_dock.isVisible():
+            self.playlist_dock.setVisible(True)
+            self.playlist_dock.show()
+            self.playlist_dock.raise_()
+
     def open_multiple_files(self):
         """Open the selected files and add them to a new playlist."""
         filenames, ok = QFileDialog.getOpenFileNames(
             self, 'Open Multiple Files', '',
             'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
+
         if ok:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -264,6 +271,11 @@ class MusicPlayer(QMainWindow):
                 self.playlist_view.addItem(playlist_item)
                 self.playlist_view.setCurrentRow(0)
                 self.player.play()
+
+        if self.library_dock.isVisible():
+            self.playlist_dock.setVisible(True)
+            self.playlist_dock.show()
+            self.playlist_dock.raise_()
 
     def open_playlist(self):
         """Load an M3U or PLS file into a new playlist."""
@@ -285,10 +297,16 @@ class MusicPlayer(QMainWindow):
 
             self.player.play()
 
+        if self.library_dock.isVisible():
+            self.playlist_dock.setVisible(True)
+            self.playlist_dock.show()
+            self.playlist_dock.raise_()
+
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
         directory = QFileDialog.getExistingDirectory(
             self, 'Open Directory', '', QFileDialog.ReadOnly)
+        
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -304,6 +322,11 @@ class MusicPlayer(QMainWindow):
             self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
             self.player.play()
+
+        if self.library_dock.isVisible():
+            self.playlist_dock.setVisible(True)
+            self.playlist_dock.show()
+            self.playlist_dock.raise_()
 
     def open_media_library(self, index):
         """Open a directory or file from the media library into an empty playlist."""
@@ -534,3 +557,4 @@ def main():
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())
+main()
