@@ -277,6 +277,9 @@ class MusicPlayer(QMainWindow):
             self.playlist_dock.show()
             self.playlist_dock.raise_()
 
+        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+            self.repeat_song()
+
     def open_playlist(self):
         """Load an M3U or PLS file into a new playlist."""
         playlist, ok = QFileDialog.getOpenFileName(
@@ -302,11 +305,14 @@ class MusicPlayer(QMainWindow):
             self.playlist_dock.show()
             self.playlist_dock.raise_()
 
+        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+            self.repeat_song()
+
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
         directory = QFileDialog.getExistingDirectory(
             self, 'Open Directory', '', QFileDialog.ReadOnly)
-        
+
         if directory:
             self.playlist.clear()
             self.playlist_view.clear()
@@ -327,6 +333,9 @@ class MusicPlayer(QMainWindow):
             self.playlist_dock.setVisible(True)
             self.playlist_dock.show()
             self.playlist_dock.raise_()
+
+        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+            self.repeat_song()
 
     def open_media_library(self, index):
         """Open a directory or file from the media library into an empty playlist."""
@@ -354,6 +363,9 @@ class MusicPlayer(QMainWindow):
         self.playlist_dock.show()
         self.playlist_dock.raise_()
         self.player.play()
+
+        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+            self.repeat_song()
 
     def display_meta_data(self):
         """Display the current song's metadata in the main window.
