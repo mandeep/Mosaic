@@ -9,18 +9,18 @@ Mosaic is a cover art focused media player built with Python and the PyQt5 libra
 .. image:: mosaic/images/screen2.png
 
 
-*********
+********
 Features
-*********
+********
 
 * Displays correctly scaled cover art meta data in the main window
 * Provides media information including bitrate, bits per sample, and sample rate
 * Media library and playlist browser for easy access listening
 * Supports FLAC and MP3 file formats
 
-*************
+************
 Installation
-*************
+************
 
 Mosaic requires Python and the PyQt5 library installed locally. For PyQt5 install instructions please visit: https://www.riverbankcomputing.com/software/pyqt/download5
 
@@ -35,17 +35,17 @@ If you would rather install from source, run the following commands::
     $ python setup.py install
 
 
-******
+*****
 Usage
-******
+*****
 
 Mosaic can be run with the following command::
 
     $ mosaic
 
-***********
+**********
 Change Log
-***********
+**********
 
 
 To see the Mosaic change log, click here_.
@@ -57,7 +57,7 @@ To see the Mosaic change log, click here_.
     :target: https://ci.appveyor.com/project/mandeep/mosaic
 .. |coverage| image:: https://img.shields.io/coveralls/mandeep/Mosaic/master.svg
     :target: https://coveralls.io/github/mandeep/Mosaic
-.. |dependency| image:: https://img.shields.io/librariesio/github/mandeepbhutani/Mosaic.svg
+.. |dependency| image:: https://dependencyci.com/github/mandeep/Mosaic/badge
     :target: https://dependencyci.com/github/mandeep/Mosaic
 .. |codacy| image:: https://img.shields.io/codacy/grade/bae3a2a675c84a5da7863e46f25441fe.svg
     :target: https://www.codacy.com/app/bhutanimandeep/Mosaic/dashboard
