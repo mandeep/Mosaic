@@ -14,10 +14,18 @@ Additions
 -  Optional status bar with information pertaining to playlist items
 -  Search bar in media library dock
 
+0.18.6 - 2016-12-06
+===================
+
+Changed
+-------
+
+-  Repeat turns off when new media added to empty playlist
+
 0.18.5 - 2016-11-19
 ===================
 
-Added
+Fixed
 -----
 
 -  Playlist now shown when new media added if media library dock open
