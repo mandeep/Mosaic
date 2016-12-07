@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.18.5',
-      author='Mandeep',
+      version='0.18.6',
+      author='Mandeep Bhutani',
       author_email='info@mandeep.xyz',
       url='https://github.com/mandeep/Mosaic',
       description='A cross-platform cover art focused music player.',
@@ -21,7 +21,7 @@ setup(name='mosaic-music',
         ''',
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
