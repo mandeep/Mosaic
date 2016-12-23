@@ -11,8 +11,14 @@ Additions
 ---------
 
 -  Application specific right-click context menu
--  Optional status bar with information pertaining to playlist items
--  Search bar in media library dock
+
+0.19.0 - 2016-12-23
+===================
+
+Added
+-----
+
+-  Ability to loop playlist
 
 0.18.6 - 2016-12-06
 ===================
