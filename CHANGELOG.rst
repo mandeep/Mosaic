@@ -12,6 +12,15 @@ Additions
 
 -  Application specific right-click context menu
 
+
+0.19.1 - 2016-12-23
+===================
+
+Fixed
+-----
+
+-  Missing repeat icons now appear
+
 0.19.0 - 2016-12-23
 ===================
 
