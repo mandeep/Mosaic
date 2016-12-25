@@ -13,6 +13,14 @@ Additions
 -  Application specific right-click context menu
 
 
+0.19.2 - 2016-12-25
+===================
+
+Fixed
+-----
+
+-  First index of playlist now highlighted when media added from playlist file
+
 0.19.1 - 2016-12-23
 ===================
 
