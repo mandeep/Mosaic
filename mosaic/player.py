@@ -81,7 +81,7 @@ class MusicPlayer(QMainWindow):
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
         self.player.stateChanged.connect(self.set_state)
-        self.playlist_view.itemActivated.connect(self.playlist_item)
+        self.playlist_view.itemActivated.connect(self.activate_playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
         self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
@@ -507,7 +507,7 @@ class MusicPlayer(QMainWindow):
             repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_all.png')
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
-    def playlist_item(self, item):
+    def activate_playlist_item(self, item):
         """Set the active media to the playlist item dobule-clicked on by the user."""
         current_index = self.playlist_view.row(item)
         if self.playlist.currentIndex() != current_index:
