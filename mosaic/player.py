@@ -84,6 +84,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.itemActivated.connect(self.activate_playlist_item)
         self.library_view.activated.connect(self.open_media_library)
         self.playlist.currentIndexChanged.connect(self.change_index)
+        self.playlist.mediaInserted.connect(self.initialize_playlist)
         self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.library_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.preferences.dialog_media_library.media_library_line.textChanged.connect(
@@ -248,11 +249,6 @@ class MusicPlayer(QMainWindow):
             self.playlist_view.setCurrentRow(0)
             self.player.play()
 
-        if self.library_dock.isVisible():
-            self.playlist_dock.setVisible(True)
-            self.playlist_dock.show()
-            self.playlist_dock.raise_()
-
     def open_multiple_files(self):
         """Open the selected files and add them to a new playlist."""
         filenames, ok = QFileDialog.getOpenFileNames(
@@ -272,14 +268,6 @@ class MusicPlayer(QMainWindow):
                 self.playlist_view.setCurrentRow(0)
                 self.player.play()
 
-        if self.library_dock.isVisible():
-            self.playlist_dock.setVisible(True)
-            self.playlist_dock.show()
-            self.playlist_dock.raise_()
-
-        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-            self.repeat_song()
-
     def open_playlist(self):
         """Load an M3U or PLS file into a new playlist."""
         playlist, ok = QFileDialog.getOpenFileName(
@@ -298,15 +286,8 @@ class MusicPlayer(QMainWindow):
                 playlist_item.setToolTip(file_info)
                 self.playlist_view.addItem(playlist_item)
 
+            self.playlist_view.setCurrentRow(0)
             self.player.play()
-
-        if self.library_dock.isVisible():
-            self.playlist_dock.setVisible(True)
-            self.playlist_dock.show()
-            self.playlist_dock.raise_()
-
-        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-            self.repeat_song()
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
@@ -328,14 +309,6 @@ class MusicPlayer(QMainWindow):
             self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
             self.player.play()
-
-        if self.library_dock.isVisible():
-            self.playlist_dock.setVisible(True)
-            self.playlist_dock.show()
-            self.playlist_dock.raise_()
-
-        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-            self.repeat_song()
 
     def open_media_library(self, index):
         """Open a directory or file from the media library into an empty playlist."""
@@ -359,13 +332,7 @@ class MusicPlayer(QMainWindow):
                         self.playlist_view.addItem(playlist_item)
 
         self.player.setPlaylist(self.playlist)
-        self.playlist_dock.setVisible(True)
-        self.playlist_dock.show()
-        self.playlist_dock.raise_()
         self.player.play()
-
-        if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-            self.repeat_song()
 
     def display_meta_data(self):
         """Display the current song's metadata in the main window.
@@ -391,6 +358,17 @@ class MusicPlayer(QMainWindow):
             self.art.setPixmap(self.pixmap)
 
             self.layout.addWidget(self.art)
+
+    def initialize_playlist(self, start):
+        """Display playlist and reset playback mode when media inserted into playlist."""
+        if start == 0:
+            if self.library_dock.isVisible():
+                self.playlist_dock.setVisible(True)
+                self.playlist_dock.show()
+                self.playlist_dock.raise_()
+
+            if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+                self.repeat_song()
 
     def press_playback(self, event):
         """Change the playback of the player on cover art mouse event.
