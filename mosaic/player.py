@@ -130,7 +130,7 @@ class MusicPlayer(QMainWindow):
         self.next_action = QAction(QIcon(next_icon), 'Next', self)
         self.next_action.triggered.connect(self.playlist.next)
 
-        repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_all.png')
+        repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_none.png')
         self.repeat_action = QAction(QIcon(repeat_icon), 'Repeat', self)
         self.repeat_action.triggered.connect(self.repeat_song)
 
@@ -465,24 +465,27 @@ class MusicPlayer(QMainWindow):
     def repeat_song(self):
         """Set the current media to repeat and change the repeat icon accordingly.
 
-        If the playback mode is set to sequential (default) then the playback mode will be
-        set to loop the playlist when the user clicks on the repeat icon. If the user clicks
-        on the repeat icon again, the playback mode will be set to repeat current item. Another
-        click will set the playback mode to sequential again.
+        There are four playback modes: repeat none, repeat all, repeat once, and shuffle.
+        Clicking the repeat button cycles through each playback mode.
         """
         if self.playlist.playbackMode() == QMediaPlaylist.Sequential:
             self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
-            repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_all_on.png')
+            repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_all.png')
             self.repeat_action.setIcon(QIcon(repeat_on_icon))
 
         elif self.playlist.playbackMode() == QMediaPlaylist.Loop:
             self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
-            repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_on.png')
+            repeat_on_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_once.png')
             self.repeat_action.setIcon(QIcon(repeat_on_icon))
 
         elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+            self.playlist.setPlaybackMode(QMediaPlaylist.Random)
+            repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_shuffle.png')
+            self.repeat_action.setIcon(QIcon(repeat_icon))
+
+        elif self.playlist.playbackMode() == QMediaPlaylist.Random:
             self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
-            repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_all.png')
+            repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_none.png')
             self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def activate_playlist_item(self, item):

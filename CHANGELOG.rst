@@ -4,14 +4,27 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
-Unreleased
-==========
+0.19.4 - 2017-01-17
+===================
 
-Additions
----------
+Added
+-----
 
--  Application specific right-click context menu
+-  Ability to shuffle playlist
 
+Changed
+-------
+
+-  New repeat playlist icons
+
+
+0.19.3 - 2016-12-28
+===================
+
+Changed
+-------
+
+-  Rewrote docstrings in test functions
 
 0.19.2 - 2016-12-25
 ===================
