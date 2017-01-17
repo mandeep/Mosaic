@@ -4,7 +4,7 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
-0.19.4 - 2017-01-17
+0.20.0 - 2017-01-17
 ===================
 
 Added
