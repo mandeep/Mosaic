@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.21.1 - 2017-01-18
+===================
+
+Changed
+-------
+
+-  Updated screenshot on README to reflect new icons
+
 0.20.0 - 2017-01-17
 ===================
 
