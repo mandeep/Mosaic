@@ -4,7 +4,7 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
-0.22.0 - 2017-02-27
+0.21.0 - 2017-02-27
 ===================
 
 Added
@@ -13,7 +13,7 @@ Added
 -  Ability to save playlist on player close
 -  Ability to open previously saved playlist
 
-0.21.1 - 2017-01-18
+0.20.1 - 2017-01-18
 ===================
 
 Changed
