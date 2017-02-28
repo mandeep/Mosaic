@@ -9,9 +9,10 @@ show_on_start = false
 
 [playlist]
 show_on_start = false
+save_on_close = true
 
 [dock]
-position = 'right'
+position = "right"
 
 [playback]
 cover_art = true

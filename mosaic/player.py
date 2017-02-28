@@ -34,6 +34,7 @@ class MusicPlayer(QMainWindow):
         # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
+        self.playlist_location = defaults.Settings().playlist_path()
         self.content = QMediaContent()
         self.menu = self.menuBar()
         self.toolbar = QToolBar()
@@ -96,6 +97,7 @@ class MusicPlayer(QMainWindow):
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
+        self.load_saved_playlist()
 
     def menu_controls(self):
         """Initiate the menu bar and add it to the QMainWindow widget."""
@@ -166,7 +168,7 @@ class MusicPlayer(QMainWindow):
 
         self.exit_action = QAction('Quit', self)
         self.exit_action.setShortcut('CTRL+Q')
-        self.exit_action.triggered.connect(lambda: QApplication.quit())
+        self.exit_action.triggered.connect(self.closeEvent)
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
@@ -288,6 +290,22 @@ class MusicPlayer(QMainWindow):
 
             self.playlist_view.setCurrentRow(0)
             self.player.play()
+
+    def load_saved_playlist(self):
+        """Load the saved playlist if user setting permits."""
+        saved_playlist = "{}/.m3u" .format(self.playlist_location)
+        if os.path.exists(saved_playlist):
+            playlist = QUrl().fromLocalFile(saved_playlist)
+            self.playlist.load(playlist)
+            self.player.setPlaylist(self.playlist)
+
+            for song_index in range(self.playlist.mediaCount()+1):
+                file_info = self.playlist.media(song_index).canonicalUrl().fileName()
+                playlist_item = QListWidgetItem(file_info)
+                playlist_item.setToolTip(file_info)
+                self.playlist_view.addItem(playlist_item)
+
+            self.playlist_view.setCurrentRow(0)
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
@@ -548,6 +566,16 @@ class MusicPlayer(QMainWindow):
         self.library_model.setRootPath(path)
         self.library_view.setModel(self.library_model)
         self.library_view.setRootIndex(self.library_model.index(path))
+
+    def closeEvent(self, event):
+        """Override the PyQt close event in order to handle save playlist on close."""
+        playlist = "{}/.m3u" .format(self.playlist_location)
+        if defaults.Settings().save_playlist_on_close():
+            self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
+        else:
+            if os.path.exists(playlist):
+                os.remove(playlist) 
+        QApplication.quit()
 
 
 def main():
