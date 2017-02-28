@@ -17,16 +17,16 @@ class Settings(object):
         is read into memory and then written to a new settings.toml file in the
         user config directory.
         """
-        config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
 
-        if not os.path.exists(config_directory):
-            os.makedirs(config_directory)
+        if not os.path.exists(self.config_directory):
+            os.makedirs(self.config_directory)
 
         settings = pkg_resources.resource_filename(__name__, 'settings.toml')
         with open(settings) as default_config:
             config = default_config.read()
 
-        self.user_config_file = os.path.join(config_directory, 'settings.toml')
+        self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
         if not os.path.isfile(self.user_config_file):
             with open(self.user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
@@ -45,6 +45,14 @@ class Settings(object):
     def playlist_on_start(self):
         """Check the state of the playlist view checkbox from settings.toml."""
         return self.config['playlist']['show_on_start']
+
+    def save_playlist_on_close(self):
+        """Check the state of the save playlist close setting from settings.toml."""
+        return self.config['playlist']['save_on_close']
+
+    def playlist_path(self):
+        """Return the user config directory as the location to save the playlist."""
+        return self.config_directory
 
     def dock_position(self):
         """Return the dock area selected by the user in the preferences dialog."""

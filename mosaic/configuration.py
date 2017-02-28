@@ -94,7 +94,11 @@ class Playback(QWidget):
         playback_config_layout.setAlignment(Qt.AlignTop)
 
         self.cover_art_playback = QCheckBox('Cover Art Playback')
+        self.playlist_save_checkbox = QCheckBox('Save Playlist on Close')
+
         playback_config_layout.addWidget(self.cover_art_playback)
+        playback_config_layout.addWidget(self.playlist_save_checkbox)
+
         playback_config.setLayout(playback_config_layout)
 
         main_layout = QVBoxLayout()
@@ -103,7 +107,9 @@ class Playback(QWidget):
         self.setLayout(main_layout)
 
         self.check_playback_setting(config)
+        self.check_playlist_save(config)
         self.cover_art_playback.clicked.connect(lambda: self.cover_art_playback_setting(config))
+        self.playlist_save_checkbox.clicked.connect(lambda: self.playlist_save_setting(config))
 
     def cover_art_playback_setting(self, config):
         """Change the cover art playback behavior of the music player.
@@ -120,9 +126,24 @@ class Playback(QWidget):
         with open(self.user_config_file, 'w') as conffile:
             pytoml.dump(conffile, config)
 
+    def playlist_save_setting(self, config):
+        """Change the save playlist on close behavior of the music player."""
+        if self.playlist_save_checkbox.isChecked():
+            config.setdefault('playlist', {})['save_on_close'] = True
+
+        elif not self.playlist_save_checkbox.isChecked():
+            config.setdefault('playlist', {})['save_on_close'] = False
+
+        with open(self.user_config_file, 'w') as conffile:
+            pytoml.dump(conffile, config)
+
     def check_playback_setting(self, config):
         """Set the cover art playback checkbox state from settings.toml."""
         self.cover_art_playback.setChecked(config['playback']['cover_art'])
+
+    def check_playlist_save(self, config):
+        """Set the playlist save on close state from settings.toml."""
+        self.playlist_save_checkbox.setChecked(config['playlist']['save_on_close'])
 
 
 class ViewOptions(QWidget):
