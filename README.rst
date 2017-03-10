@@ -6,6 +6,7 @@
 
 .. image:: mosaic/images/screen2.png
 
+.. image:: mosaic/images/screen3.png
 
 ********
 Features
