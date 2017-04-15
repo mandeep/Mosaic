@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.21.2',
+      version='0.22.0',
       author='Mandeep Bhutani',
       author_email='info@mandeep.xyz',
       url='https://github.com/mandeep/Mosaic',
@@ -11,7 +11,7 @@ setup(name='mosaic-music',
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
         'appdirs==1.4.0',
-        'mutagen==1.34',
+        'mutagen==1.37',
         'pytoml==0.1.10',
         'natsort==5.0.1'
       ],
