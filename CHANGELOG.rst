@@ -4,6 +4,22 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.23.0 - 2017-04-27
+===================
+
+Fixed
+-----
+
+-  Playlist state saved when switching between default view and minimalist view
+
+0.22.0 - 2017-04-14
+===================
+
+Changed
+-------
+
+-  Mutagen updated from 1.34 to 1.37
+
 
 0.21.1 - 2017-03-10
 ===================

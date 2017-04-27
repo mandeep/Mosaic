@@ -51,6 +51,8 @@ class MusicPlayer(QMainWindow):
         self.widget = QWidget()
         self.layout = QVBoxLayout(self.widget)
         self.duration = 0
+        self.playlist_dock_state = None
+        self.library_dock_state = None
 
         # Sets QWidget() as the central widget of the main window
         self.setCentralWidget(self.widget)
@@ -522,11 +524,25 @@ class MusicPlayer(QMainWindow):
     def minimalist_view(self):
         """Resize the window to only show the menu bar and audio controls."""
         if self.minimalist_view_action.isChecked():
+
+            if self.playlist_dock.isVisible():
+                self.playlist_dock_state = True
+            if self.library_dock.isVisible():
+                self.library_dock_state = True
+
             self.library_dock.close()
             self.playlist_dock.close()
+
             QTimer.singleShot(10, lambda: self.resize(500, 0))
+
         else:
             self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+
+            if self.library_dock_state:
+                self.library_dock.setVisible(True)
+
+            if self.playlist_dock_state:
+                self.playlist_dock.setVisible(True)
 
     def dock_visiblity_change(self, visible):
         """Change the size of the main window when the docks are toggled."""
