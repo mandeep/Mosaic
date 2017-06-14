@@ -75,6 +75,10 @@ class MusicPlayer(QMainWindow):
         self.slider.setRange(0, self.player.duration() / 1000)
         self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
 
+        # OSX system menu bar causes conflicts with PyQt5 menu bar
+        if sys.platform == 'darwin':
+            self.menu.setNativeMenuBar(False)
+
         # Initiates Settings in the defaults module to give access to settings.toml
         defaults.Settings()
 

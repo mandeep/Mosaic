@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.24.0 - 2017-06-14
+===================
+
+Changed
+-------
+
+-  Non-native menu bar used on OSX due to system menu bar causing problems
+
+
 0.23.0 - 2017-04-27
 ===================
 
