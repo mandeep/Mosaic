@@ -1,6 +1,6 @@
 .. image:: mosaic/images/mosaic.png
 
-|travis| |appveyor| |coverage| |dependency| |codacy| |pypi| |status| |pyversions| |wheel| |license|
+|travis| |appveyor| |coverage| |dependency| |quality| |pypi| |status| |pyversions| |wheel| |license|
 
 .. image:: mosaic/images/screen.png
 
@@ -59,8 +59,8 @@ To see the Mosaic change log, click here_.
     :target: https://coveralls.io/github/mandeep/Mosaic
 .. |dependency| image:: https://dependencyci.com/github/mandeep/Mosaic/badge
     :target: https://dependencyci.com/github/mandeep/Mosaic
-.. |codacy| image:: https://img.shields.io/codacy/grade/bae3a2a675c84a5da7863e46f25441fe.svg
-    :target: https://www.codacy.com/app/bhutanimandeep/Mosaic/dashboard
+.. |quality| image:: https://img.shields.io/scrutinizer/g/mandeep/Mosaic.svg
+    :target: https://scrutinizer-ci.com/g/mandeep/Mosaic/
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |status| image:: https://img.shields.io/pypi/status/mosaic-music.svg

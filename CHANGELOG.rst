@@ -4,6 +4,16 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+
+0.24.1 - 2017-06-21
+===================
+
+Changed
+-------
+
+-  Replaced Codacity with Scrutinizer in README
+
+
 0.24.0 - 2017-06-14
 ===================
 
