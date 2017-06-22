@@ -37,22 +37,8 @@ install:
   - pip install pytest-mock
   - pip install pytest-cov
   - pip install pytest-xvfb
-  - pip install pyqt5
-script:
-  - py.test -s -v -x --cov=./
-after_success:
-  - coveralls
-install:
-  - python setup.py install
-  - pip install coverage
-  - pip install coveralls
-  - pip install pytest
-  - pip install pytest-qt
-  - pip install pytest-mock
-  - pip install pytest-cov
-  - pip install pytest-xvfb
   - pip install pytest-faulthandler
 script:
-  - py.test -s -v -x --cov=./
+  - pytest -s -v --cov=./
 after_success:
   - coveralls
