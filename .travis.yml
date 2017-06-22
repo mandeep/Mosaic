@@ -1,6 +1,6 @@
 notifications:
   email: false
-dist: trusty
+dist: xenial
 sudo: required
 language: python
 python: 3.4_with_system_site_packages
