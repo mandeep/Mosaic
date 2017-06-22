@@ -4,10 +4,10 @@ dist: trusty
 sudo: required
 language: python
 python:
-  - 3.4_with_system_site_packages
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
+  - 3.5
+# before_install:
+#   - sudo apt-get update
+#   - sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
 deploy:
   provider: pypi
   user: mandeepb
