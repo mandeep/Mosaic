@@ -1,43 +1,32 @@
-notifications:
-  email: false
-dist: trusty
-sudo: required
-language: python
-python: 3.4_with_system_site_packages
+after_success:
+- coveralls
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
+- sudo apt-get update
+- sudo apt-get install -y xvfb python3-pyqt5 python3-pyqt5.qtmultimedia
 deploy:
-  provider: pypi
   user: mandeepb
-  password:
-    secure: !!binary |
-      RE9HY2ViZEpaOStYQ2NIWUNUQzBnSXh1VHkwK2tLS0ZGOGJPb00xcGkvNldBRCtoUXBKd2xBTUZZ
-      WjBoYy9JYlpsN015VWNwaUluMHdlTys2ejF1RXN6TEYxVFZPSlkxaHVrcGwyUmJqVjVOeHRpQWhM
-      TFFKazFwZHVkamZyTlpKS3p0U2RWcjZPT2FEbEhVYnpWWjVlSFFGSXJyc2lJVDRwWjA5OU1DUFcz
-      cXBxM2dSWlJyTzQwZ0xkb2plRThxak9qVnFjdndIMTRLQWhhcEhRdHd5NVB4VWxMekt6ZnJSbTlF
-      V0JDZkFhNzhuN29UNTZETlg5cnRCZVROTTlOZFJkRENSRldRcVBEMzlJRjh3WFl3aCs3S2xQUm5h
-      RUNQajBOK1BRUG5RWVphVnV3Zks5QVphdnFLeDZtSlMrUWs4Qi9KR3NreEZRVHBONDRtL3I3VnlH
-      TWxveTZISkhVek9VdERZOVhFbFdvcXJhclc2a0ZvdHk2bDNhRllnM1FhZzdYRlNQUjRONFVEOGpL
-      OENvL3VLNWtUWnkwZy9EODNKdDA5OTFodXF5eXZmK3ZvdlBzTS81TmxsN1NWSEVHVFhNMXpxVlY4
-      Q1JXWitqYjRPc2VFOEU0Y3h0SEgvbjhSSEtEOGRpTmhSWm0xTFNhbUo5WE5YZUhYVDhFYS93MjJD
-      OU5lNENsK0gvWDcxTk5VN2FWemp4ZUhReEdLTzBKZE5wYkR0dzRZYndiWkR1RWZkRFp6bGFRN3kr
-      YWhxOXkyNnFHejdRZHZxVGp1VEU3QVJwcXljN2pieHBCYnQwZTdzMndJTnZ6ZkpPd2lIVk41QzMx
-      MUN1UVd1bEs5eFdQVmRmbTArdmpqcVBIUXhOZXVONnpXMnUxOThXdHR1bU95d3k4MytHZDBsWHc9
+  provider: pypi
   true:
     branch: master
-  distributions: "sdist bdist_wheel"
+  password:
+    secure: AGAJqxkakDawczssi9A6ndL0JD1gX+rNnlMq3C9fjRb1ZdXYjY77hB4R2Xwjly3D70LYPCg+uug8BgoBINfBH32SM1NnY2uiHfb2nUFECL8tsbdo28KMlMIuB0qAszYE4yg1h1M02ZrGSZQoMZtUiZgbsFfBJnKsdwP29JByvVRKQ0BmVIny35O82V1JtAp8K8IxKIhn2Kw7REcKo4o5D9vZScsyIn+zE40ZVT7DOlykXt7IfFgFQdP12bYfXLREKuHswTEAWCWb1oG3B+mOUwM4l1kBHx+LDMnvKaJ4UYW1kqdCLcf1y6b39D7ynHyWKnjM0ynEk1iS6S6kA4YeOp/LQdvBLN+iumVTEGw7GeWD+LrSNOBYgkPf3Bgys0GGAZEIcRc1/aI9r1xEKkYyj3eqhJX7rRanf2bcFusgig6onMSv/XeB/kxtW4YfxpfXl6NDmt0wVOvAfGHf4FBBRj5A/u2gpBXiSw276DOd1dSPIYvGduzpCas+TrxuT64v6UrhmA4fDJAxFx8xNOtnU2p73vjTOrTYomHJghnU7Ei3pwirlWHuvXaSYfWFy+BchXKumsRyZs9n8YISBr2BG+LQLGczXxbc6DvnsxkShVQFJv33e67ntW5tfZ0PdfgIqO3cpBLT/DKYzYXeyA4f0vw2al28Gj/5OzywNd0C4rw=
+  distributions: sdist bdist_wheel
+dist: trusty
+group: deprecated-2017Q2
 install:
-  - python setup.py install
-  - pip install coverage
-  - pip install coveralls
-  - pip install pytest
-  - pip install pytest-qt
-  - pip install pytest-mock
-  - pip install pytest-cov
-  - pip install pytest-xvfb
-  - pip install pytest-faulthandler
+- python setup.py install
+- pip install coverage
+- pip install coveralls
+- pip install pytest
+- pip install pytest-qt
+- pip install pytest-mock
+- pip install pytest-cov
+- pip install pytest-xvfb
+- pip install pytest-faulthandler
+language: python
+notifications:
+  email: false
+python: 3.4_with_system_site_packages
 script:
-  - py.test -s -v -x --cov=./
-after_success:
-  - coveralls
+- pytest -s -v --cov=./
+sudo: required

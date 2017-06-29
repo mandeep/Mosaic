@@ -5,6 +5,14 @@ Change Log
 All notable changes to this project will be documented in this file.
 
 
+0.24.2 - 2017-06-28
+===================
+
+Changed
+-------
+
+-  Reverted to old Trusty image on Travis CI as new image caused problems
+
 0.24.1 - 2017-06-21
 ===================
 
