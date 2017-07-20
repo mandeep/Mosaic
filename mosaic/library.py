@@ -1,9 +1,8 @@
 import os
 
 from appdirs import AppDirs
-import pytoml
-
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView
+import toml
 
 
 class MediaLibraryModel(QFileSystemModel):
@@ -21,7 +20,7 @@ class MediaLibraryModel(QFileSystemModel):
         self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
 
         with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
+            config = toml.load(conffile)
         self.library = config['media_library']['media_library_path']
 
         if os.path.isdir(self.library):

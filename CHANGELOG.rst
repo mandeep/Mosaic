@@ -4,6 +4,18 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.24.3 - 2017-07-19
+===================
+
+Fixed
+-----
+
+-  Replaced the pytoml library with the toml library due to issues with the pytoml library not loading/dumping files correctly
+
+Changed
+-------
+
+-  Moved tests directory outside package directory so that tests are excluded from the distribution
 
 0.24.2 - 2017-06-28
 ===================

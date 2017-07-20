@@ -1,8 +1,10 @@
-from mosaic import configuration, information, player
-import pkg_resources
-import pytest
+import os
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog
+import pytest
+
+from mosaic import configuration, information, player
 
 
 @pytest.fixture
@@ -31,14 +33,14 @@ def config(qtbot):
 @pytest.fixture
 def flac_file():
     """Pass a FLAC file resource as an argument to the unit tests."""
-    file = pkg_resources.resource_filename('mosaic.tests', '02_Ghosts_I.flac')
+    file = os.path.join(os.path.dirname(__file__), '02_Ghosts_I.flac')
     return file
 
 
 @pytest.fixture
 def mp3_file():
     """Pass an MP3 file resource as an argument to the unit tests."""
-    file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
+    file = os.path.join(os.path.dirname(__file__), '01_Ghosts_I_320kb.mp3')
     return file
 
 
@@ -48,7 +50,7 @@ def blank_flac_file():
 
     The metadata from this file has been removed to test cases where a file
     has no metadata."""
-    file = pkg_resources.resource_filename('mosaic.tests', '03_Ghosts_I.flac')
+    file = os.path.join(os.path.dirname(__file__), '03_Ghosts_I.flac')
     return file
 
 
@@ -58,7 +60,7 @@ def blank_mp3_file():
 
     The metadata from this file has been removed to test cases where a file
     has no metadata."""
-    file = pkg_resources.resource_filename('mosaic.tests', '04_Ghosts_I_320kb.mp3')
+    file = os.path.join(os.path.dirname(__file__), '04_Ghosts_I_320kb.mp3')
     return file
 
 
@@ -153,7 +155,7 @@ def test_open_directory(qtbot, mock, window):
     Qtbot clicks on the file menu then Qt.Key_Down highlights
     the open directory item. The mock plugin creates a mock of the
     QFileDialog window while Key_Enter executes it."""
-    file = pkg_resources.resource_filename('mosaic.tests', '')
+    file = os.path.join(os.path.dirname(__file__), '')
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)

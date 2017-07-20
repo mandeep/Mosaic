@@ -2,14 +2,13 @@ import os
 import pkg_resources
 
 from appdirs import AppDirs
-import pytoml
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QFileDialog,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QRadioButton, QStackedWidget,
                              QVBoxLayout, QWidget)
+import toml
 
 
 class MediaLibrary(QWidget):
@@ -22,7 +21,7 @@ class MediaLibrary(QWidget):
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
+            config = toml.load(conffile)
 
         media_library_config = QGroupBox("Media Library Configuration")
 
@@ -63,7 +62,7 @@ class MediaLibrary(QWidget):
             config['media_library']['media_library_path'] = library
 
             with open(self.user_config_file, 'w') as conffile:
-                pytoml.dump(conffile, config)
+                toml.dump(config, conffile)
 
     def media_library_settings(self, config):
         """Set the media library text box to the path of the media library.
@@ -87,7 +86,7 @@ class Playback(QWidget):
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
+            config = toml.load(conffile)
 
         playback_config = QGroupBox('Playback Configuration')
         playback_config_layout = QVBoxLayout()
@@ -124,7 +123,7 @@ class Playback(QWidget):
             config.setdefault('playback', {})['cover_art'] = False
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def playlist_save_setting(self, config):
         """Change the save playlist on close behavior of the music player."""
@@ -135,7 +134,7 @@ class Playback(QWidget):
             config.setdefault('playlist', {})['save_on_close'] = False
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def check_playback_setting(self, config):
         """Set the cover art playback checkbox state from settings.toml."""
@@ -157,7 +156,7 @@ class ViewOptions(QWidget):
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:
-            config = pytoml.load(conffile)
+            config = toml.load(conffile)
 
         dock_config = QGroupBox('Dock Configuration')
 
@@ -223,7 +222,7 @@ class ViewOptions(QWidget):
             config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def check_window_size(self, config):
         """Set the dropdown box to the current window size provided by settings.toml."""
@@ -242,7 +241,7 @@ class ViewOptions(QWidget):
             config.setdefault('media_library', {})['show_on_start'] = False
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def check_media_library(self, config):
         """Set the media library checkbox state from settings.toml."""
@@ -261,7 +260,7 @@ class ViewOptions(QWidget):
             config.setdefault('playlist', {})['show_on_start'] = False
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def check_playlist_dock(self, config):
         """Set the playlist dock checkbox state from settings.toml."""
@@ -276,7 +275,7 @@ class ViewOptions(QWidget):
             config.setdefault('dock', {})['position'] = 'right'
 
         with open(self.user_config_file, 'w') as conffile:
-            pytoml.dump(conffile, config)
+            toml.dump(config, conffile)
 
     def check_dock_position(self, config):
         """Select the radio button previously chosen by the user in the preferences dialog."""

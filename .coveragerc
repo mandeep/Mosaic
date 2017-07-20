@@ -2,5 +2,5 @@
 omit = 
     setup.py
     mosaic/__main__.py
-    mosaic/tests/*
+    tests/*
     */__init__.py

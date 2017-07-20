@@ -2,9 +2,8 @@ import os
 import pkg_resources
 
 from appdirs import AppDirs
-import pytoml
-
 from PyQt5.QtCore import Qt
+import toml
 
 
 class Settings(object):
@@ -32,7 +31,7 @@ class Settings(object):
                 new_config_file.write(config)
 
         with open(self.user_config_file) as conffile:
-            self.config = pytoml.load(conffile)
+            self.config = toml.load(conffile)
 
     def media_library_path(self):
         """Set the user defined media library path as the default path in file dialogs."""

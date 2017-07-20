@@ -1,20 +1,22 @@
-from mosaic import metadata
+import os
+
 from mutagen import easyid3, flac, mp3
-import pkg_resources
 import pytest
+
+from mosaic import metadata
 
 
 @pytest.fixture
 def mp3_file():
     """Pass an MP3 file resource as an argument to the unit tests."""
-    file = pkg_resources.resource_filename('mosaic.tests', '01_Ghosts_I_320kb.mp3')
+    file = os.path.join(os.path.dirname(__file__), '01_Ghosts_I_320kb.mp3')
     return file
 
 
 @pytest.fixture
 def flac_file():
     """Pass a FLAC file resource as an argument to the unit tests."""
-    file = pkg_resources.resource_filename('mosaic.tests', '02_Ghosts_I.flac')
+    file = os.path.join(os.path.dirname(__file__), '02_Ghosts_I.flac')
     return file
 
 
@@ -23,7 +25,7 @@ def blank_flac_file():
     """Pass a blank FLAC file resource as an argument to the unit tests.
 
     This particular file has had all metadata removed from it."""
-    file = pkg_resources.resource_filename('mosaic.tests', '03_Ghosts_I.flac')
+    file = os.path.join(os.path.dirname(__file__), '03_Ghosts_I.flac')
     return file
 
 
@@ -32,7 +34,7 @@ def blank_mp3_file():
     """Pass a blank MP3 file resource as an argument to the unit tests.
 
     This particular file has had all metadata removed from it."""
-    file = pkg_resources.resource_filename('mosaic.tests', '04_Ghosts_I_320kb.mp3')
+    file = os.path.join(os.path.dirname(__file__), '04_Ghosts_I_320kb.mp3')
     return file
 
 
