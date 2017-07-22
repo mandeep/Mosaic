@@ -391,8 +391,10 @@ class MusicPlayer(QMainWindow):
                 self.playlist_dock.show()
                 self.playlist_dock.raise_()
 
-            if self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-                self.repeat_song()
+            if self.playlist.playbackMode() != QMediaPlaylist.Sequential:
+                self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+                repeat_icon = pkg_resources.resource_filename('mosaic.images', 'md_repeat_none.png')
+                self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def press_playback(self, event):
         """Change the playback of the player on cover art mouse event.

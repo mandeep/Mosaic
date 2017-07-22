@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.24.4 - 2017-07-22
+===================
+
+Fixed
+-----
+
+-  Repeat setting now resetting on new media insertion
+
 0.24.3 - 2017-07-19
 ===================
 
