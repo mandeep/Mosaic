@@ -28,5 +28,5 @@ notifications:
   email: false
 python: 3.4_with_system_site_packages
 script:
-- pytest -s -v --cov=./
+- pytest -v --cov=. --cov-report term-missing
 sudo: required
