@@ -109,11 +109,13 @@ class MusicPlayer(QMainWindow):
         """Initiate the menu bar and add it to the QMainWindow widget."""
         self.file = self.menu.addMenu('File')
         self.edit = self.menu.addMenu('Edit')
+        self.playback = self.menu.addMenu('Playback')
         self.view = self.menu.addMenu('View')
         self.help_ = self.menu.addMenu('Help')
 
         self.file_menu()
         self.edit_menu()
+        self.playback_menu()
         self.view_menu()
         self.help_menu()
 
@@ -194,6 +196,32 @@ class MusicPlayer(QMainWindow):
         self.preferences_action.triggered.connect(lambda: self.preferences.exec_())
 
         self.edit.addAction(self.preferences_action)
+
+    def playback_menu(self):
+        """Add a playback menu to the menu bar.
+
+        The playback menu houses
+        """
+        self.play_playback_action = QAction('Play', self)
+        self.play_playback_action.setShortcut('P')
+        self.play_playback_action.triggered.connect(self.player.play)
+
+        self.stop_playback_action = QAction('Stop', self)
+        self.stop_playback_action.setShortcut('S')
+        self.stop_playback_action.triggered.connect(self.player.stop)
+
+        self.previous_playback_action = QAction('Previous', self)
+        self.previous_playback_action.setShortcut('B')
+        self.previous_playback_action.triggered.connect(self.previous)
+
+        self.next_playback_action = QAction('Next', self)
+        self.next_playback_action.setShortcut('N')
+        self.next_playback_action.triggered.connect(self.playlist.next)
+
+        self.playback.addAction(self.play_playback_action)
+        self.playback.addAction(self.stop_playback_action)
+        self.playback.addAction(self.previous_playback_action)
+        self.playback.addAction(self.next_playback_action)
 
     def view_menu(self):
         """Add a view menu to the menu bar.

@@ -313,3 +313,37 @@ def test_media_information_directly(qtbot, flac_file, mp3_file):
     information.FullInformation(flac_file)
     information.GeneralInformation(mp3_file)
     information.FullInformation(mp3_file)
+
+
+def test_playback_play(qtbot, window):
+    """Test the play item in the playback menu."""
+    qtbot.mouseClick(window.playback, Qt.LeftButton)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Enter)
+
+
+def test_playback_stop(qtbot, window):
+    """Test the stop item in the playback menu."""
+    qtbot.mouseClick(window.playback, Qt.LeftButton)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Enter)
+
+
+def test_playback_previous(qtbot, window):
+    """Test the previous item in the playback menu."""
+    qtbot.mouseClick(window.playback, Qt.LeftButton)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Enter)
+
+
+def test_playback_next(qtbot, window):
+    """Test the next item in the playback menu."""
+    qtbot.mouseClick(window.playback, Qt.LeftButton)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Down)
+    qtbot.keyClick(window.playback, Qt.Key_Enter)

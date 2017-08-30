@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.25.0 - 2017-08-30
+===================
+
+Added
+-----
+
+-  Playback menu with shortcuts to media controls
+
 0.24.4 - 2017-07-22
 ===================
 
