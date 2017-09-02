@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.26.0 - 2017-08-30
+===================
+
+Changed
+-------
+
+-  Keyboard shortcuts to Open File and Open Directory are now 'O' and 'D'
+
 0.25.0 - 2017-08-30
 ===================
 

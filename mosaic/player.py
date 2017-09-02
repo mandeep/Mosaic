@@ -159,11 +159,11 @@ class MusicPlayer(QMainWindow):
         Open Directory, and Exit Application menu items.
         """
         self.open_action = QAction('Open File', self)
-        self.open_action.setShortcut('CTRL+O')
+        self.open_action.setShortcut('O')
         self.open_action.triggered.connect(self.open_file)
 
         self.open_multiple_files_action = QAction('Open Multiple Files', self)
-        self.open_multiple_files_action.setShortcut('CTRL+SHIFT+O')
+        self.open_multiple_files_action.setShortcut('M')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
         self.open_playlist_action = QAction('Open Playlist', self)
@@ -171,7 +171,7 @@ class MusicPlayer(QMainWindow):
         self.open_playlist_action.triggered.connect(self.open_playlist)
 
         self.open_directory_action = QAction('Open Directory', self)
-        self.open_directory_action.setShortcut('CTRL+D')
+        self.open_directory_action.setShortcut('D')
         self.open_directory_action.triggered.connect(self.open_directory)
 
         self.exit_action = QAction('Quit', self)
