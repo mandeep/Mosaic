@@ -262,7 +262,7 @@ class MusicPlayer(QMainWindow):
         related to the application.
         """
         self.about_action = QAction('About', self)
-        self.about_action.setShortcut('CTRL+H')
+        self.about_action.setShortcut('H')
         self.about_action.triggered.connect(lambda: about.AboutDialog().exec_())
 
         self.help_.addAction(self.about_action)

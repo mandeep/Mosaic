@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.27.0 - 2017-09-11
+===================
+
+Changed
+-------
+
+-  Keyboard shortcut to Help is now 'H'
+
+
 0.26.0 - 2017-08-30
 ===================
 
