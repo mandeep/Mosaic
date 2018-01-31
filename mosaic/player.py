@@ -29,12 +29,12 @@ class MusicPlayer(QMainWindow):
         self.setWindowTitle('Mosaic')
         window_icon = pkg_resources.resource_filename('mosaic.images', 'icon.png')
         self.setWindowIcon(QIcon(window_icon))
-        self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+        self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
 
         # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
-        self.playlist_location = defaults.Settings().playlist_path()
+        self.playlist_location = defaults.Settings().playlist_path
         self.content = QMediaContent()
         self.menu = self.menuBar()
         self.toolbar = QToolBar()
@@ -60,14 +60,14 @@ class MusicPlayer(QMainWindow):
         self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Initiates the playlist dock widget and the library dock widget
-        self.addDockWidget(defaults.Settings().dock_position(), self.playlist_dock)
+        self.addDockWidget(defaults.Settings().dock_position, self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
-        self.playlist_dock.setVisible(defaults.Settings().playlist_on_start())
+        self.playlist_dock.setVisible(defaults.Settings().playlist_on_start)
         self.playlist_dock.setFeatures(QDockWidget.DockWidgetClosable)
 
-        self.addDockWidget(defaults.Settings().dock_position(), self.library_dock)
+        self.addDockWidget(defaults.Settings().dock_position, self.library_dock)
         self.library_dock.setWidget(self.library_view)
-        self.library_dock.setVisible(defaults.Settings().media_library_on_start())
+        self.library_dock.setVisible(defaults.Settings().media_library_on_start)
         self.library_dock.setFeatures(QDockWidget.DockWidgetClosable)
         self.tabifyDockWidget(self.playlist_dock, self.library_dock)
 
@@ -570,7 +570,7 @@ class MusicPlayer(QMainWindow):
             QTimer.singleShot(10, lambda: self.resize(500, 0))
 
         else:
-            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+            self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
 
             if self.library_dock_state:
                 self.library_dock.setVisible(True)
@@ -581,20 +581,20 @@ class MusicPlayer(QMainWindow):
     def dock_visiblity_change(self, visible):
         """Change the size of the main window when the docks are toggled."""
         if visible and self.playlist_dock.isVisible() and not self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size() + self.playlist_dock.width() + 6,
+            self.resize(defaults.Settings().window_size + self.playlist_dock.width() + 6,
                         self.height())
 
         elif visible and not self.playlist_dock.isVisible() and self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
+            self.resize(defaults.Settings().window_size + self.library_dock.width() + 6,
                         self.height())
 
         elif visible and self.playlist_dock.isVisible() and self.library_dock.isVisible():
-            self.resize(defaults.Settings().window_size() + self.library_dock.width() + 6,
+            self.resize(defaults.Settings().window_size + self.library_dock.width() + 6,
                         self.height())
 
         elif (not visible and not self.playlist_dock.isVisible() and not
                 self.library_dock.isVisible()):
-            self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+            self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
 
     def media_information_dialog(self):
         """Show a dialog of the current song's metadata."""
@@ -609,7 +609,7 @@ class MusicPlayer(QMainWindow):
         """Change the window size of the music player."""
         self.playlist_dock.close()
         self.library_dock.close()
-        self.resize(defaults.Settings().window_size(), defaults.Settings().window_size() + 63)
+        self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
 
     def change_media_library_path(self, path):
         """Change the media library path to the new path selected in the preferences dialog."""
@@ -620,7 +620,7 @@ class MusicPlayer(QMainWindow):
     def closeEvent(self, event):
         """Override the PyQt close event in order to handle save playlist on close."""
         playlist = "{}/.m3u" .format(self.playlist_location)
-        if defaults.Settings().save_playlist_on_close():
+        if defaults.Settings().save_playlist_on_close:
             self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
         else:
             if os.path.exists(playlist):

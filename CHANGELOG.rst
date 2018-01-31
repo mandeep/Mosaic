@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.27.1 - 2018-01-31
+===================
+
+Changed
+-------
+
+-  Changed functions used as attributes to properties
+
+
 0.27.0 - 2017-09-11
 ===================
 

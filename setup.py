@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.27.0',
+      version='0.27.1',
       author='Mandeep Bhutani',
       author_email='mandeep@keemail.me',
       url='https://github.com/mandeep/Mosaic',

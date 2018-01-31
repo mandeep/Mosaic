@@ -33,26 +33,32 @@ class Settings(object):
         with open(self.user_config_file) as conffile:
             self.config = toml.load(conffile)
 
+    @property
     def media_library_path(self):
         """Set the user defined media library path as the default path in file dialogs."""
         return self.config['media_library']['media_library_path']
 
+    @property
     def media_library_on_start(self):
         """Set the state of the media library view checkbox from settings.toml."""
         return self.config['media_library']['show_on_start']
 
+    @property
     def playlist_on_start(self):
         """Check the state of the playlist view checkbox from settings.toml."""
         return self.config['playlist']['show_on_start']
 
+    @property
     def save_playlist_on_close(self):
         """Check the state of the save playlist close setting from settings.toml."""
         return self.config['playlist']['save_on_close']
 
+    @property    
     def playlist_path(self):
         """Return the user config directory as the location to save the playlist."""
         return self.config_directory
 
+    @property
     def dock_position(self):
         """Return the dock area selected by the user in the preferences dialog."""
         radio_button_state = self.config['dock']['position']
@@ -61,6 +67,7 @@ class Settings(object):
         elif radio_button_state == 'right':
             return Qt.RightDockWidgetArea
 
+    @property
     def window_size(self):
         """Set the user defined window size as the size of the current window.
 
