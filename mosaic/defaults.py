@@ -1,7 +1,9 @@
+import atexit
+import contextlib
 import os
-import pkg_resources
 
 from appdirs import AppDirs
+import importlib_resources
 from PyQt5.QtCore import Qt
 import toml
 
@@ -21,7 +23,10 @@ class Settings(object):
         if not os.path.exists(self.config_directory):
             os.makedirs(self.config_directory)
 
-        settings = pkg_resources.resource_filename(__name__, 'settings.toml')
+        self.file_manager = contextlib.ExitStack()
+        atexit.register(self.file_manager.close)
+
+        settings = str(self.file_manager.enter_context(importlib_resources.path('mosaic', 'settings.toml')))
         with open(settings) as default_config:
             config = default_config.read()
 

@@ -1,4 +1,7 @@
-import pkg_resources
+import atexit
+import contextlib
+
+import importlib_resources
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QTableWidget,
@@ -188,7 +191,11 @@ class InformationDialog(QDialog):
         """Initialize QTabWidget with tabs for each metadata page."""
         super(InformationDialog, self).__init__(parent)
         self.setWindowTitle('Media Information')
-        info_icon = pkg_resources.resource_filename('mosaic.images', 'md_info.png')
+
+        self.file_manager = contextlib.ExitStack()
+        atexit.register(self.file_manager.close)
+
+        info_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_info.png')))
         self.setWindowIcon(QIcon(info_icon))
         self.setFixedSize(600, 600)
 

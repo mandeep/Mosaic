@@ -1,4 +1,7 @@
-import pkg_resources
+import atexit
+import contextlib
+
+import importlib_resources
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -11,9 +14,12 @@ class AboutDialog(QDialog):
     def __init__(self, parent=None):
         """Display a dialog that shows application information."""
         super(AboutDialog, self).__init__(parent)
-
         self.setWindowTitle('About')
-        help_icon = pkg_resources.resource_filename('mosaic.images', 'md_help.png')
+
+        self.file_manager = contextlib.ExitStack()
+        atexit.register(self.file_manager.close)
+
+        help_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_help.png')))
         self.setWindowIcon(QIcon(help_icon))
         self.resize(300, 200)
 

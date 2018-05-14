@@ -1,7 +1,10 @@
+import atexit
+import contextlib
 import os
-import pkg_resources
 
 from appdirs import AppDirs
+import importlib_resources
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QFileDialog,
@@ -17,6 +20,7 @@ class MediaLibrary(QWidget):
     def __init__(self, parent=None):
         """Initialize a page of options to be shown in the preferences dialog."""
         super(MediaLibrary, self).__init__(parent)
+
         self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
                                              'settings.toml')
 
@@ -296,7 +300,11 @@ class PreferencesDialog(QDialog):
         """Initialize the preferences dialog with a list box and a content layout."""
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
-        settings_icon = pkg_resources.resource_filename('mosaic.images', 'md_settings.png')
+
+        self.file_manager = contextlib.ExitStack()
+        atexit.register(self.file_manager.close)
+
+        settings_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_settings.png')))
         self.setWindowIcon(QIcon(settings_icon))
         self.resize(600, 450)
 
