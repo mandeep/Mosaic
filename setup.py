@@ -10,6 +10,7 @@ setup(name='mosaic-music',
       packages=['mosaic', 'mosaic.images'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
+        'importlib_resources>=0.5'
         'appdirs>=1.4.0',
         'mutagen>=1.37',
         'toml>=0.9.2',
@@ -22,8 +23,8 @@ setup(name='mosaic-music',
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         ]
       )
