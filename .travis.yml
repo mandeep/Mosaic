@@ -30,6 +30,7 @@ deploy:
 
 install:
   - pip install coveralls pytest pytest-qt pytest-mock pytest-cov pytest-xvfb pytest-faulthandler
+  - pip install setuptools --upgrade
   - pip install .
 
 before_script:
