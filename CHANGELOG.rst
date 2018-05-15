@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.28.0 - 2018-05-14
+===================
+
+Changed
+-------
+
+-  Replaced pkg_resources with importlib_resources for potential performance improvements
+
 0.27.1 - 2018-01-31
 ===================
 
