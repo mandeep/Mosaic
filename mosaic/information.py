@@ -1,13 +1,8 @@
-import atexit
-import contextlib
-
-import importlib_resources
-
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QTableWidget,
                              QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 
-from mosaic import metadata
+from mosaic import metadata, utilities
 
 
 class GeneralInformation(QWidget):
@@ -192,10 +187,7 @@ class InformationDialog(QDialog):
         super(InformationDialog, self).__init__(parent)
         self.setWindowTitle('Media Information')
 
-        self.file_manager = contextlib.ExitStack()
-        atexit.register(self.file_manager.close)
-
-        info_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_info.png')))
+        info_icon = utilities.resource_filename('mosaic.images', 'md_info.png')
         self.setWindowIcon(QIcon(info_icon))
         self.setFixedSize(600, 600)
 

@@ -1,9 +1,6 @@
-import atexit
-import contextlib
 import os
 
 from appdirs import AppDirs
-import importlib_resources
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -11,7 +8,10 @@ from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QF
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QRadioButton, QStackedWidget,
                              QVBoxLayout, QWidget)
+
 import toml
+
+from mosaic import utilities
 
 
 class MediaLibrary(QWidget):
@@ -301,10 +301,7 @@ class PreferencesDialog(QDialog):
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowTitle('Preferences')
 
-        self.file_manager = contextlib.ExitStack()
-        atexit.register(self.file_manager.close)
-
-        settings_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_settings.png')))
+        settings_icon = utilities.resource_filename('mosaic.images', 'md_settings.png')
         self.setWindowIcon(QIcon(settings_icon))
         self.resize(600, 450)
 

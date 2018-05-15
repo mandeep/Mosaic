@@ -1,10 +1,7 @@
-import atexit
-import contextlib
-
-import importlib_resources
-
 from mutagen import easyid3, flac, mp3
 from PyQt5.QtCore import QByteArray
+
+from mosaic import utilities
 
 
 def identify_filetype(file):
@@ -37,9 +34,6 @@ def extract_metadata(file):
 
 def metadata(file):
     """Create a list of all the media file's extracted metadata."""
-    file_manager = contextlib.ExitStack()
-    atexit.register(file_manager.close)
-
     audio_file = identify_filetype(file)
     file_metadata = extract_metadata(file)
 
@@ -51,7 +45,7 @@ def metadata(file):
     genre = file_metadata.get('genre', '')
     description = file_metadata.get('description', '')
     sample_rate = "{} Hz" .format(audio_file.info.sample_rate)
-    artwork = str(file_manager.enter_context(importlib_resources.path('mosaic.images', 'nocover.png')))
+    artwork = utilities.resource_filename('mosaic.images', 'nocover.png')
 
     try:  # Bitrate only applies to mp3 files
         bitrate = "{} kb/s" .format(audio_file.info.bitrate // 1000)
@@ -67,7 +61,7 @@ def metadata(file):
     try:  # Searches for cover art in flac files
         artwork = QByteArray().append(audio_file.pictures[0].data)
     except (IndexError, flac.FLACNoHeaderError):
-        artwork = str(file_manager.enter_context(importlib_resources.path('mosaic.images', 'nocover.png')))
+        artwork = utilities.resource_filename('mosaic.images', 'nocover.png')
     except AttributeError:  # Searches for cover art in mp3 files
         for tag in mp3.MP3(file):
             if 'APIC' in tag:

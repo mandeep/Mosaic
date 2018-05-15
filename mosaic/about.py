@@ -1,11 +1,8 @@
-import atexit
-import contextlib
-
-import importlib_resources
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
+
+from mosaic import utilities
 
 
 class AboutDialog(QDialog):
@@ -16,10 +13,7 @@ class AboutDialog(QDialog):
         super(AboutDialog, self).__init__(parent)
         self.setWindowTitle('About')
 
-        self.file_manager = contextlib.ExitStack()
-        atexit.register(self.file_manager.close)
-
-        help_icon = str(self.file_manager.enter_context(importlib_resources.path('mosaic.images', 'md_help.png')))
+        help_icon = utilities.resource_filename('mosaic.images', 'md_help.png')
         self.setWindowIcon(QIcon(help_icon))
         self.resize(300, 200)
 
