@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.28.1 - 2018-05-15
+===================
+
+Changed
+-------
+
+-  Moved importlib_resources context manager to separate utilties file
+
+
 0.28.0 - 2018-05-14
 ===================
 
