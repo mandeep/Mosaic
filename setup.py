@@ -14,7 +14,7 @@ setup(name='mosaic-music',
         'appdirs>=1.4.0',
         'mutagen>=1.37',
         'toml>=0.9.2',
-        'natsort==5.3.0'
+        'natsort>=5.3.0'
       ],
       entry_points='''
         [console_scripts]

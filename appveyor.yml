@@ -17,6 +17,8 @@ install:
   - "pip install pytest-cov"
   - "pip install pytest-xvfb"
   - "pip install pytest-faulthandler"
+  - "pip install natsort"
+  - "pip install importlib_resources"
 
 build_script:
   - "%CMD_IN_ENV% python setup.py install"
