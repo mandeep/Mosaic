@@ -94,10 +94,8 @@ class MusicPlayer(QMainWindow):
         self.playlist.mediaInserted.connect(self.initialize_playlist)
         self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.library_dock.visibilityChanged.connect(self.dock_visiblity_change)
-        self.preferences.dialog_media_library.media_library_line.textChanged.connect(
-            self.change_media_library_path)
-        self.preferences.dialog_view_options.dropdown_box.currentIndexChanged.connect(
-            self.change_window_size)
+        self.preferences.dialog_media_library.media_library_line.textChanged.connect(self.change_media_library_path)
+        self.preferences.dialog_view_options.dropdown_box.currentIndexChanged.connect(self.change_window_size)
         self.art.mousePressEvent = self.press_playback
 
         # Creating the menu controls, media controls, and window size of the music player
@@ -269,9 +267,7 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Open the selected file and add it to a new playlist."""
-        filename, success = QFileDialog.getOpenFileName(
-            self, 'Open File', '', 'Audio (*.mp3 *.flac)', '',
-            QFileDialog.ReadOnly)
+        filename, success = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
 
         if success:
             file_info = QFileInfo(filename).fileName()
@@ -287,9 +283,7 @@ class MusicPlayer(QMainWindow):
 
     def open_multiple_files(self):
         """Open the selected files and add them to a new playlist."""
-        filenames, success = QFileDialog.getOpenFileNames(
-            self, 'Open Multiple Files', '',
-            'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
+        filenames, success = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
 
         if success:
             self.playlist.clear()
@@ -306,9 +300,8 @@ class MusicPlayer(QMainWindow):
 
     def open_playlist(self):
         """Load an M3U or PLS file into a new playlist."""
-        playlist, success = QFileDialog.getOpenFileName(
-            self, 'Open Playlist', '',
-            'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
+        playlist, success = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
+
         if success:
             playlist = QUrl.fromLocalFile(playlist)
             self.playlist.clear()
@@ -316,7 +309,7 @@ class MusicPlayer(QMainWindow):
             self.playlist.load(playlist)
             self.player.setPlaylist(self.playlist)
 
-            for song_index in range(self.playlist.mediaCount()+1):
+            for song_index in range(self.playlist.mediaCount()):
                 file_info = self.playlist.media(song_index).canonicalUrl().fileName()
                 playlist_item = QListWidgetItem(file_info)
                 playlist_item.setToolTip(file_info)
@@ -333,7 +326,7 @@ class MusicPlayer(QMainWindow):
             self.playlist.load(playlist)
             self.player.setPlaylist(self.playlist)
 
-            for song_index in range(self.playlist.mediaCount()+1):
+            for song_index in range(self.playlist.mediaCount()):
                 file_info = self.playlist.media(song_index).canonicalUrl().fileName()
                 playlist_item = QListWidgetItem(file_info)
                 playlist_item.setToolTip(file_info)
@@ -343,8 +336,7 @@ class MusicPlayer(QMainWindow):
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
-        directory = QFileDialog.getExistingDirectory(
-            self, 'Open Directory', '', QFileDialog.ReadOnly)
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', '', QFileDialog.ReadOnly)
 
         if directory:
             self.playlist.clear()
@@ -368,8 +360,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.clear()
 
         if self.library_model.fileName(index).endswith(('mp3', 'flac')):
-            self.playlist.addMedia(
-                QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
+            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
             self.playlist_view.addItem(self.library_model.fileName(index))
 
         elif self.library_model.isDir(index):
@@ -402,13 +393,11 @@ class MusicPlayer(QMainWindow):
             except TypeError:
                 self.pixmap = QPixmap(artwork)
 
-            meta_data = '{} - {} - {} - {}' .format(
-                    track_number, artist, album, title)
-            self.setWindowTitle(meta_data)
+            meta_data = '{} - {} - {} - {}' .format(track_number, artist, album, title)
 
+            self.setWindowTitle(meta_data)
             self.art.setScaledContents(True)
             self.art.setPixmap(self.pixmap)
-
             self.layout.addWidget(self.art)
 
     def initialize_playlist(self, start):
@@ -480,8 +469,8 @@ class MusicPlayer(QMainWindow):
             else:
                 time_format = "mm:ss"
 
-            time_display = "{} / {}" .format(time_played.toString(time_format),
-                                             song_length.toString(time_format))
+            time_display = "{} / {}" .format(time_played.toString(time_format), song_length.toString(time_format))
+
         else:
             time_display = ""
 
@@ -499,8 +488,7 @@ class MusicPlayer(QMainWindow):
             self.play_action.setIcon(QIcon(pause_icon))
             self.play_action.triggered.connect(self.player.pause)
 
-        elif (self.player.state() == QMediaPlayer.PausedState or
-              self.player.state() == QMediaPlayer.StoppedState):
+        elif (self.player.state() == QMediaPlayer.PausedState or self.player.state() == QMediaPlayer.StoppedState):
             self.play_action.triggered.connect(self.player.play)
             play_icon = utilities.resource_filename('mosaic.images', 'md_play.png')
             self.play_action.setIcon(QIcon(play_icon))
@@ -624,7 +612,7 @@ class MusicPlayer(QMainWindow):
             self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
         else:
             if os.path.exists(playlist):
-                os.remove(playlist) 
+                os.remove(playlist)
         QApplication.quit()
 
 
