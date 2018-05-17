@@ -8,7 +8,8 @@ version: 1.0.{build}
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "python -m pip install --upgrade pip"
+  - "pip install pip --upgrade"
+  - "pip install setuptools --upgrade"
   - "pip install PyQt5"
   - "pip install coverage"
   - "pip install pytest"
