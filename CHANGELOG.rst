@@ -12,6 +12,10 @@ Fixed
 
 -  Fixed issues with importlib_resources installation on Windows
 
+Changed
+-------
+
+-  Moved screenshots and header image to project root so that they aren't downloaded with the package
 
 0.28.1 - 2018-05-15
 ===================
