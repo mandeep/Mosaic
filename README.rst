@@ -26,7 +26,7 @@ Mosaic requires Python and the PyQt5 library installed locally. For PyQt5 instal
 
 With your environment set, simply run the following command to install Mosaic::
 
-    $ pip3 install mosaic-music
+    $ pip install --user mosaic-music
 
 If you would rather install from source, run the following commands::
 
