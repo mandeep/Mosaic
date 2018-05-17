@@ -54,7 +54,7 @@ class Settings(object):
         """Check the state of the save playlist close setting from settings.toml."""
         return self.config['playlist']['save_on_close']
 
-    @property    
+    @property
     def playlist_path(self):
         """Return the user config directory as the location to save the playlist."""
         return self.config_directory
