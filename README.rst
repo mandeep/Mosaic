@@ -1,12 +1,12 @@
-.. image:: mosaic/images/mosaic.png
+.. image:: mosaic.png
 
 |travis| |appveyor| |coverage| |dependency| |quality| |pypi| |status| |pyversions| |wheel| |license|
 
-.. image:: mosaic/images/screen.png
+.. image:: screenshots/screen.png
 
-.. image:: mosaic/images/screen2.png
+.. image:: screenshots/screen2.png
 
-.. image:: mosaic/images/screen3.png
+.. image:: screenshots/screen3.png
 
 ********
 Features
