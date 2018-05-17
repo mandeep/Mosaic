@@ -269,11 +269,11 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Open the selected file and add it to a new playlist."""
-        filename, ok = QFileDialog.getOpenFileName(
+        filename, success = QFileDialog.getOpenFileName(
             self, 'Open File', '', 'Audio (*.mp3 *.flac)', '',
             QFileDialog.ReadOnly)
 
-        if ok:
+        if success:
             file_info = QFileInfo(filename).fileName()
             playlist_item = QListWidgetItem(file_info)
             self.playlist.clear()
@@ -287,11 +287,11 @@ class MusicPlayer(QMainWindow):
 
     def open_multiple_files(self):
         """Open the selected files and add them to a new playlist."""
-        filenames, ok = QFileDialog.getOpenFileNames(
+        filenames, success = QFileDialog.getOpenFileNames(
             self, 'Open Multiple Files', '',
             'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
 
-        if ok:
+        if success:
             self.playlist.clear()
             self.playlist_view.clear()
             for file in natsort.natsorted(filenames, alg=natsort.ns.PATH):
@@ -306,10 +306,10 @@ class MusicPlayer(QMainWindow):
 
     def open_playlist(self):
         """Load an M3U or PLS file into a new playlist."""
-        playlist, ok = QFileDialog.getOpenFileName(
+        playlist, success = QFileDialog.getOpenFileName(
             self, 'Open Playlist', '',
             'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
-        if ok:
+        if success:
             playlist = QUrl.fromLocalFile(playlist)
             self.playlist.clear()
             self.playlist_view.clear()
