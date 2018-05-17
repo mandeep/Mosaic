@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.28.2 - 2018-05-16
+===================
+
+Fixed
+-----
+
+-  Fixed issues with importlib_resources installation on Windows
+
+
 0.28.1 - 2018-05-15
 ===================
 
