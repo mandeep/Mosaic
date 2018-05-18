@@ -4,6 +4,14 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+0.28.3 - 2018-05-17
+===================
+
+Changed
+-------
+
+-  Code cleanup for readability purposes
+
 0.28.2 - 2018-05-16
 ===================
 
