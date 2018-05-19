@@ -149,6 +149,24 @@ def test_open_playlist(qtbot, mock, window):
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
+def test_save_playlist(qtbot, mock, window, tmpdir):
+    """Test the saving of media in the playlist dock.
+
+    Qtbot clicks on the file menu then Qt.Key_Down highlights
+    the save playlist item. The mock plugin creates a mock of the
+    QFileDialog window while Key_Enter executes it."""
+    tmpdir.chdir()
+
+    qtbot.mouseClick(window.file, Qt.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    qtbot.keyClick(window.file, Qt.Key_Down)
+    mock.patch.object(QFileDialog, 'getSaveFileName', return_value=('test', '*.m3u'))
+    qtbot.keyClick(window.file, Qt.Key_Enter)
+
+
 def test_open_directory(qtbot, mock, window):
     """Test the opening of a media directory.
 
@@ -173,6 +191,7 @@ def test_quit_application(qtbot, monkeypatch, window):
     when it does."""
     exit_calls = []
     monkeypatch.setattr(QApplication, 'quit', lambda: exit_calls.append(1))
+    qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)

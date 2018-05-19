@@ -172,6 +172,10 @@ class MusicPlayer(QMainWindow):
         self.open_directory_action.setShortcut('D')
         self.open_directory_action.triggered.connect(self.open_directory)
 
+        self.save_playlist_action = QAction('Save Playlist', self)
+        self.save_playlist_action.setShortcut('CTRL+S')
+        self.save_playlist_action.triggered.connect(self.save_playlist)
+
         self.exit_action = QAction('Quit', self)
         self.exit_action.setShortcut('CTRL+Q')
         self.exit_action.triggered.connect(self.closeEvent)
@@ -180,6 +184,8 @@ class MusicPlayer(QMainWindow):
         self.file.addAction(self.open_multiple_files_action)
         self.file.addAction(self.open_playlist_action)
         self.file.addAction(self.open_directory_action)
+        self.file.addSeparator()
+        self.file.addAction(self.save_playlist_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
@@ -317,6 +323,13 @@ class MusicPlayer(QMainWindow):
 
             self.playlist_view.setCurrentRow(0)
             self.player.play()
+
+    def save_playlist(self):
+        """Save the media in the playlist dock as a new M3U playlist."""
+        playlist, success = QFileDialog.getSaveFileName(self, 'Save Playlist', '', 'Playlist (*.m3u)', '')
+        if success:
+            saved_playlist = "{}.m3u" .format(playlist)
+            self.playlist.save(QUrl().fromLocalFile(saved_playlist), "m3u")
 
     def load_saved_playlist(self):
         """Load the saved playlist if user setting permits."""
