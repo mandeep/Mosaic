@@ -1,4 +1,4 @@
-[report]
+[run]
 omit = 
     setup.py
     mosaic/__main__.py
