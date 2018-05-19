@@ -4,6 +4,15 @@ Change Log
 
 All notable changes to this project will be documented in this file.
 
+
+0.29.0 - 2018-05-19
+===================
+
+Added
+-----
+
+-  Added the ability to save media in playlist dock to new playlist file 
+
 0.28.3 - 2018-05-17
 ===================
 
