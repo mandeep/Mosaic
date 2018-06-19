@@ -5,13 +5,22 @@ Change Log
 All notable changes to this project will be documented in this file.
 
 
+0.29.1 - 2018-05-19
+===================
+
+Changed
+-------
+
+-  Moved album.png into screenshots directory since it's not needed by the package
+-  Optimized the size of icon.png and nocover.png in order to decrease package size
+
 0.29.0 - 2018-05-19
 ===================
 
 Added
 -----
 
--  Added the ability to save media in playlist dock to new playlist file 
+-  Added the ability to save media in playlist dock to new playlist file
 
 0.28.3 - 2018-05-17
 ===================
