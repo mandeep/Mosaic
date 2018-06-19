@@ -100,3 +100,6 @@ ENV/
 
 #pytest
 .pytest_cache/
+
+# optipng generated backup files
+*.bak
