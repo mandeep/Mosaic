@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.29.1',
+      version='0.30.0',
       author='Mandeep Bhutani',
       author_email='mandeep@keemail.me',
       url='https://github.com/mandeep/Mosaic',
@@ -23,8 +23,8 @@ setup(name='mosaic-music',
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         ]
       )
