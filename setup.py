@@ -15,7 +15,6 @@ setup(name='mosaic-music',
         'mutagen>=1.37',
         'toml>=0.9.2',
         'natsort>=5.3.0'
-        'pyqt5>=5.12'
       ],
       entry_points='''
         [console_scripts]
