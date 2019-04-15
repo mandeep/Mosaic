@@ -1,16 +1,15 @@
 notifications:
   email: false
 
-dist: trusty
+dist: xenial
 
 sudo: required
 
-group: deprecated-2017Q2
 
 language: python
 
 python:
-  - '3.4'
+  - '3.6'
 
 virtualenv:
   system_site_packages: true
