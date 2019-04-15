@@ -1,6 +1,6 @@
 .. image:: mosaic.png
 
-|travis| |appveyor| |coverage| |dependency| |quality| |pypi| |status| |pyversions| |wheel| |license|
+|travis| |appveyor| |coverage| |quality| |pypi| |status| |pyversions| |wheel| |license|
 
 .. image:: screenshots/screen.png
 
@@ -57,8 +57,6 @@ To see the Mosaic change log, click here_.
     :target: https://ci.appveyor.com/project/mandeep/mosaic
 .. |coverage| image:: https://img.shields.io/coveralls/mandeep/Mosaic/master.svg
     :target: https://coveralls.io/github/mandeep/Mosaic
-.. |dependency| image:: https://dependencyci.com/github/mandeep/Mosaic/badge
-    :target: https://dependencyci.com/github/mandeep/Mosaic
 .. |quality| image:: https://img.shields.io/scrutinizer/g/mandeep/Mosaic.svg
     :target: https://scrutinizer-ci.com/g/mandeep/Mosaic/
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
