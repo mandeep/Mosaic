@@ -140,6 +140,7 @@ class MusicPlayer(QMainWindow):
 
         repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
         self.repeat_action = QAction(QIcon(repeat_icon), 'Repeat', self)
+        self.repeat_action.setShortcut('R')
         self.repeat_action.triggered.connect(self.repeat_song)
 
         self.toolbar.addAction(self.play_action)
