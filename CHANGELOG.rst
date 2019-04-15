@@ -5,6 +5,14 @@ Change Log
 All notable changes to this project will be documented in this file.
 
 
+0.30.0 - 2019-04-15
+===================
+
+Added
+-----
+
+-  Set R as a keyboard shortcut to the repeat media control
+
 0.29.1 - 2018-05-19
 ===================
 
