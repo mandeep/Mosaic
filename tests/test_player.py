@@ -70,7 +70,7 @@ def test_window(window):
     assert window.windowIcon().isNull() is False
 
 
-def test_open_flac_file(qtbot, mock, window, flac_file):
+def test_open_flac_file(qtbot, mocker, window, flac_file):
     """Test the opening of a FLAC media file.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -78,14 +78,14 @@ def test_open_flac_file(qtbot, mock, window, flac_file):
     QFileDialog window while Key_Enter executes it."""
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(flac_file, '*.flac'))
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=(flac_file, '*.flac'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
     qtbot.mouseClick(window.art, Qt.LeftButton)
     window.player.play()
     qtbot.mouseClick(window.art, Qt.LeftButton)
 
 
-def test_open_blank_flac_file(qtbot, mock, window, blank_flac_file):
+def test_open_blank_flac_file(qtbot, mocker, window, blank_flac_file):
     """Test the opening of a blank FLAC media file.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
@@ -93,11 +93,11 @@ def test_open_blank_flac_file(qtbot, mock, window, blank_flac_file):
     This test opens a blank flac file to test cases where metadata is not embedded in the file."""
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_flac_file, '*.flac'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_open_blank_mp3_file(qtbot, mock, window, blank_mp3_file):
+def test_open_blank_mp3_file(qtbot, mocker, window, blank_mp3_file):
     """Test the opening of a blank MP3 file.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights the open file item.
@@ -105,11 +105,11 @@ def test_open_blank_mp3_file(qtbot, mock, window, blank_mp3_file):
     This test opens a blank flac file to test cases where metadata is not embedded in the file."""
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_mp3_file, '*.mp3'))
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=(blank_mp3_file, '*.mp3'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_open_mp3_file(qtbot, mock, window, mp3_file):
+def test_open_mp3_file(qtbot, mocker, window, mp3_file):
     """Test the opening of an MP3 file.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -117,11 +117,11 @@ def test_open_mp3_file(qtbot, mock, window, mp3_file):
     QFileDialog window while Key_Enter executes it."""
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(mp3_file, '*.mp3'))
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=(mp3_file, '*.mp3'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_open_files(qtbot, mock, window, flac_file, mp3_file):
+def test_open_files(qtbot, mocker, window, flac_file, mp3_file):
     """Test the opening of multiple media files.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -130,12 +130,12 @@ def test_open_files(qtbot, mock, window, flac_file, mp3_file):
     qtbot.mouseClick(window.file, Qt.LeftButton)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileNames', return_value=(
+    mocker.patch.object(QFileDialog, 'getOpenFileNames', return_value=(
                       [flac_file, mp3_file], '*.flac *.mp3'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_open_playlist(qtbot, mock, window):
+def test_open_playlist(qtbot, mocker, window):
     """Test the opening of a playlist file.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -145,11 +145,11 @@ def test_open_playlist(qtbot, mock, window):
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.m3u', '*.m3u'))
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.m3u', '*.m3u'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_save_playlist(qtbot, mock, window, tmpdir):
+def test_save_playlist(qtbot, mocker, window, tmpdir):
     """Test the saving of media in the playlist dock.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -163,11 +163,11 @@ def test_save_playlist(qtbot, mock, window, tmpdir):
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getSaveFileName', return_value=('test', '*.m3u'))
+    mocker.patch.object(QFileDialog, 'getSaveFileName', return_value=('test', '*.m3u'))
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
-def test_open_directory(qtbot, mock, window):
+def test_open_directory(qtbot, mocker, window):
     """Test the opening of a media directory.
 
     Qtbot clicks on the file menu then Qt.Key_Down highlights
@@ -179,7 +179,7 @@ def test_open_directory(qtbot, mock, window):
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
     qtbot.keyClick(window.file, Qt.Key_Down)
-    mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
+    mocker.patch.object(QFileDialog, 'getExistingDirectory', return_value=file)
     qtbot.keyClick(window.file, Qt.Key_Enter)
 
 
@@ -201,7 +201,7 @@ def test_quit_application(qtbot, monkeypatch, window):
     assert exit_calls == [1]
 
 
-def test_preferences(qtbot, mock, window):
+def test_preferences(qtbot, mocker, window):
     """Test the preferences dialog.
 
     Qtbot clicks on the edit menu then Qt.Key_Down highlights
@@ -209,11 +209,11 @@ def test_preferences(qtbot, mock, window):
     QDialog window while Key_Enter executes it."""
     qtbot.mouseClick(window.edit, Qt.LeftButton)
     qtbot.keyClick(window.edit, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='accept')
+    mocker.patch.object(QDialog, 'exec_', return_value='accept')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
 
 
-def test_media_library_path(qtbot, mock, tmpdir, window, config):
+def test_media_library_path(qtbot, mocker, tmpdir, window, config):
     """Test the media library path setting in the preferences dialog.
 
     Qtbot tests the media library path selection by opening the preferences
@@ -221,13 +221,13 @@ def test_media_library_path(qtbot, mock, tmpdir, window, config):
     a temporary directory."""
     qtbot.mouseClick(window.edit, Qt.LeftButton)
     qtbot.keyClick(window.edit, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='')
+    mocker.patch.object(QDialog, 'exec_', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
-    mock.patch.object(QFileDialog, 'getExistingDirectory', return_value=str(tmpdir))
+    mocker.patch.object(QFileDialog, 'getExistingDirectory', return_value=str(tmpdir))
     qtbot.mouseClick(config.dialog_media_library.media_library_button, Qt.LeftButton)
 
 
-def test_playback_options(qtbot, mock, window, config):
+def test_playback_options(qtbot, mocker, window, config):
     """Test the playback settings in the preferences dialog.
 
     Qtbot tests the functionality of the items in the Playback page of
@@ -235,14 +235,14 @@ def test_playback_options(qtbot, mock, window, config):
     order to test for segmentation faults."""
     qtbot.mouseClick(window.edit, Qt.LeftButton)
     qtbot.keyClick(window.edit, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='')
+    mocker.patch.object(QDialog, 'exec_', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
     config.contents.setCurrentRow(1)
     qtbot.mouseClick(config.dialog_playback.cover_art_playback, Qt.LeftButton)
     qtbot.mouseClick(config.dialog_playback.cover_art_playback, Qt.LeftButton)
 
 
-def test_view_options(qtbot, mock, window, config):
+def test_view_options(qtbot, mocker, window, config):
     """Test the view options in the preferences dialog.
 
     Qtbot tests the functionality of the items in the View Options page of
@@ -250,7 +250,7 @@ def test_view_options(qtbot, mock, window, config):
     and the window size dropdown box is set to the 400x400 window size."""
     qtbot.mouseClick(window.edit, Qt.LeftButton)
     qtbot.keyClick(window.edit, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='')
+    mocker.patch.object(QDialog, 'exec_', return_value='')
     qtbot.keyClick(window.edit, Qt.Key_Enter)
     config.contents.setCurrentRow(2)
     qtbot.mouseClick(config.dialog_view_options.media_library_view_button, Qt.LeftButton)
@@ -263,7 +263,7 @@ def test_view_options(qtbot, mock, window, config):
     config.dialog_view_options.dropdown_box.setCurrentIndex(0)
 
 
-def test_about_dialog(qtbot, mock, window):
+def test_about_dialog(qtbot, mocker, window):
     """Test that the about dialog opens correctly.
 
     Qtbot clicks on the help menu then Qt.Key_Down highlights
@@ -271,11 +271,11 @@ def test_about_dialog(qtbot, mock, window):
     QMessageBox window while Key_Enter executes it."""
     qtbot.mouseClick(window.help_, Qt.LeftButton)
     qtbot.keyClick(window.help_, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='finished')
+    mocker.patch.object(QDialog, 'exec_', return_value='finished')
     qtbot.keyClick(window.help_, Qt.Key_Enter)
 
 
-def test_playlist_view(qtbot, mock, window):
+def test_playlist_view(qtbot, mocker, window):
     """Test that the playlist dock widget opens correctly.
 
     Qtbot selects the view menu then keys down to the view playlist
@@ -297,7 +297,7 @@ def test_minimalist_view(qtbot, window):
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
-def test_media_information(qtbot, mock, window):
+def test_media_information(qtbot, mocker, window):
     """Test that the media information dialog opens correctly..
 
     Qtbot clicks on the view menu then Qt.Key_Down highlights
@@ -308,7 +308,7 @@ def test_media_information(qtbot, mock, window):
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
     qtbot.keyClick(window.view, Qt.Key_Down)
-    mock.patch.object(QDialog, 'exec_', return_value='finished')
+    mocker.patch.object(QDialog, 'exec_', return_value='finished')
     qtbot.keyClick(window.view, Qt.Key_Enter)
 
 
