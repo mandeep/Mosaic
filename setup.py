@@ -10,11 +10,11 @@ setup(name='mosaic-music',
       packages=['mosaic', 'mosaic.images'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
-        'importlib_resources>=0.5',
-        'appdirs>=1.4.0',
-        'mutagen>=1.37',
-        'toml>=0.9.2',
-        'natsort>=5.3.0'
+        'importlib_resources>=3.0',
+        'appdirs>=1.4',
+        'mutagen>=1.45',
+        'toml>=0.10',
+        'natsort>=7.0'
       ],
       entry_points='''
         [console_scripts]
