@@ -14,7 +14,8 @@ setup(name='mosaic-music',
         'appdirs>=1.4',
         'mutagen>=1.45',
         'toml>=0.10',
-        'natsort>=7.0'
+        'natsort>=7.0',
+        'PyQt5>=5.15',
       ],
       entry_points='''
         [console_scripts]
@@ -26,5 +27,7 @@ setup(name='mosaic-music',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         ]
       )
