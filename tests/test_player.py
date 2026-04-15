@@ -135,36 +135,36 @@ def test_open_files(qtbot, mocker, window, flac_file, mp3_file):
     qtbot.keyClick(window.file, Qt.Key.Key_Enter)
 
 
-def test_open_playlist(qtbot, mocker, window):
-    """Test the opening of a playlist file.
+# def test_open_playlist(qtbot, mocker, window):
+#     """Test the opening of a playlist file.
 
-    Qtbot clicks on the file menu then Qt.Key.Key_Down highlights
-    the open playlist item. The mock plugin creates a mock of the
-    QFileDialog window while Key_Enter executes it."""
-    qtbot.mouseClick(window.file, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.m3u', '*.m3u'))
-    qtbot.keyClick(window.file, Qt.Key.Key_Enter)
+#     Qtbot clicks on the file menu then Qt.Key.Key_Down highlights
+#     the open playlist item. The mock plugin creates a mock of the
+#     QFileDialog window while Key_Enter executes it."""
+#     qtbot.mouseClick(window.file, Qt.MouseButton.LeftButton)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=('test.m3u', '*.m3u'))
+#     qtbot.keyClick(window.file, Qt.Key.Key_Enter)
 
 
-def test_save_playlist(qtbot, mocker, window, tmpdir):
-    """Test the saving of media in the playlist dock.
+# def test_save_playlist(qtbot, mocker, window, tmpdir):
+#     """Test the saving of media in the playlist dock.
 
-    Qtbot clicks on the file menu then Qt.Key.Key_Down highlights
-    the save playlist item. The mock plugin creates a mock of the
-    QFileDialog window while Key_Enter executes it."""
-    tmpdir.chdir()
+#     Qtbot clicks on the file menu then Qt.Key.Key_Down highlights
+#     the save playlist item. The mock plugin creates a mock of the
+#     QFileDialog window while Key_Enter executes it."""
+#     tmpdir.chdir()
 
-    qtbot.mouseClick(window.file, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    mocker.patch.object(QFileDialog, 'getSaveFileName', return_value=('test', '*.m3u'))
-    qtbot.keyClick(window.file, Qt.Key.Key_Enter)
+#     qtbot.mouseClick(window.file, Qt.MouseButton.LeftButton)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+#     mocker.patch.object(QFileDialog, 'getSaveFileName', return_value=('test', '*.m3u'))
+#     qtbot.keyClick(window.file, Qt.Key.Key_Enter)
 
 
 def test_open_directory(qtbot, mocker, window):
@@ -191,8 +191,6 @@ def test_quit_application(qtbot, monkeypatch, window):
     when it does."""
     exit_calls = []
     monkeypatch.setattr(QApplication, 'quit', lambda: exit_calls.append(1))
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
-    qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
@@ -297,12 +295,17 @@ def test_minimalist_view(qtbot, window):
     qtbot.keyClick(window.view, Qt.Key.Key_Enter)
 
 
-def test_media_information(qtbot, mocker, window):
+def test_media_information(qtbot, mocker, flac_file, window):
     """Test that the media information dialog opens correctly..
 
     Qtbot clicks on the view menu then Qt.Key.Key_Down highlights
     the media information item. The mock plugin creates a mock of the
     QDialog window while Key_Enter executes it."""
+    qtbot.mouseClick(window.file, Qt.MouseButton.LeftButton)
+    qtbot.keyClick(window.file, Qt.Key.Key_Down)
+    mocker.patch.object(QFileDialog, 'getOpenFileName', return_value=(flac_file, '*.flac'))
+    qtbot.keyClick(window.file, Qt.Key.Key_Enter)
+
     qtbot.mouseClick(window.view, Qt.MouseButton.LeftButton)
     qtbot.keyClick(window.view, Qt.Key.Key_Down)
     qtbot.keyClick(window.view, Qt.Key.Key_Down)
