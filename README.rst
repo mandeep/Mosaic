@@ -1,12 +1,12 @@
-.. image:: mosaic.png
+.. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/mosaic.png
 
-|travis| |appveyor| |coverage| |quality| |pypi| |status| |pyversions| |wheel| |license|
+|pypi| |status| |pyversions| |wheel| |license|
 
-.. image:: screenshots/screen.png
+.. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/screenshots/screen.png
 
-.. image:: screenshots/screen2.png
+.. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/screenshots/screen2.png
 
-.. image:: screenshots/screen3.png
+.. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/screenshots/screen3.png
 
 ********
 Features
@@ -50,15 +50,6 @@ Change Log
 
 To see the Mosaic change log, click here_.
 
-
-.. |travis| image:: https://travis-ci.org/mandeep/Mosaic.svg?branch=master
-    :target: https://travis-ci.org/mandeep/Mosaic
-.. |appveyor| image:: https://img.shields.io/appveyor/ci/mandeep/Mosaic/master.svg
-    :target: https://ci.appveyor.com/project/mandeep/mosaic
-.. |coverage| image:: https://img.shields.io/coveralls/mandeep/Mosaic/master.svg
-    :target: https://coveralls.io/github/mandeep/Mosaic
-.. |quality| image:: https://img.shields.io/scrutinizer/g/mandeep/Mosaic.svg
-    :target: https://scrutinizer-ci.com/g/mandeep/Mosaic/
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |status| image:: https://img.shields.io/pypi/status/mosaic-music.svg
