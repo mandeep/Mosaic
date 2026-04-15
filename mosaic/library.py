@@ -2,7 +2,7 @@ import os
 
 from appdirs import AppDirs
 from PySide6.QtWidgets import QFileSystemModel, QTreeView
-import tomllib
+import toml
 
 
 class MediaLibraryModel(QFileSystemModel):
@@ -19,8 +19,8 @@ class MediaLibraryModel(QFileSystemModel):
         self.config_directory = AppDirs('mosaic', 'mandeep').user_config_dir
         self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
 
-        with open(self.user_config_file, 'rb') as conffile:
-            config = tomllib.load(conffile)
+        with open(self.user_config_file, 'r') as conffile:
+            config = toml.load(conffile)
         self.library = config['media_library']['media_library_path']
 
         if os.path.isdir(self.library):

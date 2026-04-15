@@ -2,7 +2,7 @@ import os
 
 from appdirs import AppDirs
 from PySide6.QtCore import Qt
-import tomllib
+import toml
 
 from mosaic import utilities
 
@@ -31,8 +31,8 @@ class Settings(object):
             with open(self.user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
 
-        with open(self.user_config_file, 'rb') as conffile:
-            self.config = tomllib.load(conffile)
+        with open(self.user_config_file, 'r') as conffile:
+            self.config = toml.load(conffile)
 
     @property
     def media_library_path(self):

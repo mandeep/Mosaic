@@ -70,7 +70,7 @@ wheels = [
 
 [[package]]
 name = "mosaic-music"
-version = "0.31.3"
+version = "0.31.5"
 source = { editable = "." }
 dependencies = [
     { name = "appdirs" },
@@ -80,7 +80,7 @@ dependencies = [
     { name = "toml" },
 ]
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 tests = [
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -95,17 +95,14 @@ requires-dist = [
     { name = "mutagen", specifier = ">=1.45" },
     { name = "natsort" },
     { name = "pyside6", specifier = ">=6.11.0" },
+    { name = "pytest", marker = "extra == 'tests'", specifier = ">=9.0.3" },
+    { name = "pytest-cov", marker = "extra == 'tests'", specifier = ">=7.1.0" },
+    { name = "pytest-mock", marker = "extra == 'tests'", specifier = ">=3.15.1" },
+    { name = "pytest-qt", marker = "extra == 'tests'", specifier = ">=4.5.0" },
+    { name = "pytest-xvfb", marker = "extra == 'tests'", specifier = ">=3.1.1" },
     { name = "toml", specifier = ">=0.10.2" },
 ]
-
-[package.metadata.requires-dev]
-tests = [
-    { name = "pytest", specifier = ">=9.0.3" },
-    { name = "pytest-cov", specifier = ">=7.1.0" },
-    { name = "pytest-mock", specifier = ">=3.15.1" },
-    { name = "pytest-qt", specifier = ">=4.5.0" },
-    { name = "pytest-xvfb", specifier = ">=3.1.1" },
-]
+provides-extras = ["tests"]
 
 [[package]]
 name = "mutagen"

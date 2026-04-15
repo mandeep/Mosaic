@@ -34,7 +34,7 @@ class MediaLibrary(QWidget):
         self.media_library_line.setReadOnly(True)
         self.media_library_button = QPushButton('Select Path')
 
-        self.media_library_button.clicked.connect(lambda: self.select_media_library(config))
+        self.media_library_button.clicked.connect(self.select_media_library)
 
         media_library_layout = QVBoxLayout()
 
@@ -54,7 +54,7 @@ class MediaLibrary(QWidget):
 
         self.media_library_settings(config)
 
-    def select_media_library(self, config):
+    def select_media_library(self):
         """Open a file dialog to allow the user to select the media library path.
 
         The selected path is written to settings.toml.
@@ -62,6 +62,9 @@ class MediaLibrary(QWidget):
         library = QFileDialog.getExistingDirectory(self, 'Select Media Library Directory')
         if library:
             self.media_library_line.setText(library)
+
+            with open(self.user_config_file) as conffile:
+                config = toml.load(conffile)
 
             config['media_library']['media_library_path'] = library
 
@@ -111,31 +114,29 @@ class Playback(QWidget):
 
         self.check_playback_setting(config)
         self.check_playlist_save(config)
-        self.cover_art_playback.clicked.connect(lambda: self.cover_art_playback_setting(config))
-        self.playlist_save_checkbox.clicked.connect(lambda: self.playlist_save_setting(config))
+        self.cover_art_playback.clicked.connect(self.cover_art_playback_setting)
+        self.playlist_save_checkbox.clicked.connect(self.playlist_save_setting)
 
-    def cover_art_playback_setting(self, config):
+    def cover_art_playback_setting(self):
         """Change the cover art playback behavior of the music player.
 
         The default setting allows for the current media
         to be paused and played with mouse button clicks on the cover art.
         """
-        if self.cover_art_playback.isChecked():
-            config.setdefault('playback', {})['cover_art'] = True
+        with open(self.user_config_file) as conffile:
+            config = toml.load(conffile)
 
-        elif not self.cover_art_playback.isChecked():
-            config.setdefault('playback', {})['cover_art'] = False
+        config['playback']['cover_art'] = self.cover_art_playback.isChecked()
 
         with open(self.user_config_file, 'w') as conffile:
             toml.dump(config, conffile)
 
-    def playlist_save_setting(self, config):
+    def playlist_save_setting(self):
         """Change the save playlist on close behavior of the music player."""
-        if self.playlist_save_checkbox.isChecked():
-            config.setdefault('playlist', {})['save_on_close'] = True
+        with open(self.user_config_file) as conffile:
+            config = toml.load(conffile)
 
-        elif not self.playlist_save_checkbox.isChecked():
-            config.setdefault('playlist', {})['save_on_close'] = False
+        config['playlist']['save_on_close'] = self.playlist_save_checkbox.isChecked()
 
         with open(self.user_config_file, 'w') as conffile:
             toml.dump(config, conffile)
@@ -212,35 +213,37 @@ class ViewOptions(QWidget):
         self.check_playlist_dock(config)
         self.check_dock_position(config)
 
-        self.dropdown_box.currentIndexChanged.connect(lambda: self.change_size(config))
-        self.media_library_view_button.clicked.connect(lambda: self.media_library_view_settings(config))
-        self.playlist_view_button.clicked.connect(lambda: self.playlist_view_settings(config))
-        self.dock_left_side.clicked.connect(lambda: self.dock_positon_settings(config))
-        self.dock_right_side.clicked.connect(lambda: self.dock_positon_settings(config))
+        self.dropdown_box.currentIndexChanged.connect(self.change_size)
+        self.media_library_view_button.clicked.connect(self.media_library_view_settings)
+        self.playlist_view_button.clicked.connect(self.playlist_view_settings)
+        self.dock_left_side.clicked.connect(self.dock_positon_settings)
+        self.dock_right_side.clicked.connect(self.dock_positon_settings)
 
-    def change_size(self, config):
+    def change_size(self):
         """Record the change in window size to the settings.toml file."""
         if self.dropdown_box.currentIndex() != -1:
-            config.setdefault('view_options', {})['window_size'] = self.dropdown_box.currentIndex()
+            with open(self.user_config_file) as conffile:
+                config = toml.load(conffile)
 
-        with open(self.user_config_file, 'w') as conffile:
-            toml.dump(config, conffile)
+            config['view_options']['window_size'] = self.dropdown_box.currentIndex()
+
+            with open(self.user_config_file, 'w') as conffile:
+                toml.dump(config, conffile)
 
     def check_window_size(self, config):
         """Set the dropdown box to the current window size provided by settings.toml."""
         self.dropdown_box.setCurrentIndex(config['view_options']['window_size'])
 
-    def media_library_view_settings(self, config):
+    def media_library_view_settings(self):
         """Change the behavior of the Media Library dock widget.
 
         The default setting hides the dock on application start. With this option
         checked, the media library dock will show on start.
         """
-        if self.media_library_view_button.isChecked():
-            config.setdefault('media_library', {})['show_on_start'] = True
+        with open(self.user_config_file) as conffile:
+            config = toml.load(conffile)
 
-        elif not self.media_library_view_button.isChecked():
-            config.setdefault('media_library', {})['show_on_start'] = False
+        config['media_library']['show_on_start'] = self.media_library_view_button.isChecked()
 
         with open(self.user_config_file, 'w') as conffile:
             toml.dump(config, conffile)
@@ -249,17 +252,16 @@ class ViewOptions(QWidget):
         """Set the media library checkbox state from settings.toml."""
         self.media_library_view_button.setChecked(config['media_library']['show_on_start'])
 
-    def playlist_view_settings(self, config):
+    def playlist_view_settings(self):
         """Change the behavior of the Playlist dock widget.
 
         The default setting hides the dock on application start. With this option
         checked, the playlist dock will show on start.
         """
-        if self.playlist_view_button.isChecked():
-            config.setdefault('playlist', {})['show_on_start'] = True
+        with open(self.user_config_file) as conffile:
+            config = toml.load(conffile)
 
-        elif not self.playlist_view_button.isChecked():
-            config.setdefault('playlist', {})['show_on_start'] = False
+        config['playlist']['show_on_start'] = self.playlist_view_button.isChecked()
 
         with open(self.user_config_file, 'w') as conffile:
             toml.dump(config, conffile)
@@ -268,13 +270,15 @@ class ViewOptions(QWidget):
         """Set the playlist dock checkbox state from settings.toml."""
         self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
 
-    def dock_positon_settings(self, config):
+    def dock_positon_settings(self):
         """Write to the settings.toml the radio button chosen by the user."""
-        if self.dock_left_side.isChecked():
-            config.setdefault('dock', {})['position'] = 'left'
+        with open(self.user_config_file) as conffile:
+            config = toml.load(conffile)
 
+        if self.dock_left_side.isChecked():
+            config['dock']['position'] = 'left'
         elif self.dock_right_side.isChecked():
-            config.setdefault('dock', {})['position'] = 'right'
+            config['dock']['position'] = 'right'
 
         with open(self.user_config_file, 'w') as conffile:
             toml.dump(config, conffile)
