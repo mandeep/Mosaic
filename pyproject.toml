@@ -1,11 +1,12 @@
 [project]
 name = "mosaic-music"
-version = "0.31.1"
+version = "0.31.2"
 description = "A cross-platform cover art focused music player."
 authors = [
     {name = "mandeep"}
 ]
 license = {text = "GPLv3+"}
+readme = "README.rst"
 urls = {repository = "https://github.com/mandeep/Mosaic"}
 dependencies = [
     "appdirs>=1.4",
