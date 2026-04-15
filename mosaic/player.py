@@ -447,7 +447,7 @@ class MusicPlayer(QMainWindow):
         either paused or stopped. If the media is playing, the media is set
         to pause.
         """
-        if event.button() == Qt.MouseButton.LeftButton and configuration.Playback().cover_art_playback.isChecked():
+        if event.button() == Qt.MouseButton.LeftButton and defaults.Settings().config['playback']['cover_art']:
             if (self.player.playbackState() == QMediaPlayer.PlaybackState.StoppedState or
                     self.player.playbackState() == QMediaPlayer.PlaybackState.PausedState):
                 self.player.play()
