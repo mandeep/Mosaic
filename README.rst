@@ -50,15 +50,15 @@ Change Log
 
 To see the Mosaic change log, click here_.
 
-.. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music.svg
+.. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
-.. |status| image:: https://img.shields.io/pypi/status/mosaic-music.svg
+.. |status| image:: https://img.shields.io/pypi/status/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
-.. |pyversions| image:: https://img.shields.io/pypi/pyversions/mosaic-music.svg
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
-.. |wheel| image:: https://img.shields.io/pypi/format/mosaic-music.svg
+.. |wheel| image:: https://img.shields.io/pypi/format/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
-.. |license| image:: https://img.shields.io/pypi/l/mosaic-music.svg
+.. |license| image:: https://img.shields.io/pypi/l/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
 
 .. _here: https://github.com/mandeep/Mosaic/blob/master/CHANGELOG.rst
