@@ -1,0 +1,120 @@
+version = 1
+revision = 3
+requires-python = ">=3.14"
+
+[[package]]
+name = "appdirs"
+version = "1.4.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41", size = 13470, upload-time = "2020-05-11T07:59:51.037Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128", size = 9566, upload-time = "2020-05-11T07:59:49.499Z" },
+]
+
+[[package]]
+name = "mosaic-music"
+version = "0.31.0"
+source = { editable = "." }
+dependencies = [
+    { name = "appdirs" },
+    { name = "mutagen" },
+    { name = "natsort" },
+    { name = "pyside6" },
+    { name = "toml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "appdirs", specifier = ">=1.4" },
+    { name = "mutagen", specifier = ">=1.45" },
+    { name = "natsort" },
+    { name = "pyside6", specifier = ">=6.11.0" },
+    { name = "toml", specifier = ">=0.10.2" },
+]
+
+[[package]]
+name = "mutagen"
+version = "1.47.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/e6/64bc71b74eef4b68e61eb921dcf72dabd9e4ec4af1e11891bbd312ccbb77/mutagen-1.47.0.tar.gz", hash = "sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99", size = 1274186, upload-time = "2023-09-03T16:33:33.411Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/7a/620f945b96be1f6ee357d211d5bf74ab1b7fe72a9f1525aafbfe3aee6875/mutagen-1.47.0-py3-none-any.whl", hash = "sha256:edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719", size = 194391, upload-time = "2023-09-03T16:33:29.955Z" },
+]
+
+[[package]]
+name = "natsort"
+version = "8.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/a9/a0c57aee75f77794adaf35322f8b6404cbd0f89ad45c87197a937764b7d0/natsort-8.4.0.tar.gz", hash = "sha256:45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581", size = 76575, upload-time = "2023-06-20T04:17:19.925Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/82/7a9d0550484a62c6da82858ee9419f3dd1ccc9aa1c26a1e43da3ecd20b0d/natsort-8.4.0-py3-none-any.whl", hash = "sha256:4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c", size = 38268, upload-time = "2023-06-20T04:17:17.522Z" },
+]
+
+[[package]]
+name = "pyside6"
+version = "6.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyside6-addons" },
+    { name = "pyside6-essentials" },
+    { name = "shiboken6" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f4/95/f3f5a2799163b6658126d78a85bc1dec9eda88c75c26780556b26071a1d8/pyside6-6.11.0-cp310-abi3-macosx_13_0_universal2.whl", hash = "sha256:1f2735dc4f2bd4ec452ae50502c8a22128bba0aced35358a2bbc58384b820c6f", size = 571544, upload-time = "2026-03-23T12:47:20.263Z" },
+    { url = "https://files.pythonhosted.org/packages/da/89/9a1f521051714e6694ebbe2b979ded279845ec8e25cb309ca3960158d74f/pyside6-6.11.0-cp310-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:c642e2d25704ca746fd37f56feacf25c5aecc4cd40bef23d18eec81f87d9dc00", size = 571725, upload-time = "2026-03-23T12:47:21.727Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/3d/f779d8bba00fcde31a7d7fb6b59347a70773c9cc8135592dea9972579877/pyside6-6.11.0-cp310-abi3-manylinux_2_39_aarch64.whl", hash = "sha256:267b344c73580ac938ca63c611881fb42a3922ebfe043e271005f4f06c372c4e", size = 571722, upload-time = "2026-03-23T12:47:22.761Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/98/150e01a026df3e9697310236821fa825319bb4b9d6137539cb25a3032968/pyside6-6.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:9092cb002ca43c64006afb2e0d0f6f51aef17aa737c33a45e502326a081ddcbc", size = 577988, upload-time = "2026-03-23T12:47:23.795Z" },
+    { url = "https://files.pythonhosted.org/packages/50/e7/55960f7c6b41d058e95cb4af02652c46c48702c506c8bbf12e99550e1fb3/pyside6-6.11.0-cp310-abi3-win_arm64.whl", hash = "sha256:b15f39acc2b8f46251a630acad0d97f9a0a0461f2baffcd66d7adfada8eb641e", size = 561372, upload-time = "2026-03-23T12:47:25.073Z" },
+]
+
+[[package]]
+name = "pyside6-addons"
+version = "6.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyside6-essentials" },
+    { name = "shiboken6" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c0/df/241f311c61a46b7b1195927da77b2537692ee3442aa9ccd87981164ff78d/pyside6_addons-6.11.0-cp310-abi3-macosx_13_0_universal2.whl", hash = "sha256:d5eaa4643302e3a0fa94c5766234bee4073d7d5ab9c2b7fd222692a176faf182", size = 331554157, upload-time = "2026-03-23T12:40:40.497Z" },
+    { url = "https://files.pythonhosted.org/packages/31/b9/e81172835ccc9d8b9792cc6bf7524a252a0db9a76ddd693de230402697f9/pyside6_addons-6.11.0-cp310-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:ac6fe3d4ef4497dde3efc5e896b0acd53ff6c93be4bf485f045690f919419f35", size = 174948482, upload-time = "2026-03-23T12:41:05.379Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/a4/426d9333782bf65ab2a20257d6b4b3af9b8d5d7a710da719865fab49d492/pyside6_addons-6.11.0-cp310-abi3-manylinux_2_39_aarch64.whl", hash = "sha256:8ffb40222456078930816ebcac2f2511716d2acbc11716dd5acc5c365179a753", size = 170430798, upload-time = "2026-03-23T12:41:38.134Z" },
+    { url = "https://files.pythonhosted.org/packages/35/9a/46d271fedfabad8c6dce2ebb69bb593745487ed33753a56a47c3ba4fdb1c/pyside6_addons-6.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:413e6121c24f5ffdce376298059eddecff74aa6d638e94e0f6015b33d29b889e", size = 168723088, upload-time = "2026-03-23T12:42:00.668Z" },
+    { url = "https://files.pythonhosted.org/packages/16/cd/1b28264f7dc9a642da2e4e7c02f67418d0949eb7ce329ae20869703c2630/pyside6_addons-6.11.0-cp310-abi3-win_arm64.whl", hash = "sha256:aaaee83385977a0fe134b2f4fbfb92b45a880d5b656e4d90a708eef10b1b6de8", size = 35698324, upload-time = "2026-03-23T12:42:13.748Z" },
+]
+
+[[package]]
+name = "pyside6-essentials"
+version = "6.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "shiboken6" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/00/8a8583d3429c737cc20e61a43eba8ab1ec13ddb101e99802c2ffeedf3b41/pyside6_essentials-6.11.0-cp310-abi3-macosx_13_0_universal2.whl", hash = "sha256:85d6ca87ef35fa6565d385ede72ae48420dd3f63113929d10fc800f6b0360e01", size = 108085251, upload-time = "2026-03-23T12:42:52.872Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/a9/07c9e5c014b871c1b19caf8f994bcd50b345559b81f81671217b49559b67/pyside6_essentials-6.11.0-cp310-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:dc20e7afd5fc6fe51297db91cef997ce60844be578f7a49fc61b7ab9657a8849", size = 78316055, upload-time = "2026-03-23T12:43:04.19Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/35/f06b1b641d7600ec46374c16cd37c66fa4a22870326b4eb073a95471035f/pyside6_essentials-6.11.0-cp310-abi3-manylinux_2_39_aarch64.whl", hash = "sha256:4854cb0a1b061e7a576d8fb7bb7cf9f49540d558b1acb7df0742a7afefe61e4e", size = 77380821, upload-time = "2026-03-23T12:43:24.649Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/37/ba95c6262836d2b286b4e05a9d16a5e870995d5d2503ac6adc6312208049/pyside6_essentials-6.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:3b3362882ad9389357a80504e600180006a957731fec05786fced7b038461fdf", size = 75793322, upload-time = "2026-03-23T12:43:35.575Z" },
+    { url = "https://files.pythonhosted.org/packages/53/27/d17f25e45820e633a70e6109b35991eda09a5e8000c2a306f0ab7538d48c/pyside6_essentials-6.11.0-cp310-abi3-win_arm64.whl", hash = "sha256:81ca603dbf21bc39f89bb42db215c25ebe0c879a1a4c387625c321d2730ec187", size = 56337457, upload-time = "2026-03-23T12:43:43.573Z" },
+]
+
+[[package]]
+name = "shiboken6"
+version = "6.11.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/82/1d/b56b7b694fbc871496435488d1f41c5068de546334850d722756511cef65/shiboken6-6.11.0-cp310-abi3-macosx_13_0_universal2.whl", hash = "sha256:d88e8a1eb705f2b9ad21db08a61ae1dc0c773e5cd86a069de0754c4cf1f9b43b", size = 476085, upload-time = "2026-03-23T12:47:05.724Z" },
+    { url = "https://files.pythonhosted.org/packages/65/cb/4bb0c76011166230daa7c0074aeb3fdb3935c83ac1fef3789b85fcd1a8fc/shiboken6-6.11.0-cp310-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:ad54e64f8192ddbdff0c54ac82b89edcd62ed623f502ea21c960541d19514053", size = 271055, upload-time = "2026-03-23T12:47:07.349Z" },
+    { url = "https://files.pythonhosted.org/packages/f5/96/771a6e2b530f725303d16d78a321fa4876b98b4f3615c9851880df8c1a43/shiboken6-6.11.0-cp310-abi3-manylinux_2_39_aarch64.whl", hash = "sha256:a10dc7718104ea2dc15d5b0b96909b77162ce1c76fcc6968e6df692b947a00e9", size = 267456, upload-time = "2026-03-23T12:47:08.689Z" },
+    { url = "https://files.pythonhosted.org/packages/72/f7/44c0c42c3f5f29dec457fd46ea0552174bcb8aa75becf03bbd90308ba07b/shiboken6-6.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:483ff78a73c7b3189ca924abc694318084f078bcfeaffa68e32024ff2d025ee1", size = 1222132, upload-time = "2026-03-23T12:47:10.143Z" },
+    { url = "https://files.pythonhosted.org/packages/fb/99/6e5ee21db2d6af84bbbd7d871d441dafeb069c6de5667b1aa49891a77c66/shiboken6-6.11.0-cp310-abi3-win_arm64.whl", hash = "sha256:3bd76cf56105ab2d62ecaff630366f11264f69b88d488f10f048da9a065781f4", size = 1783186, upload-time = "2026-03-23T12:47:11.832Z" },
+]
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f", size = 22253, upload-time = "2020-11-01T01:40:22.204Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b", size = 16588, upload-time = "2020-11-01T01:40:20.672Z" },
+]

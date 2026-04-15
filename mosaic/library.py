@@ -1,8 +1,8 @@
 import os
 
 from appdirs import AppDirs
-from PyQt5.QtWidgets import QFileSystemModel, QTreeView
-import toml
+from PySide6.QtWidgets import QFileSystemModel, QTreeView
+import tomllib
 
 
 class MediaLibraryModel(QFileSystemModel):
@@ -16,11 +16,11 @@ class MediaLibraryModel(QFileSystemModel):
         super(MediaLibraryModel, self).__init__(parent)
 
         self.setNameFilters(['*.mp3', '*.flac'])
-        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.config_directory = AppDirs('mosaic', 'mandeep').user_config_dir
         self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
 
-        with open(self.user_config_file) as conffile:
-            config = toml.load(conffile)
+        with open(self.user_config_file, 'rb') as conffile:
+            config = tomllib.load(conffile)
         self.library = config['media_library']['media_library_path']
 
         if os.path.isdir(self.library):
@@ -38,11 +38,11 @@ class MediaLibraryView(QTreeView):
         """
         super(MediaLibraryView, self).__init__(parent)
 
-        self.model = MediaLibraryModel()
-        self.setModel(self.model)
+        self.media_model = MediaLibraryModel()
+        self.setModel(self.media_model)
 
-        if os.path.isdir(self.model.library):
-            self.setRootIndex(self.model.index(self.model.library))
+        if os.path.isdir(self.media_model.library):
+            self.setRootIndex(self.media_model.index(self.media_model.library))
 
         for column in range(1, 4):
             self.hideColumn(column)

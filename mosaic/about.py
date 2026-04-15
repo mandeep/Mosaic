@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout
 
 from mosaic import utilities
 
@@ -17,20 +17,16 @@ class AboutDialog(QDialog):
         self.setWindowIcon(QIcon(help_icon))
         self.resize(300, 200)
 
-        author = QLabel('Created by Mandeep')
-        author.setAlignment(Qt.AlignCenter)
-
-        icons = QLabel('Material design icons created by Google')
-        icons.setAlignment(Qt.AlignCenter)
+        author = QLabel('Created by mandeep')
+        author.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         github = QLabel('GitHub: mandeep')
-        github.setAlignment(Qt.AlignCenter)
+        github.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignVCenter)
+        self.dialog_layout = QVBoxLayout()
+        self.dialog_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
-        self.layout.addWidget(author)
-        self.layout.addWidget(icons)
-        self.layout.addWidget(github)
+        self.dialog_layout.addWidget(author)
+        self.dialog_layout.addWidget(github)
 
-        self.setLayout(self.layout)
+        self.setLayout(self.dialog_layout)

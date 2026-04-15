@@ -3,10 +3,10 @@ import sys
 
 import natsort
 
-from PyQt5.QtCore import Qt, QFileInfo, QTime, QTimer, QUrl
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QMediaPlaylist
-from PyQt5.QtWidgets import (QAction, QApplication, QDesktopWidget, QDockWidget, QFileDialog,
+from PySide6.QtCore import Qt, QFileInfo, QTime, QTimer, QUrl
+from PySide6.QtGui import QAction, QGuiApplication, QIcon, QPixmap
+from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PySide6.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                              QLabel, QListWidget, QListWidgetItem, QMainWindow, QSizePolicy,
                              QSlider, QToolBar, QVBoxLayout, QWidget)
 
@@ -33,14 +33,16 @@ class MusicPlayer(QMainWindow):
 
         # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
-        self.playlist = QMediaPlaylist()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
+        self.playlist = []
+        self.current_index = -1
         self.playlist_location = defaults.Settings().playlist_path
-        self.content = QMediaContent()
         self.menu = self.menuBar()
         self.toolbar = QToolBar()
         self.art = QLabel()
         self.pixmap = QPixmap()
-        self.slider = QSlider(Qt.Horizontal)
+        self.slider = QSlider(Qt.Orientation.Horizontal)
         self.duration_label = QLabel()
         self.playlist_dock = QDockWidget('Playlist', self)
         self.library_dock = QDockWidget('Media Library', self)
@@ -49,31 +51,31 @@ class MusicPlayer(QMainWindow):
         self.library_model = library.MediaLibraryModel()
         self.preferences = configuration.PreferencesDialog()
         self.widget = QWidget()
-        self.layout = QVBoxLayout(self.widget)
+        self.player_layout = QVBoxLayout(self.widget)
         self.duration = 0
         self.playlist_dock_state = None
         self.library_dock_state = None
 
         # Sets QWidget() as the central widget of the main window
         self.setCentralWidget(self.widget)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.art.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.player_layout.setContentsMargins(0, 0, 0, 0)
+        self.art.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
 
         # Initiates the playlist dock widget and the library dock widget
         self.addDockWidget(defaults.Settings().dock_position, self.playlist_dock)
         self.playlist_dock.setWidget(self.playlist_view)
         self.playlist_dock.setVisible(defaults.Settings().playlist_on_start)
-        self.playlist_dock.setFeatures(QDockWidget.DockWidgetClosable)
+        self.playlist_dock.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetClosable)
 
         self.addDockWidget(defaults.Settings().dock_position, self.library_dock)
         self.library_dock.setWidget(self.library_view)
         self.library_dock.setVisible(defaults.Settings().media_library_on_start)
-        self.library_dock.setFeatures(QDockWidget.DockWidgetClosable)
+        self.library_dock.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetClosable)
         self.tabifyDockWidget(self.playlist_dock, self.library_dock)
 
         # Sets the range of the playback slider and sets the playback mode as looping
-        self.slider.setRange(0, self.player.duration() / 1000)
-        self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+        self.slider.setRange(0, self.player.duration() // 1000)
+        # self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
 
         # OSX system menu bar causes conflicts with PyQt5 menu bar
         if sys.platform == 'darwin':
@@ -84,14 +86,15 @@ class MusicPlayer(QMainWindow):
 
         # Signals that connect to other methods when they're called
         self.player.metaDataChanged.connect(self.display_meta_data)
+        self.player.mediaStatusChanged.connect(self.handle_media_status)
         self.slider.sliderMoved.connect(self.seek)
         self.player.durationChanged.connect(self.song_duration)
         self.player.positionChanged.connect(self.song_position)
-        self.player.stateChanged.connect(self.set_state)
+        self.player.playbackStateChanged.connect(self.set_state)
         self.playlist_view.itemActivated.connect(self.activate_playlist_item)
         self.library_view.activated.connect(self.open_media_library)
-        self.playlist.currentIndexChanged.connect(self.change_index)
-        self.playlist.mediaInserted.connect(self.initialize_playlist)
+        # self.playlist.currentIndexChanged.connect(self.change_index)
+        # self.playlist.mediaInserted.connect(self.initialize_playlist)
         self.playlist_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.library_dock.visibilityChanged.connect(self.dock_visiblity_change)
         self.preferences.dialog_media_library.media_library_line.textChanged.connect(self.change_media_library_path)
@@ -101,7 +104,20 @@ class MusicPlayer(QMainWindow):
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
-        self.load_saved_playlist()
+        # self.load_saved_playlist()
+
+    def handle_media_status(self, status):
+        """Auto-play next track when current ends."""
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.next()
+
+    def play_index(self, index):
+        """Play specific track from the manual playlist."""
+        if 0 <= index and index < len(self.playlist):
+            self.current_index = index
+            self.player.setSource(self.playlist[index])
+            self.playlist_view.setCurrentRow(index)
+            self.player.play()
 
     def menu_controls(self):
         """Initiate the menu bar and add it to the QMainWindow widget."""
@@ -119,7 +135,7 @@ class MusicPlayer(QMainWindow):
 
     def media_controls(self):
         """Create the bottom toolbar and controls used for media playback."""
-        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
+        self.addToolBar(Qt.ToolBarArea.BottomToolBarArea, self.toolbar)
         self.toolbar.setMovable(False)
 
         play_icon = utilities.resource_filename('mosaic.images', 'md_play.png')
@@ -136,18 +152,18 @@ class MusicPlayer(QMainWindow):
 
         next_icon = utilities.resource_filename('mosaic.images', 'md_next.png')
         self.next_action = QAction(QIcon(next_icon), 'Next', self)
-        self.next_action.triggered.connect(self.playlist.next)
+        self.next_action.triggered.connect(self.next)
 
-        repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
-        self.repeat_action = QAction(QIcon(repeat_icon), 'Repeat', self)
-        self.repeat_action.setShortcut('R')
-        self.repeat_action.triggered.connect(self.repeat_song)
+        # repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
+        # self.repeat_action = QAction(QIcon(repeat_icon), 'Repeat', self)
+        # self.repeat_action.setShortcut('R')
+        # self.repeat_action.triggered.connect(self.repeat_song)
 
         self.toolbar.addAction(self.play_action)
         self.toolbar.addAction(self.stop_action)
         self.toolbar.addAction(self.previous_action)
         self.toolbar.addAction(self.next_action)
-        self.toolbar.addAction(self.repeat_action)
+        # self.toolbar.addAction(self.repeat_action)
         self.toolbar.addWidget(self.slider)
         self.toolbar.addWidget(self.duration_label)
 
@@ -165,17 +181,17 @@ class MusicPlayer(QMainWindow):
         self.open_multiple_files_action.setShortcut('M')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
-        self.open_playlist_action = QAction('Open Playlist', self)
-        self.open_playlist_action.setShortcut('CTRL+P')
-        self.open_playlist_action.triggered.connect(self.open_playlist)
+        # self.open_playlist_action = QAction('Open Playlist', self)
+        # self.open_playlist_action.setShortcut('CTRL+P')
+        # self.open_playlist_action.triggered.connect(self.open_playlist)
 
         self.open_directory_action = QAction('Open Directory', self)
         self.open_directory_action.setShortcut('D')
         self.open_directory_action.triggered.connect(self.open_directory)
 
-        self.save_playlist_action = QAction('Save Playlist', self)
-        self.save_playlist_action.setShortcut('CTRL+S')
-        self.save_playlist_action.triggered.connect(self.save_playlist)
+        # self.save_playlist_action = QAction('Save Playlist', self)
+        # self.save_playlist_action.setShortcut('CTRL+S')
+        # self.save_playlist_action.triggered.connect(self.save_playlist)
 
         self.exit_action = QAction('Quit', self)
         self.exit_action.setShortcut('CTRL+Q')
@@ -183,10 +199,10 @@ class MusicPlayer(QMainWindow):
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
-        self.file.addAction(self.open_playlist_action)
+        # self.file.addAction(self.open_playlist_action)
         self.file.addAction(self.open_directory_action)
-        self.file.addSeparator()
-        self.file.addAction(self.save_playlist_action)
+        # self.file.addSeparator()
+        # self.file.addAction(self.save_playlist_action)
         self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
@@ -221,7 +237,7 @@ class MusicPlayer(QMainWindow):
 
         self.next_playback_action = QAction('Next', self)
         self.next_playback_action.setShortcut('N')
-        self.next_playback_action.triggered.connect(self.playlist.next)
+        self.next_playback_action.triggered.connect(self.next)
 
         self.playback.addAction(self.play_playback_action)
         self.playback.addAction(self.stop_playback_action)
@@ -274,23 +290,23 @@ class MusicPlayer(QMainWindow):
 
     def open_file(self):
         """Open the selected file and add it to a new playlist."""
-        filename, success = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
+        filename, success = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.Option.ReadOnly)
 
         if success:
             file_info = QFileInfo(filename).fileName()
             playlist_item = QListWidgetItem(file_info)
             self.playlist.clear()
             self.playlist_view.clear()
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(filename)))
-            self.player.setPlaylist(self.playlist)
+            self.playlist = [QUrl.fromLocalFile(filename)]
+            # self.player.setPlaylist(self.playlist)
             playlist_item.setToolTip(file_info)
             self.playlist_view.addItem(playlist_item)
             self.playlist_view.setCurrentRow(0)
-            self.player.play()
+            self.play_index(0)
 
     def open_multiple_files(self):
         """Open the selected files and add them to a new playlist."""
-        filenames, success = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.ReadOnly)
+        filenames, success = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.Option.ReadOnly)
 
         if success:
             self.playlist.clear()
@@ -298,59 +314,59 @@ class MusicPlayer(QMainWindow):
             for file in natsort.natsorted(filenames, alg=natsort.ns.PATH):
                 file_info = QFileInfo(file).fileName()
                 playlist_item = QListWidgetItem(file_info)
-                self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
-                self.player.setPlaylist(self.playlist)
+                self.playlist.append(QUrl().fromLocalFile(file))
+                # self.player.setPlaylist(self.playlist)
                 playlist_item.setToolTip(file_info)
                 self.playlist_view.addItem(playlist_item)
                 self.playlist_view.setCurrentRow(0)
-                self.player.play()
+                self.play_index(0)
 
-    def open_playlist(self):
-        """Load an M3U or PLS file into a new playlist."""
-        playlist, success = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
+    # def open_playlist(self):
+    #     """Load an M3U or PLS file into a new playlist."""
+    #     playlist, success = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
 
-        if success:
-            playlist = QUrl.fromLocalFile(playlist)
-            self.playlist.clear()
-            self.playlist_view.clear()
-            self.playlist.load(playlist)
-            self.player.setPlaylist(self.playlist)
+    #     if success:
+    #         playlist = QUrl.fromLocalFile(playlist)
+    #         self.playlist.clear()
+    #         self.playlist_view.clear()
+    #         self.playlist.load(playlist)
+    #         self.player.setPlaylist(self.playlist)
 
-            for song_index in range(self.playlist.mediaCount()):
-                file_info = self.playlist.media(song_index).canonicalUrl().fileName()
-                playlist_item = QListWidgetItem(file_info)
-                playlist_item.setToolTip(file_info)
-                self.playlist_view.addItem(playlist_item)
+    #         for song_index in range(self.playlist.mediaCount()):
+    #             file_info = self.playlist.media(song_index).canonicalUrl().fileName()
+    #             playlist_item = QListWidgetItem(file_info)
+    #             playlist_item.setToolTip(file_info)
+    #             self.playlist_view.addItem(playlist_item)
 
-            self.playlist_view.setCurrentRow(0)
-            self.player.play()
+    #         self.playlist_view.setCurrentRow(0)
+    #         self.player.play()
 
-    def save_playlist(self):
-        """Save the media in the playlist dock as a new M3U playlist."""
-        playlist, success = QFileDialog.getSaveFileName(self, 'Save Playlist', '', 'Playlist (*.m3u)', '')
-        if success:
-            saved_playlist = "{}.m3u" .format(playlist)
-            self.playlist.save(QUrl().fromLocalFile(saved_playlist), "m3u")
+    # def save_playlist(self):
+    #     """Save the media in the playlist dock as a new M3U playlist."""
+    #     playlist, success = QFileDialog.getSaveFileName(self, 'Save Playlist', '', 'Playlist (*.m3u)', '')
+    #     if success:
+    #         saved_playlist = "{}.m3u" .format(playlist)
+    #         self.playlist.save(QUrl().fromLocalFile(saved_playlist), "m3u")
 
-    def load_saved_playlist(self):
-        """Load the saved playlist if user setting permits."""
-        saved_playlist = "{}/.m3u" .format(self.playlist_location)
-        if os.path.exists(saved_playlist):
-            playlist = QUrl().fromLocalFile(saved_playlist)
-            self.playlist.load(playlist)
-            self.player.setPlaylist(self.playlist)
+    # def load_saved_playlist(self):
+    #     """Load the saved playlist if user setting permits."""
+    #     saved_playlist = "{}/.m3u" .format(self.playlist_location)
+    #     if os.path.exists(saved_playlist):
+    #         playlist = QUrl().fromLocalFile(saved_playlist)
+    #         self.playlist.load(playlist)
+    #         self.player.setPlaylist(self.playlist)
 
-            for song_index in range(self.playlist.mediaCount()):
-                file_info = self.playlist.media(song_index).canonicalUrl().fileName()
-                playlist_item = QListWidgetItem(file_info)
-                playlist_item.setToolTip(file_info)
-                self.playlist_view.addItem(playlist_item)
+    #         for song_index in range(self.playlist.mediaCount()):
+    #             file_info = self.playlist.media(song_index).canonicalUrl().fileName()
+    #             playlist_item = QListWidgetItem(file_info)
+    #             playlist_item.setToolTip(file_info)
+    #             self.playlist_view.addItem(playlist_item)
 
-            self.playlist_view.setCurrentRow(0)
+    #         self.playlist_view.setCurrentRow(0)
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
-        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', '', QFileDialog.ReadOnly)
+        directory = QFileDialog.getExistingDirectory(self, 'Open Directory', '', QFileDialog.Option.ReadOnly)
 
         if directory:
             self.playlist.clear()
@@ -359,14 +375,13 @@ class MusicPlayer(QMainWindow):
                 for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
                     file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
-                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist.append(QUrl.fromLocalFile(os.path.join(dirpath, filename)))
                         playlist_item = QListWidgetItem(filename)
                         playlist_item.setToolTip(filename)
                         self.playlist_view.addItem(playlist_item)
 
-            self.player.setPlaylist(self.playlist)
             self.playlist_view.setCurrentRow(0)
-            self.player.play()
+            self.play_index(0)
 
     def open_media_library(self, index):
         """Open a directory or file from the media library into an empty playlist."""
@@ -374,7 +389,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_view.clear()
 
         if self.library_model.fileName(index).endswith(('mp3', 'flac')):
-            self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(self.library_model.filePath(index))))
+            self.playlist.append(QUrl().fromLocalFile(self.library_model.filePath(index)))
             self.playlist_view.addItem(self.library_model.fileName(index))
 
         elif self.library_model.isDir(index):
@@ -383,12 +398,11 @@ class MusicPlayer(QMainWindow):
                 for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
                     file = os.path.join(dirpath, filename)
                     if filename.endswith(('mp3', 'flac')):
-                        self.playlist.addMedia(QMediaContent(QUrl().fromLocalFile(file)))
+                        self.playlist.append(QUrl().fromLocalFile(file))
                         playlist_item = QListWidgetItem(filename)
                         playlist_item.setToolTip(filename)
                         self.playlist_view.addItem(playlist_item)
 
-        self.player.setPlaylist(self.playlist)
         self.player.play()
 
     def display_meta_data(self):
@@ -397,35 +411,34 @@ class MusicPlayer(QMainWindow):
         If the current song contains metadata, its cover art is extracted and shown in
         the main window while the track number, artist, album, and track title are shown
         in the window title.
-        """
-        if self.player.isMetaDataAvailable():
-            file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
-            (album, artist, title, track_number, *__, artwork) = metadata.metadata(file_path)
+        """        
+        file_path = self.player.source().toLocalFile()
+        (album, artist, title, track_number, *__, artwork) = metadata.metadata(file_path)
 
-            try:
-                self.pixmap.loadFromData(artwork)
-            except TypeError:
-                self.pixmap = QPixmap(artwork)
+        try:
+            self.pixmap.loadFromData(artwork)
+        except TypeError:
+            self.pixmap = QPixmap(artwork)
 
-            meta_data = '{} - {} - {} - {}' .format(track_number, artist, album, title)
+        meta_data = '{} - {} - {} - {}' .format(track_number, artist, album, title)
 
-            self.setWindowTitle(meta_data)
-            self.art.setScaledContents(True)
-            self.art.setPixmap(self.pixmap)
-            self.layout.addWidget(self.art)
+        self.setWindowTitle(meta_data)
+        self.art.setScaledContents(True)
+        self.art.setPixmap(self.pixmap)
+        self.player_layout.addWidget(self.art)
 
     def initialize_playlist(self, start):
         """Display playlist and reset playback mode when media inserted into playlist."""
-        if start == 0:
-            if self.library_dock.isVisible():
-                self.playlist_dock.setVisible(True)
-                self.playlist_dock.show()
-                self.playlist_dock.raise_()
+        # if start == 0:
+        #     if self.library_dock.isVisible():
+        #         self.playlist_dock.setVisible(True)
+        #         self.playlist_dock.show()
+        #         self.playlist_dock.raise_()
 
-            if self.playlist.playbackMode() != QMediaPlaylist.Sequential:
-                self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
-                repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
-                self.repeat_action.setIcon(QIcon(repeat_icon))
+        #     if self.playlist.playbackMode() != QMediaPlaylist.Sequential:
+        #         self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+        #         repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
+        #         self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def press_playback(self, event):
         """Change the playback of the player on cover art mouse event.
@@ -435,10 +448,10 @@ class MusicPlayer(QMainWindow):
         to pause.
         """
         if event.button() == 1 and configuration.Playback().cover_art_playback.isChecked():
-            if (self.player.state() == QMediaPlayer.StoppedState or
-                    self.player.state() == QMediaPlayer.PausedState):
+            if (self.player.playbackState() == QMediaPlayer.PlaybackState.StoppedState or
+                    self.player.playbackState() == QMediaPlayer.PlaybackState.PausedState):
                 self.player.play()
-            elif self.player.state() == QMediaPlayer.PlayingState:
+            elif self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
                 self.player.pause()
 
     def seek(self, seconds):
@@ -475,7 +488,7 @@ class MusicPlayer(QMainWindow):
         if current_duration or duration:
             time_played = QTime((current_duration / 3600) % 60, (current_duration / 60) % 60,
                                 (current_duration % 60), (current_duration * 1000) % 1000)
-            song_length = QTime((duration / 3600) % 60, (duration / 60) % 60, (duration % 60),
+            song_length = QTime((duration // 3600) % 60, (duration // 60) % 60, (duration % 60),
                                 (duration * 1000) % 1000)
 
             if duration > 3600:
@@ -497,12 +510,12 @@ class MusicPlayer(QMainWindow):
         the pause icon changes back to the play icon when either paused or
         stopped.
         """
-        if self.player.state() == QMediaPlayer.PlayingState:
+        if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
             pause_icon = utilities.resource_filename('mosaic.images', 'md_pause.png')
             self.play_action.setIcon(QIcon(pause_icon))
             self.play_action.triggered.connect(self.player.pause)
 
-        elif (self.player.state() == QMediaPlayer.PausedState or self.player.state() == QMediaPlayer.StoppedState):
+        elif (self.player.playbackState() == QMediaPlayer.PlaybackState.PausedState or self.player.playbackState() == QMediaPlayer.PlaybackState.StoppedState):
             self.play_action.triggered.connect(self.player.play)
             play_icon = utilities.resource_filename('mosaic.images', 'md_play.png')
             self.play_action.setIcon(QIcon(play_icon))
@@ -513,45 +526,44 @@ class MusicPlayer(QMainWindow):
         Moves to the previous song in the playlist if the current song is less
         than five seconds in. Otherwise, restarts the current song.
         """
-        if self.player.position() <= 5000:
-            self.playlist.previous()
-        else:
+        if self.player.position() > 5000:
             self.player.setPosition(0)
+        elif self.current_index > 0:
+            self.play_index(self.current_index - 1)
 
-    def repeat_song(self):
-        """Set the current media to repeat and change the repeat icon accordingly.
+    def next(self):
+        if self.current_index < len(self.playlist) - 1:
+            self.play_index(self.current_index + 1)
 
-        There are four playback modes: repeat none, repeat all, repeat once, and shuffle.
-        Clicking the repeat button cycles through each playback mode.
-        """
-        if self.playlist.playbackMode() == QMediaPlaylist.Sequential:
-            self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
-            repeat_on_icon = utilities.resource_filename('mosaic.images', 'md_repeat_all.png')
-            self.repeat_action.setIcon(QIcon(repeat_on_icon))
+    # def repeat_song(self):
+    #     """Set the current media to repeat and change the repeat icon accordingly.
 
-        elif self.playlist.playbackMode() == QMediaPlaylist.Loop:
-            self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
-            repeat_on_icon = utilities.resource_filename('mosaic.images', 'md_repeat_once.png')
-            self.repeat_action.setIcon(QIcon(repeat_on_icon))
+    #     There are four playback modes: repeat none, repeat all, repeat once, and shuffle.
+    #     Clicking the repeat button cycles through each playback mode.
+    #     """
+    #     if self.playlist.playbackMode() == QMediaPlaylist.Sequential:
+    #         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+    #         repeat_on_icon = utilities.resource_filename('mosaic.images', 'md_repeat_all.png')
+    #         self.repeat_action.setIcon(QIcon(repeat_on_icon))
 
-        elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
-            self.playlist.setPlaybackMode(QMediaPlaylist.Random)
-            repeat_icon = utilities.resource_filename('mosaic.images', 'md_shuffle.png')
-            self.repeat_action.setIcon(QIcon(repeat_icon))
+    #     elif self.playlist.playbackMode() == QMediaPlaylist.Loop:
+    #         self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
+    #         repeat_on_icon = utilities.resource_filename('mosaic.images', 'md_repeat_once.png')
+    #         self.repeat_action.setIcon(QIcon(repeat_on_icon))
 
-        elif self.playlist.playbackMode() == QMediaPlaylist.Random:
-            self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
-            repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
-            self.repeat_action.setIcon(QIcon(repeat_icon))
+    #     elif self.playlist.playbackMode() == QMediaPlaylist.CurrentItemInLoop:
+    #         self.playlist.setPlaybackMode(QMediaPlaylist.Random)
+    #         repeat_icon = utilities.resource_filename('mosaic.images', 'md_shuffle.png')
+    #         self.repeat_action.setIcon(QIcon(repeat_icon))
+
+    #     elif self.playlist.playbackMode() == QMediaPlaylist.Random:
+    #         self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+    #         repeat_icon = utilities.resource_filename('mosaic.images', 'md_repeat_none.png')
+    #         self.repeat_action.setIcon(QIcon(repeat_icon))
 
     def activate_playlist_item(self, item):
         """Set the active media to the playlist item dobule-clicked on by the user."""
-        current_index = self.playlist_view.row(item)
-        if self.playlist.currentIndex() != current_index:
-            self.playlist.setCurrentIndex(current_index)
-
-        if self.player.state() != QMediaPlayer.PlayingState:
-            self.player.play()
+        self.play_index(self.playlist_view.row(item))
 
     def change_index(self, row):
         """Highlight the row in the playlist of the active media."""
@@ -600,8 +612,8 @@ class MusicPlayer(QMainWindow):
 
     def media_information_dialog(self):
         """Show a dialog of the current song's metadata."""
-        if self.player.isMetaDataAvailable():
-            file_path = self.player.currentMedia().canonicalUrl().toLocalFile()
+        if self.player.metaData():
+            file_path = self.player.source().toLocalFile()
         else:
             file_path = None
         dialog = information.InformationDialog(file_path)
@@ -622,11 +634,11 @@ class MusicPlayer(QMainWindow):
     def closeEvent(self, event):
         """Override the PyQt close event in order to handle save playlist on close."""
         playlist = "{}/.m3u" .format(self.playlist_location)
-        if defaults.Settings().save_playlist_on_close:
-            self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
-        else:
-            if os.path.exists(playlist):
-                os.remove(playlist)
+        # if defaults.Settings().save_playlist_on_close:
+        #     self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
+        # else:
+        #     if os.path.exists(playlist):
+        #         os.remove(playlist)
         QApplication.quit()
 
 
@@ -635,11 +647,15 @@ def main():
 
     QDesktopWidget() is used to move the application to the center of the user's screen.
     """
+    os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
+
     application = QApplication(sys.argv)
     window = MusicPlayer()
-    desktop = QDesktopWidget().availableGeometry()
-    width = (desktop.width() - window.width()) / 2
-    height = (desktop.height() - window.height()) / 2
+
+    desktop = application.primaryScreen().availableGeometry()
+    width = (desktop.width() - window.width()) // 2
+    height = (desktop.height() - window.height()) // 2
+
     window.show()
     window.move(width, height)
     sys.exit(application.exec_())

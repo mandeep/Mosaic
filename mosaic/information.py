@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QTableWidget,
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QTableWidget,
                              QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 
 from mosaic import metadata, utilities
@@ -164,8 +164,8 @@ class FullInformation(QWidget):
         table.setColumnCount(2)
         table.setColumnWidth(0, 270)
         table.setColumnWidth(1, 270)
-        table.verticalHeader().hide()
-        table.horizontalHeader().hide()
+        # table.verticalHeader().hideRow()
+        # table.horizontalHeader().hideRow()
 
         if file is not None:
             file = metadata.extract_metadata(file)

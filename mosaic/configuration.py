@@ -2,9 +2,9 @@ import os
 
 from appdirs import AppDirs
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QFileDialog,
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (QComboBox, QCheckBox, QDialog, QDialogButtonBox, QFileDialog,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QRadioButton, QStackedWidget,
                              QVBoxLayout, QWidget)
@@ -94,7 +94,7 @@ class Playback(QWidget):
 
         playback_config = QGroupBox('Playback Configuration')
         playback_config_layout = QVBoxLayout()
-        playback_config_layout.setAlignment(Qt.AlignTop)
+        playback_config_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.cover_art_playback = QCheckBox('Cover Art Playback')
         self.playlist_save_checkbox = QCheckBox('Save Playlist on Close')
@@ -308,7 +308,7 @@ class PreferencesDialog(QDialog):
         self.contents = QListWidget()
         self.contents.setFixedWidth(175)
         self.pages = QStackedWidget()
-        self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
+        self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
 
         self.dialog_media_library = MediaLibrary()
         self.dialog_playback = Playback()
@@ -335,16 +335,16 @@ class PreferencesDialog(QDialog):
         """List all of the pages available to the user."""
         media_library_options = QListWidgetItem(self.contents)
         media_library_options.setText('Media Library')
-        media_library_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        media_library_options.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
         self.contents.setCurrentRow(0)
 
         playback_options = QListWidgetItem(self.contents)
         playback_options.setText('Playback')
-        playback_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        playback_options.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
 
         view_options = QListWidgetItem(self.contents)
         view_options.setText('View Options')
-        view_options.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        view_options.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
 
     def change_page(self, current, previous):
         """Change the page according to the clicked list item."""

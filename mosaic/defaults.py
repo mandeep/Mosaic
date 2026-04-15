@@ -1,8 +1,8 @@
 import os
 
 from appdirs import AppDirs
-from PyQt5.QtCore import Qt
-import toml
+from PySide6.QtCore import Qt
+import tomllib
 
 from mosaic import utilities
 
@@ -31,8 +31,8 @@ class Settings(object):
             with open(self.user_config_file, 'a') as new_config_file:
                 new_config_file.write(config)
 
-        with open(self.user_config_file) as conffile:
-            self.config = toml.load(conffile)
+        with open(self.user_config_file, 'rb') as conffile:
+            self.config = tomllib.load(conffile)
 
     @property
     def media_library_path(self):
@@ -64,9 +64,9 @@ class Settings(object):
         """Return the dock area selected by the user in the preferences dialog."""
         radio_button_state = self.config['dock']['position']
         if radio_button_state == 'left':
-            return Qt.LeftDockWidgetArea
-        elif radio_button_state == 'right':
-            return Qt.RightDockWidgetArea
+            return Qt.DockWidgetArea.LeftDockWidgetArea
+        else:
+            return Qt.DockWidgetArea.RightDockWidgetArea
 
     @property
     def window_size(self):
@@ -77,6 +77,6 @@ class Settings(object):
         index contained in the settings.toml selects the index from the sizes list and sets
         the window and image size accordingly.
         """
-        sizes = [900, 800, 700, 600, 500, 400]
+        sizes = [1500, 1200, 900, 750]
 
         return sizes[self.config['view_options']['window_size']]

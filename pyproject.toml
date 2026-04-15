@@ -1,0 +1,39 @@
+[project]
+name = "mosaic-music"
+version = "0.31.0"
+description = "A cross-platform cover art focused music player."
+authors = [
+    {name = "mandeep"}
+]
+license = {text = "GPLv3+"}
+urls = {repository = "https://github.com/mandeep/Mosaic"}
+dependencies = [
+    "appdirs>=1.4",
+    "mutagen>=1.45",
+    "natsort",
+    "pyside6>=6.11.0",
+    "toml>=0.10.2",
+]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+mosaic = "mosaic.player:main"
+
+[tool.setuptools]
+packages = ["mosaic", "mosaic.images"]
+
+[tool.setuptools.package-data]
+"mosaic.images" = ["*.png"]
+"mosaic" = ["*.toml"]

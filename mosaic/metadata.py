@@ -1,5 +1,5 @@
 from mutagen import easyid3, flac, mp3
-from PyQt5.QtCore import QByteArray
+from PySide6.QtCore import QByteArray
 
 from mosaic import utilities
 
@@ -12,6 +12,7 @@ def identify_filetype(file):
     elif file.endswith('.flac'):
         audio_file = flac.FLAC(file)
 
+    # need to handle cases where the file is not mp3 or flac
     return audio_file
 
 
