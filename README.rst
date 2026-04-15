@@ -22,8 +22,6 @@ Features
 Installation
 ************
 
-Mosaic requires Python and the PyQt5 library installed locally. For PyQt5 install instructions please visit: https://www.riverbankcomputing.com/software/pyqt/download5
-
 With your environment set, simply run the following command to install Mosaic::
 
     $ pip install --user mosaic-music
