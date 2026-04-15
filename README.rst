@@ -1,6 +1,6 @@
 .. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/mosaic.png
 
-|pypi| |status| |pyversions| |wheel| |license|
+|actions| |pypi| |status| |pyversions| |wheel| |license|
 
 .. image:: https://raw.githubusercontent.com/mandeep/Mosaic/master/screenshots/screen.png
 
@@ -48,6 +48,8 @@ Change Log
 
 To see the Mosaic change log, click here_.
 
+.. |actions| .. image:: https://img.shields.io/github/actions/workflow/status/mandeep/Mosaic/python-tests.yml
+    :target: https://github.com/mandeep/Mosaic/actions
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
 .. |status| image:: https://img.shields.io/pypi/status/mosaic-music
