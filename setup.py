@@ -24,10 +24,9 @@ setup(name='mosaic-music',
             'pytest-mock',
         ]
       },
-      entry_points='''
-        [console_scripts]
-        mosaic=mosaic.player:main
-        ''',
+      entry_points={
+        'console_scripts': ['mosaic=mosaic.player:main'],
+      },
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Development Status :: 4 - Beta',
