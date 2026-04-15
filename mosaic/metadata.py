@@ -1,4 +1,4 @@
-from mutagen import easyid3, flac, mp3
+import mutagen
 from PySide6.QtCore import QByteArray
 
 from mosaic import utilities
@@ -6,11 +6,13 @@ from mosaic import utilities
 
 def identify_filetype(file):
     """Identify the given file as either MP3 or FLAC and return a Mutagen object."""
+    audio_file = mutagen.File(file)
+
     if file.endswith('.mp3'):
-        audio_file = mp3.MP3(file, ID3=easyid3.EasyID3)
+        audio_file = mutagen.mp3.MP3(file, ID3=mutagen.easyid3.EasyID3)
 
     elif file.endswith('.flac'):
-        audio_file = flac.FLAC(file)
+        audio_file = mutagen.flac.FLAC(file)
 
     # need to handle cases where the file is not mp3 or flac
     return audio_file
@@ -61,12 +63,12 @@ def metadata(file):
 
     try:  # Searches for cover art in flac files
         artwork = QByteArray().append(audio_file.pictures[0].data)
-    except (IndexError, flac.FLACNoHeaderError):
+    except (IndexError, mutagen.flac.FLACNoHeaderError):
         artwork = utilities.resource_filename('mosaic.images', 'nocover.png')
     except AttributeError:  # Searches for cover art in mp3 files
-        for tag in mp3.MP3(file):
+        for tag in mutagen.mp3.MP3(file):
             if 'APIC' in tag:
-                artwork = QByteArray().append(mp3.MP3(file)[tag].data)
+                artwork = QByteArray().append(mutagen.mp3.MP3(file)[tag].data)
 
     return [album, artist, title, track_number, date, genre, description, sample_rate,
             bitrate, bitrate_mode, bits_per_sample, artwork]
