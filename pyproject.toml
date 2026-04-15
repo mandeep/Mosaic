@@ -39,7 +39,7 @@ packages = ["mosaic", "mosaic.images"]
 "mosaic.images" = ["*.png"]
 "mosaic" = ["*.toml"]
 
-[dependency-groups]
+[project.optional-dependencies]
 tests = [
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
