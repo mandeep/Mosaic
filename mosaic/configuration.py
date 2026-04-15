@@ -190,12 +190,10 @@ class ViewOptions(QWidget):
         size_option = QLabel('Window Size', self)
 
         self.dropdown_box = QComboBox()
+        self.dropdown_box.addItem('1500 x 1500')
+        self.dropdown_box.addItem('1200 x 1200')
         self.dropdown_box.addItem('900 x 900')
-        self.dropdown_box.addItem('800 x 800')
-        self.dropdown_box.addItem('700 x 700')
-        self.dropdown_box.addItem('600 x 600')
-        self.dropdown_box.addItem('500 x 500')
-        self.dropdown_box.addItem('400 x 400')
+        self.dropdown_box.addItem('750 x 750')
 
         window_size_layout = QHBoxLayout()
         window_size_layout.addWidget(size_option)
