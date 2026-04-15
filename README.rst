@@ -48,7 +48,7 @@ Change Log
 
 To see the Mosaic change log, click here_.
 
-.. |actions| .. image:: https://img.shields.io/github/actions/workflow/status/mandeep/Mosaic/python-tests.yml
+.. |actions| image:: https://img.shields.io/github/actions/workflow/status/mandeep/Mosaic/python-tests.yml
     :target: https://github.com/mandeep/Mosaic/actions
 .. |pypi| image:: https://img.shields.io/pypi/v/mosaic-music
     :target: https://pypi.python.org/pypi/mosaic-music
