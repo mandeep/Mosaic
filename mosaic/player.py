@@ -370,6 +370,8 @@ class MusicPlayer(QMainWindow):
 
             if self.playlist:
                 self.playlist_view.setCurrentRow(0)
+                self.current_index = 0
+                self.player.setSource(self.playlist[0])
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
