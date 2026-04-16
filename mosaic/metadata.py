@@ -31,8 +31,8 @@ def extract_metadata(file):
         return {}
 
     tags_dictionary = dict(audio_file.tags)
-    metadata_dictionary = dict((k, "".join(v)) for k, v in tags_dictionary.items())
-    return metadata_dictionary
+
+    return tags_dictionary
 
 
 def metadata(file):
@@ -40,13 +40,13 @@ def metadata(file):
     audio_file = identify_filetype(file)
     file_metadata = extract_metadata(file)
 
-    album = file_metadata.get('album', '??')
-    artist = file_metadata.get('artist', '??')
-    title = file_metadata.get('title', '??')
-    track_number = file_metadata.get('tracknumber', '??')
-    date = file_metadata.get('date', '')
-    genre = file_metadata.get('genre', '')
-    description = file_metadata.get('description', '')
+    album = file_metadata.get('album', ['??'])[0]
+    artist = file_metadata.get('artist', ['??'])[0]
+    title = file_metadata.get('title', ['??'])[0]
+    track_number = file_metadata.get('tracknumber', ['??'])[0]
+    date = file_metadata.get('date', [''])[0]
+    genre = file_metadata.get('genre', [''])[0]
+    description = file_metadata.get('description', [''])[0]
     sample_rate = "{} Hz" .format(audio_file.info.sample_rate)
     artwork = utilities.resource_filename('mosaic.images', 'nocover.png')
 
