@@ -1,0 +1,15 @@
+services:
+  mosaic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mosaic
+    working_dir: /app
+    volumes:
+      # Bind-mount the source so edits on the host are reflected in the
+      # container without a rebuild.  Dependencies live in the image, so this
+      # only matters for .py files.
+      - .:/app
+    tty: true
+    stdin_open: true
+    entrypoint: ["/entrypoint.sh"]

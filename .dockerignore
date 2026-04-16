@@ -1,0 +1,45 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Python build artifacts
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.egg-info
+*.egg
+build
+dist
+.eggs
+
+# Virtual environments
+.venv
+venv
+env
+
+# Test and coverage artifacts
+.pytest_cache
+.coverage
+.coverage.*
+htmlcov
+.tox
+.nox
+
+# Editor/IDE
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# CI / local dev
+.github
+.mypy_cache
+.ruff_cache
+
+# Docker itself shouldn't copy the docker files into the image
+Dockerfile
+docker-compose.yml
+.dockerignore
