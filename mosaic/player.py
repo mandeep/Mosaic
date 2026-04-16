@@ -296,10 +296,10 @@ class MusicPlayer(QMainWindow):
         filename, success = QFileDialog.getOpenFileName(self, 'Open File', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.Option.ReadOnly)
 
         if success:
-            file_info = QFileInfo(filename).fileName()
+            file_info = QFileInfo(filename).baseName()
             playlist_item = QListWidgetItem(file_info)
-            self.playlist.clear()
-            self.playlist_view.clear()
+            # self.playlist.clear()
+            # self.playlist_view.clear()
             self.playlist = [QUrl.fromLocalFile(filename)]
             # self.player.setPlaylist(self.playlist)
             playlist_item.setToolTip(file_info)
@@ -312,10 +312,10 @@ class MusicPlayer(QMainWindow):
         filenames, success = QFileDialog.getOpenFileNames(self, 'Open Multiple Files', '', 'Audio (*.mp3 *.flac)', '', QFileDialog.Option.ReadOnly)
 
         if success:
-            self.playlist.clear()
-            self.playlist_view.clear()
+            # self.playlist.clear()
+            # self.playlist_view.clear()
             for file in natsort.natsorted(filenames, alg=natsort.ns.PATH):
-                file_info = QFileInfo(file).fileName()
+                file_info = QFileInfo(file).baseName()
                 playlist_item = QListWidgetItem(file_info)
                 self.playlist.append(QUrl().fromLocalFile(file))
                 # self.player.setPlaylist(self.playlist)
@@ -391,9 +391,10 @@ class MusicPlayer(QMainWindow):
         for index in self.library_view.selectedIndexes():
             if self.library_model.fileName(index).endswith(('mp3', 'flac')):
                 file = self.library_model.filePath(index)
+                track_name = os.path.basename(self.library_model.fileName(index))
                 self.playlist.append(QUrl().fromLocalFile(file))
-                playlist_item = QListWidgetItem(self.library_model.fileName(index))
-                playlist_item.setToolTip(self.library_model.fileName(index))
+                playlist_item = QListWidgetItem(track_name)
+                playlist_item.setToolTip(track_name)
                 self.playlist_view.addItem(playlist_item)
 
             elif self.library_model.isDir(index):
@@ -403,8 +404,9 @@ class MusicPlayer(QMainWindow):
                         file = os.path.join(dirpath, filename)
                         if filename.endswith(('mp3', 'flac')):
                             self.playlist.append(QUrl().fromLocalFile(file))
-                            playlist_item = QListWidgetItem(filename)
-                            playlist_item.setToolTip(filename)
+                            track_name = os.path.splitext(filename)[0]
+                            playlist_item = QListWidgetItem(track_name)
+                            playlist_item.setToolTip(track_name)
                             self.playlist_view.addItem(playlist_item)
 
         if self.current_index == -1:
@@ -425,7 +427,7 @@ class MusicPlayer(QMainWindow):
         except TypeError:
             self.pixmap = QPixmap(artwork)
 
-        meta_data = '{} - {} - {} - {}' .format(track_number, artist, album, title)
+        meta_data = '{} - {} - {} - {}' .format(track_number.zfill(2), artist, album, title)
 
         self.setWindowTitle(meta_data)
         self.art.setScaledContents(True)
