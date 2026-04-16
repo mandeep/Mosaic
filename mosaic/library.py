@@ -40,6 +40,7 @@ class MediaLibraryView(QTreeView):
 
         self.media_model = MediaLibraryModel()
         self.setModel(self.media_model)
+        self.setSelectionMode(QTreeView.SelectionMode.ExtendedSelection)
 
         if os.path.isdir(self.media_model.library):
             self.setRootIndex(self.media_model.index(self.media_model.library))

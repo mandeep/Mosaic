@@ -4,7 +4,7 @@ import sys
 import natsort
 
 from PySide6.QtCore import Qt, QFileInfo, QTime, QTimer, QUrl
-from PySide6.QtGui import QAction, QGuiApplication, QIcon, QPixmap
+from PySide6.QtGui import QAction, QIcon, QKeySequence, QPixmap, QShortcut
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtWidgets import (QApplication, QDockWidget, QFileDialog,
                              QLabel, QListWidget, QListWidgetItem, QMainWindow, QSizePolicy,
@@ -47,6 +47,7 @@ class MusicPlayer(QMainWindow):
         self.playlist_dock = QDockWidget('Playlist', self)
         self.library_dock = QDockWidget('Media Library', self)
         self.playlist_view = QListWidget()
+        self.playlist_view.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         self.library_view = library.MediaLibraryView()
         self.library_model = library.MediaLibraryModel()
         self.preferences = configuration.PreferencesDialog()
@@ -100,6 +101,8 @@ class MusicPlayer(QMainWindow):
         self.preferences.dialog_media_library.media_library_line.textChanged.connect(self.change_media_library_path)
         self.preferences.dialog_view_options.dropdown_box.currentIndexChanged.connect(self.change_window_size)
         self.art.mousePressEvent = self.press_playback
+        self.delete_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Delete), self.playlist_view)
+        self.delete_shortcut.activated.connect(self.remove_from_playlist)
 
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
@@ -385,25 +388,27 @@ class MusicPlayer(QMainWindow):
 
     def open_media_library(self, index):
         """Open a directory or file from the media library into an empty playlist."""
-        self.playlist.clear()
-        self.playlist_view.clear()
+        for index in self.library_view.selectedIndexes():
+            if self.library_model.fileName(index).endswith(('mp3', 'flac')):
+                file = self.library_model.filePath(index)
+                self.playlist.append(QUrl().fromLocalFile(file))
+                playlist_item = QListWidgetItem(self.library_model.fileName(index))
+                playlist_item.setToolTip(self.library_model.fileName(index))
+                self.playlist_view.addItem(playlist_item)
 
-        if self.library_model.fileName(index).endswith(('mp3', 'flac')):
-            self.playlist.append(QUrl().fromLocalFile(self.library_model.filePath(index)))
-            self.playlist_view.addItem(self.library_model.fileName(index))
+            elif self.library_model.isDir(index):
+                directory = self.library_model.filePath(index)
+                for dirpath, __, files in os.walk(directory):
+                    for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
+                        file = os.path.join(dirpath, filename)
+                        if filename.endswith(('mp3', 'flac')):
+                            self.playlist.append(QUrl().fromLocalFile(file))
+                            playlist_item = QListWidgetItem(filename)
+                            playlist_item.setToolTip(filename)
+                            self.playlist_view.addItem(playlist_item)
 
-        elif self.library_model.isDir(index):
-            directory = self.library_model.filePath(index)
-            for dirpath, __, files in os.walk(directory):
-                for filename in natsort.natsorted(files, alg=natsort.ns.PATH):
-                    file = os.path.join(dirpath, filename)
-                    if filename.endswith(('mp3', 'flac')):
-                        self.playlist.append(QUrl().fromLocalFile(file))
-                        playlist_item = QListWidgetItem(filename)
-                        playlist_item.setToolTip(filename)
-                        self.playlist_view.addItem(playlist_item)
-
-        self.player.play()
+        if self.current_index == -1:
+            self.play_index(0)
 
     def display_meta_data(self):
         """Display the current song's metadata in the main window.
@@ -568,6 +573,19 @@ class MusicPlayer(QMainWindow):
     def change_index(self, row):
         """Highlight the row in the playlist of the active media."""
         self.playlist_view.setCurrentRow(row)
+
+    def remove_from_playlist(self):
+        """Remove selected tracks from the playlist."""
+        for item in reversed(self.playlist_view.selectedItems()):
+            row = self.playlist_view.row(item)
+            self.playlist_view.takeItem(row)
+            del self.playlist[row]
+
+            if row == self.current_index:
+                self.player.stop()
+                self.current_index = -1
+            elif row < self.current_index:
+                self.current_index -= 1
 
     def minimalist_view(self):
         """Resize the window to only show the menu bar and audio controls."""
