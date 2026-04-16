@@ -193,8 +193,9 @@ class ViewOptions(QWidget):
         self.dropdown_box = QComboBox()
         self.dropdown_box.addItem('1500 x 1500')
         self.dropdown_box.addItem('1200 x 1200')
-        self.dropdown_box.addItem('900 x 900')
         self.dropdown_box.addItem('750 x 750')
+        self.dropdown_box.addItem('450 x 450')
+        self.dropdown_box.addItem('375 x 375')
 
         window_size_layout = QHBoxLayout()
         window_size_layout.addWidget(size_option)

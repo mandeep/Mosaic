@@ -77,6 +77,6 @@ class Settings(object):
         index contained in the settings.toml selects the index from the sizes list and sets
         the window and image size accordingly.
         """
-        sizes = [1500, 1200, 900, 750]
+        sizes = [1500, 1200, 750, 450, 375]
 
         return sizes[self.config['view_options']['window_size']]

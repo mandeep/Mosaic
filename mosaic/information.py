@@ -88,6 +88,8 @@ class FullInformation(QWidget):
         table.setColumnCount(2)
         table.setColumnWidth(0, 270)
         table.setColumnWidth(1, 270)
+        table.verticalHeader().hide()
+        table.horizontalHeader().hide()
 
         if file is not None:
             file = metadata.extract_metadata(file)

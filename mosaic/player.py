@@ -29,7 +29,7 @@ class MusicPlayer(QMainWindow):
 
         window_icon = utilities.resource_filename('mosaic.images', 'icon.png')
         self.setWindowIcon(QIcon(window_icon))
-        self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
+        self.resize(defaults.Settings().window_size, defaults.Settings().window_size)
 
         # Initiates Qt objects to be used by MusicPlayer
         self.player = QMediaPlayer()
@@ -604,7 +604,7 @@ class MusicPlayer(QMainWindow):
             QTimer.singleShot(10, lambda: self.resize(500, 0))
 
         else:
-            self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
+            self.resize(defaults.Settings().window_size, defaults.Settings().window_size)
 
             if self.library_dock_state:
                 self.library_dock.setVisible(True)
@@ -628,7 +628,7 @@ class MusicPlayer(QMainWindow):
 
         elif (not visible and not self.playlist_dock.isVisible() and not
                 self.library_dock.isVisible()):
-            self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
+            self.resize(defaults.Settings().window_size, defaults.Settings().window_size)
 
     def media_information_dialog(self):
         """Show a dialog of the current song's metadata."""
@@ -643,7 +643,7 @@ class MusicPlayer(QMainWindow):
         """Change the window size of the music player."""
         self.playlist_dock.close()
         self.library_dock.close()
-        self.resize(defaults.Settings().window_size, defaults.Settings().window_size + 63)
+        self.resize(defaults.Settings().window_size, defaults.Settings().window_size)
 
     def change_media_library_path(self, path):
         """Change the media library path to the new path selected in the preferences dialog."""
@@ -667,12 +667,17 @@ def main():
 
     QDesktopWidget() is used to move the application to the center of the user's screen.
     """
-    os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
+    # os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
+    os.environ["QT_LOGGING_RULES"] = "qt.multimedia.*=false"
 
     application = QApplication(sys.argv)
     window = MusicPlayer()
 
     desktop = application.primaryScreen().availableGeometry()
+
+    if window.width() > desktop.width() or window.height() > desktop.height():
+        window.resize(desktop.width(), desktop.height())
+
     width = (desktop.width() - window.width()) // 2
     height = (desktop.height() - window.height()) // 2
 
