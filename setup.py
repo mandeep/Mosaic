@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.33.0',
+      version='0.34.0',
       author='mandeep',
       url='https://github.com/mandeep/Mosaic',
       description='A cross-platform cover art focused music player.',
@@ -25,7 +25,7 @@ setup(name='mosaic-music',
         ]
       },
       entry_points={
-        'console_scripts': ['mosaic=mosaic.player:main'],
+        'gui_scripts': ['mosaic=mosaic.player:main'],
       },
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',

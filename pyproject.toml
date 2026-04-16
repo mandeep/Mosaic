@@ -1,6 +1,6 @@
 [project]
 name = "mosaic-music"
-version = "0.33.0"
+version = "0.34.0"
 description = "A cross-platform cover art focused music player."
 authors = [
     {name = "mandeep"}
@@ -23,12 +23,13 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
+requires-python = ">=3.11"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[project.scripts]
+[project.gui-scripts]
 mosaic = "mosaic.player:main"
 
 [tool.setuptools]
