@@ -16,7 +16,7 @@ class MediaLibraryModel(QFileSystemModel):
         super(MediaLibraryModel, self).__init__(parent)
 
         self.setNameFilters(['*.mp3', '*.flac'])
-        self.config_directory = AppDirs('mosaic', 'mandeep').user_config_dir
+        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
         self.user_config_file = os.path.join(self.config_directory, 'settings.toml')
 
         with open(self.user_config_file, 'r') as conffile:

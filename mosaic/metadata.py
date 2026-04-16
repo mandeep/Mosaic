@@ -8,13 +8,11 @@ def identify_filetype(file):
     """Identify the given file as either MP3 or FLAC and return a Mutagen object."""
     audio_file = mutagen.File(file)
 
-    if file.endswith('.mp3'):
+    if file.lower().endswith('.mp3'):
         audio_file = mutagen.mp3.MP3(file, ID3=mutagen.easyid3.EasyID3)
-
-    elif file.endswith('.flac'):
+    elif file.lower().endswith('.flac'):
         audio_file = mutagen.flac.FLAC(file)
 
-    # need to handle cases where the file is not mp3 or flac
     return audio_file
 
 

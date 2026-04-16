@@ -53,15 +53,14 @@ class GeneralInformation(QWidget):
 
             self.setLayout(media_information_layout)
 
-    def info_field(self, label_text, value, fixed_width=None):
+    def info_field(self, label_text, value):
         """Create a labeled read-only line edit sized to fit its content."""
         label = QLabel(label_text, self)
         label.setStyleSheet('font-weight: bold')
         line = QLineEdit()
         line.setText(value)
         line.setReadOnly(True)
-        width = fixed_width or line.fontMetrics().horizontalAdvance(value) + 20
-        width = max(width, 50)
+        width = max(line.fontMetrics().horizontalAdvance(value) + 20, 50)
         line.setMinimumWidth(width)
         line.setMaximumWidth(width)
 

@@ -217,8 +217,8 @@ class ViewOptions(QWidget):
         self.dropdown_box.currentIndexChanged.connect(self.change_size)
         self.media_library_view_button.clicked.connect(self.media_library_view_settings)
         self.playlist_view_button.clicked.connect(self.playlist_view_settings)
-        self.dock_left_side.clicked.connect(self.dock_positon_settings)
-        self.dock_right_side.clicked.connect(self.dock_positon_settings)
+        self.dock_left_side.clicked.connect(self.dock_position_settings)
+        self.dock_right_side.clicked.connect(self.dock_position_settings)
 
     def change_size(self):
         """Record the change in window size to the settings.toml file."""
@@ -271,7 +271,7 @@ class ViewOptions(QWidget):
         """Set the playlist dock checkbox state from settings.toml."""
         self.playlist_view_button.setChecked(config['playlist']['show_on_start'])
 
-    def dock_positon_settings(self):
+    def dock_position_settings(self):
         """Write to the settings.toml the radio button chosen by the user."""
         with open(self.user_config_file) as conffile:
             config = toml.load(conffile)
