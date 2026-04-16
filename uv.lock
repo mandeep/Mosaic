@@ -135,7 +135,7 @@ wheels = [
 
 [[package]]
 name = "mosaic-music"
-version = "0.34.0"
+version = "0.35.0"
 source = { editable = "." }
 dependencies = [
     { name = "appdirs" },
