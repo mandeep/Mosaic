@@ -195,6 +195,7 @@ def test_quit_application(qtbot, monkeypatch, window):
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Down)
+    qtbot.keyClick(window.file, Qt.Key.Key_Down)
     qtbot.keyClick(window.file, Qt.Key.Key_Enter)
     assert exit_calls == [1]
 

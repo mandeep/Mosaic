@@ -107,7 +107,7 @@ class MusicPlayer(QMainWindow):
         # Creating the menu controls, media controls, and window size of the music player
         self.menu_controls()
         self.media_controls()
-        # self.load_saved_playlist()
+        self.load_saved_playlist()
 
     def handle_media_status(self, status):
         """Auto-play next track when current ends."""
@@ -184,9 +184,9 @@ class MusicPlayer(QMainWindow):
         self.open_multiple_files_action.setShortcut('M')
         self.open_multiple_files_action.triggered.connect(self.open_multiple_files)
 
-        # self.open_playlist_action = QAction('Open Playlist', self)
-        # self.open_playlist_action.setShortcut('CTRL+P')
-        # self.open_playlist_action.triggered.connect(self.open_playlist)
+        self.open_playlist_action = QAction('Open Playlist', self)
+        self.open_playlist_action.setShortcut('CTRL+P')
+        self.open_playlist_action.triggered.connect(self.open_playlist)
 
         self.open_directory_action = QAction('Open Directory', self)
         self.open_directory_action.setShortcut('D')
@@ -202,11 +202,11 @@ class MusicPlayer(QMainWindow):
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
-        # self.file.addAction(self.open_playlist_action)
+        self.file.addAction(self.open_playlist_action)
         self.file.addAction(self.open_directory_action)
-        # self.file.addSeparator()
-        # self.file.addAction(self.save_playlist_action)
         self.file.addSeparator()
+        # self.file.addAction(self.save_playlist_action)
+        # self.file.addSeparator()
         self.file.addAction(self.exit_action)
 
     def edit_menu(self):
@@ -324,48 +324,52 @@ class MusicPlayer(QMainWindow):
                 self.playlist_view.setCurrentRow(0)
                 self.play_index(0)
 
-    # def open_playlist(self):
-    #     """Load an M3U or PLS file into a new playlist."""
-    #     playlist, success = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'Playlist (*.m3u *.pls)', '', QFileDialog.ReadOnly)
+    def open_playlist(self):
+        """Load an M3U file into a new playlist."""
+        playlist, success = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'Playlist (*.m3u)', '', QFileDialog.Option.ReadOnly)
 
-    #     if success:
-    #         playlist = QUrl.fromLocalFile(playlist)
-    #         self.playlist.clear()
-    #         self.playlist_view.clear()
-    #         self.playlist.load(playlist)
-    #         self.player.setPlaylist(self.playlist)
+        if success:
+            self.playlist.clear()
+            self.playlist_view.clear()
+            self.current_index = -1
 
-    #         for song_index in range(self.playlist.mediaCount()):
-    #             file_info = self.playlist.media(song_index).canonicalUrl().fileName()
-    #             playlist_item = QListWidgetItem(file_info)
-    #             playlist_item.setToolTip(file_info)
-    #             self.playlist_view.addItem(playlist_item)
+            with open(playlist, 'r', encoding='utf-8') as f:
+                for line in f:
+                    file = line.strip()
+                    if file and not file.startswith('#') and os.path.exists(file):
+                        self.playlist.append(QUrl.fromLocalFile(file))
+                        file_info = QFileInfo(file).fileName()
+                        playlist_item = QListWidgetItem(file_info)
+                        playlist_item.setToolTip(file_info)
+                        self.playlist_view.addItem(playlist_item)
 
-    #         self.playlist_view.setCurrentRow(0)
-    #         self.player.play()
+            if self.playlist:
+                self.playlist_view.setCurrentRow(0)
+                self.play_index(0)
 
-    # def save_playlist(self):
-    #     """Save the media in the playlist dock as a new M3U playlist."""
-    #     playlist, success = QFileDialog.getSaveFileName(self, 'Save Playlist', '', 'Playlist (*.m3u)', '')
-    #     if success:
-    #         saved_playlist = "{}.m3u" .format(playlist)
-    #         self.playlist.save(QUrl().fromLocalFile(saved_playlist), "m3u")
+    def save_playlist(self):
+        """Save the media in the playlist dock as a new M3U playlist."""
+        playlist_path = os.path.join(self.playlist_location, '.m3u')
+        with open(playlist_path, 'w', encoding='utf-8') as f:
+            for url in self.playlist:
+                f.write(url.toLocalFile() + '\n')
 
-    # def load_saved_playlist(self):
-    #     """Load the saved playlist if user setting permits."""
-    #     saved_playlist = "{}/.m3u" .format(self.playlist_location)
-    #     if os.path.exists(saved_playlist):
-    #         playlist = QUrl().fromLocalFile(saved_playlist)
-    #         self.playlist.load(playlist)
-    #         self.player.setPlaylist(self.playlist)
+    def load_saved_playlist(self):
+        """Load the saved playlist if user setting permits."""
+        saved_playlist = os.path.join(self.playlist_location, '.m3u')
+        if os.path.exists(saved_playlist):
+            with open(saved_playlist, 'r', encoding='utf-8') as f:
+                for line in f:
+                    file = line.strip()
+                    if file and not file.startswith('#') and os.path.exists(file):
+                        self.playlist.append(QUrl.fromLocalFile(file))
+                        file_info = QFileInfo(file).fileName()
+                        playlist_item = QListWidgetItem(file_info)
+                        playlist_item.setToolTip(file_info)
+                        self.playlist_view.addItem(playlist_item)
 
-    #         for song_index in range(self.playlist.mediaCount()):
-    #             file_info = self.playlist.media(song_index).canonicalUrl().fileName()
-    #             playlist_item = QListWidgetItem(file_info)
-    #             playlist_item.setToolTip(file_info)
-    #             self.playlist_view.addItem(playlist_item)
-
-    #         self.playlist_view.setCurrentRow(0)
+            if self.playlist:
+                self.playlist_view.setCurrentRow(0)
 
     def open_directory(self):
         """Open the selected directory and add the files within to an empty playlist."""
@@ -653,12 +657,9 @@ class MusicPlayer(QMainWindow):
 
     def closeEvent(self, event):
         """Override the PyQt close event in order to handle save playlist on close."""
-        playlist = "{}/.m3u" .format(self.playlist_location)
-        # if defaults.Settings().save_playlist_on_close:
-        #     self.playlist.save(QUrl().fromLocalFile(playlist), "m3u")
-        # else:
-        #     if os.path.exists(playlist):
-        #         os.remove(playlist)
+        if defaults.Settings().save_playlist_on_close:
+            self.save_playlist()
+
         QApplication.quit()
 
 
