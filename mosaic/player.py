@@ -187,7 +187,7 @@ class MusicPlayer(QMainWindow):
 
         self.exit_action = QAction('Quit', self)
         self.exit_action.setShortcut('CTRL+Q')
-        self.exit_action.triggered.connect(self.close)
+        self.exit_action.triggered.connect(self.closeEvent)
 
         self.file.addAction(self.open_action)
         self.file.addAction(self.open_multiple_files_action)
@@ -624,7 +624,7 @@ class MusicPlayer(QMainWindow):
         if self.settings.save_playlist_on_close:
             self.save_playlist()
 
-        event.accept()
+        QApplication.quit()
 
 
 def main():
