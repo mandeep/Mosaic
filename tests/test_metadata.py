@@ -57,8 +57,11 @@ def test_mp3_tags(mp3_file):
 
     Asserts that the extract_metadata function returns all of the MP3 tags necessary for the
     music player to use."""
-    assert isinstance(metadata.extract_metadata(mp3_file), dict)
-    assert 'Ghosts I-IV' in metadata.extract_metadata(mp3_file).values()
+    extracted_metadata = metadata.extract_metadata(mp3_file)
+    assert isinstance(extracted_metadata, dict)
+    assert 'Ghosts I-IV' in extracted_metadata['album'][0]
+    assert 'Nine Inch Nails' in extracted_metadata['artist'][0]
+    assert '2008' in extracted_metadata['date']
 
 
 def test_flac_tags(flac_file):
@@ -66,8 +69,11 @@ def test_flac_tags(flac_file):
 
     Asserts that the extract_metadata function returns all of the FLAC tags necessary for the
     music player to use."""
-    assert isinstance(metadata.extract_metadata(flac_file), dict)
-    assert 'Ghosts I-IV' in metadata.extract_metadata(flac_file).values()
+    extracted_metadata = metadata.extract_metadata(flac_file)
+    assert isinstance(extracted_metadata, dict)
+    assert 'Ghosts I-IV' in extracted_metadata['album'][0]
+    assert 'Nine Inch Nails' in extracted_metadata['artist'][0]
+    assert '2008' in extracted_metadata['date']
 
 
 def test_mp3_metadata(mp3_file):
