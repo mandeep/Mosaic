@@ -23,7 +23,9 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-* freeglut3-dev libglib2.0 libpulse0
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-* freeglut3-dev libglib2.0 libpulse0 pulseaudio libva-dev
+        pulseaudio -D --exit-idle-time=-1
+        pactl load-module module-dummy-main
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -44,4 +46,7 @@ jobs:
         pip install .[tests]
 
     - name: Run tests
-      run: pytest --verbose --capture=no --cov --cov-report term-missing
+      run: xvfb-run --server-args="-screen 0 1024x768x24" pytest
+      env:
+        # Force Qt to use the dummy audio
+        QT_MULTIMEDIA_PREFERRED_PLUGINS: ffmpeg
