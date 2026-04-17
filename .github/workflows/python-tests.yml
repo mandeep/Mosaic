@@ -27,7 +27,8 @@ jobs:
           xvfb libxkbcommon-x11-0 libxcb-cursor0 \
           libglib2.0-0 libpulse0 pipewire pipewire-pulse \
           libva-drm2 libva-dev libva-x11-2 mesa-va-drivers \
-          ffmpeg pipewire-audio-client-libraries dbus-x11
+          ffmpeg pipewire-audio-client-libraries dbus-x11 \
+          libegl1 libgles2 libgl1-mesa-dev
 
     - name: Set up Python
       uses: actions/setup-python@v5
