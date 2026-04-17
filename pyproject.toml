@@ -1,6 +1,6 @@
 [project]
 name = "mosaic-music"
-version = "0.35.1"
+version = "0.35.2"
 description = "A cross-platform cover art focused music player."
 authors = [
     {name = "mandeep"}
