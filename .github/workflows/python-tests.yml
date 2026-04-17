@@ -23,22 +23,16 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-* freeglut3-dev libglib2.0 libpulse0 pipewire libva-drm2 libva-dev libva-x11-2 mesa-va-drivers va-driver-all ffmpeg
-        pulseaudio -D --exit-idle-time=-1
-        pactl load-module module-dummy-main
+        sudo apt-get install -y \
+          xvfb libxkbcommon-x11-0 libxcb-cursor0 \
+          libglib2.0-0 libpulse0 pipewire pipewire-pulse \
+          libva-drm2 libva-dev libva-x11-2 mesa-va-drivers \
+          ffmpeg pipewire-audio-client-libraries dbus-x11
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Cache dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-${{ matrix.python-version }}-
 
     - name: Install dependencies
       run: |
@@ -46,23 +40,29 @@ jobs:
         pip install .[tests]
 
     - name: Setup Virtual Audio and Display
+    # We move the startup logic here to ensure the daemons stay alive for the next step
       run: |
-        # Initialize a dummy sound card for PipeWire/PulseAudio
+        # 1. Setup PipeWire config
         mkdir -p ~/.config/pipewire
         cp /usr/share/pipewire/client.conf ~/.config/pipewire/ || true
         
-        # Start xvfb with a dedicated display number
+        # 2. Start PipeWire and PulseAudio compatibility layer
+        /usr/bin/pipewire &
+        sleep 2
+        /usr/bin/pipewire-pulse &
+        sleep 2
+        
+        # 3. Start Xvfb
         Xvfb :99 -screen 0 1024x768x24 &
         echo "DISPLAY=:99" >> $GITHUB_ENV
-      
 
     - name: Run tests
       env:
         DISPLAY: :99
-        # Force Qt to use the software FFmpeg path instead of hardware VA-API
         QT_VIDEO_BACKEND: ffmpeg
-        # Suppress the VA-API symbol lookup logs
+        QT_MULTIMEDIA_PREFERRED_PLUGINS: ffmpeg
         LIBVA_MESSAGING_LEVEL: 0 
       run: |
-        # Use 'dbus-run-session' to give the media player a bus to talk to
+        # dbus-run-session is the "glue" that lets PipeWire and Qt talk 
+        # to each other in a headless environment.
         dbus-run-session -- python -m pytest
