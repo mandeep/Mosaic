@@ -378,7 +378,7 @@ class MusicPlayer(QMainWindow):
         for index in self.library_view.selectedIndexes():
             if self.library_view.media_model.fileName(index).lower().endswith(('.mp3', '.flac')):
                 file = self.library_view.media_model.filePath(index)
-                track_name = os.path.basename(self.library_view.media_model.fileName(index))
+                track_name = os.path.splitext(self.library_view.media_model.fileName(index))[0]
                 self.playlist.append(QUrl().fromLocalFile(file))
                 playlist_item = QListWidgetItem(track_name)
                 playlist_item.setToolTip(track_name)
