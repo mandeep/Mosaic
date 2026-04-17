@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # Qt runtime libraries for PySide6, plus xvfb for headless display during tests.
 # --no-install-recommends keeps the image lean; we clean the apt lists in the
