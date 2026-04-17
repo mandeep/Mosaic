@@ -23,7 +23,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-* freeglut3-dev libglib2.0 libpulse0 pulseaudio libva-dev
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-* freeglut3-dev libglib2.0 libpulse0 pipewire libva-drm2 libva-dev libva-x11-2 mesa-va-drivers va-driver-all ffmpeg
         pulseaudio -D --exit-idle-time=-1
         pactl load-module module-dummy-main
 
@@ -45,8 +45,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install .[tests]
 
+    - name: Setup Virtual Audio and Display
+      run: |
+        # Initialize a dummy sound card for PipeWire/PulseAudio
+        mkdir -p ~/.config/pipewire
+        cp /usr/share/pipewire/client.conf ~/.config/pipewire/ || true
+        
+        # Start xvfb with a dedicated display number
+        Xvfb :99 -screen 0 1024x768x24 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
+      
+
     - name: Run tests
-      run: xvfb-run --server-args="-screen 0 1024x768x24" pytest
       env:
-        # Force Qt to use the dummy audio
-        QT_MULTIMEDIA_PREFERRED_PLUGINS: ffmpeg
+        DISPLAY: :99
+        # Force Qt to use the software FFmpeg path instead of hardware VA-API
+        QT_VIDEO_BACKEND: ffmpeg
+        # Suppress the VA-API symbol lookup logs
+        LIBVA_MESSAGING_LEVEL: 0 
+      run: |
+        # Use 'dbus-run-session' to give the media player a bus to talk to
+        dbus-run-session -- python -m pytest
