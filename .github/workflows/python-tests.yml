@@ -41,7 +41,7 @@ jobs:
         pip install .[tests]
 
     - name: Setup Virtual Audio and Display
-    # We move the startup logic here to ensure the daemons stay alive for the next step
+      # We move the startup logic here to ensure the daemons stay alive for the next step
       run: |
         # 1. Setup PipeWire config
         mkdir -p ~/.config/pipewire
@@ -60,10 +60,12 @@ jobs:
     - name: Run tests
       env:
         DISPLAY: :99
+        # Force Qt to use the offscreen backend to prevent 'Aborted'
+        QT_QPA_PLATFORM: offscreen
+        # Keep our multimedia overrides
         QT_VIDEO_BACKEND: ffmpeg
         QT_MULTIMEDIA_PREFERRED_PLUGINS: ffmpeg
         LIBVA_MESSAGING_LEVEL: 0 
       run: |
-        # dbus-run-session is the "glue" that lets PipeWire and Qt talk 
-        # to each other in a headless environment.
+        # We still use dbus-run-session for the audio/pipewire connection
         dbus-run-session -- python -m pytest
