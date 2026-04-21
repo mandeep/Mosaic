@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mosaic-music',
-      version='0.35.2',
+      version='0.36.0',
       author='mandeep',
       url='https://github.com/mandeep/Mosaic',
       description='A cross-platform cover art focused music player.',
@@ -9,7 +9,7 @@ setup(name='mosaic-music',
       packages=['mosaic', 'mosaic.images'],
       package_data={'mosaic.images': ['*.png'], 'mosaic': ['*.toml']},
       install_requires=[
-        'appdirs',
+        'platformdirs',
         'mutagen',
         'toml',
         'natsort',

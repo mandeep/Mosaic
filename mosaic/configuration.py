@@ -1,6 +1,6 @@
 import os
 
-from appdirs import AppDirs
+from platformdirs import PlatformDirs
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
@@ -21,7 +21,7 @@ class MediaLibrary(QWidget):
         """Initialize a page of options to be shown in the preferences dialog."""
         super(MediaLibrary, self).__init__(parent)
 
-        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+        self.user_config_file = os.path.join(PlatformDirs(appname='mosaic-music', appauthor=False).user_config_dir,
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:
@@ -89,7 +89,7 @@ class Playback(QWidget):
     def __init__(self, parent=None):
         """Initiate the abstract widget that is displayed in the preferences dialog."""
         super(Playback, self).__init__(parent)
-        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+        self.user_config_file = os.path.join(PlatformDirs(appname='mosaic-music', appauthor=False).user_config_dir,
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:
@@ -157,7 +157,7 @@ class ViewOptions(QWidget):
         """Initiate the View Options page in the preferences dialog."""
         super(ViewOptions, self).__init__(parent)
 
-        self.user_config_file = os.path.join(AppDirs('mosaic', 'Mandeep').user_config_dir,
+        self.user_config_file = os.path.join(PlatformDirs(appname='mosaic-music', appauthor=False).user_config_dir,
                                              'settings.toml')
 
         with open(self.user_config_file) as conffile:

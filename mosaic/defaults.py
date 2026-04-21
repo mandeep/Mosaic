@@ -1,6 +1,6 @@
 import os
 
-from appdirs import AppDirs
+from platformdirs import PlatformDirs
 from PySide6.QtCore import Qt
 import toml
 
@@ -11,13 +11,13 @@ class Settings(object):
     """Settings module provides the Music Player access to the settings.toml file."""
 
     def __init__(self):
-        """Using AppDirs, checks for an existing config folder for Mosaic.
+        """Using PlatformDirs, checks for an existing config folder for Mosaic.
 
         If the directory doesn't exist, it is created. The default settings from settings.toml
         is read into memory and then written to a new settings.toml file in the
         user config directory.
         """
-        self.config_directory = AppDirs('mosaic', 'Mandeep').user_config_dir
+        self.config_directory = PlatformDirs(appname='mosaic-music', appauthor=False).user_config_dir
 
         if not os.path.exists(self.config_directory):
             os.makedirs(self.config_directory)

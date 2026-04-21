@@ -1,6 +1,6 @@
 [project]
 name = "mosaic-music"
-version = "0.35.2"
+version = "0.36.0"
 description = "A cross-platform cover art focused music player."
 authors = [
     {name = "mandeep"}
@@ -9,9 +9,9 @@ license = {text = "GPLv3+"}
 readme = "README.rst"
 urls = {repository = "https://github.com/mandeep/Mosaic"}
 dependencies = [
-    "appdirs>=1.4",
     "mutagen>=1.45",
     "natsort",
+    "platformdirs>=4.9.6",
     "pyside6>=6.11.0",
     "toml>=0.10.2",
 ]
